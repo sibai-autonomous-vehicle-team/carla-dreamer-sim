@@ -14,6 +14,9 @@ class CarlaFollowEnv(CarlaWptEnv):
     Vehicle follows the car in front of it at a reasonable distance for going straight, turning left, and turning right.
     **Provided Tasks**: ``carla_follow``
     """
+    def __init__(self, config):
+        super().__init__(config)
+        self.reset_to_state = None
 
     def state(self):
         """
@@ -22,10 +25,16 @@ class CarlaFollowEnv(CarlaWptEnv):
         ego_tf = self.ego.get_transform()
         nonego_tf = self.nonego.get_transform()
         return [
-            [ego_tf.location.x, ego_tf.location.y, ego_tf.rotation.yaw],
-            [nonego_tf.location.x, nonego_tf.location.y, nonego_tf.rotation.yaw]
+            [ego_tf.location.x, ego_tf.location.y, ego_tf.location.z, ego_tf.rotation.pitch, ego_tf.rotation.yaw, ego_tf.rotation.roll],
+            [nonego_tf.location.x, nonego_tf.location.y, nonego_tf.location.z, ego_tf.rotation.pitch, nonego_tf.rotation.yaw, nonego_tf.rotation.roll]
         ]
 
+    # def set_reset_to_state(self, reset_to_state):
+    #     """
+    #     Set the state to reset the environment to.
+    #     The state should be a list of two lists, each containing the position and orientation of the ego and non-ego vehicles.
+    #     """
+    #     self.reset_to_state = reset_to_state
     # def on_reset(self) -> None:
     #     # checks which path the vehicle will take this time
     #     max_num_of_directions = len(self._config.lane_start_points)
@@ -60,9 +69,9 @@ class CarlaFollowEnv(CarlaWptEnv):
     #     self.nonego_planner = FixedEndingPlanner(self.nonego, dest_location)
     #     self.on_step()
 
-    def on_reset(self, reset_to_state = None) -> None:
+    def on_reset(self) -> None:
         self.random_num = 0
-        if reset_to_state is None:
+        if self.reset_to_state is None:
             # Get a random valid waypoint on the driving lane for the ego vehicle
             all_waypoints = self._world._get_map().generate_waypoints(distance=2.0)
             driving_waypoints = [wp for wp in all_waypoints if wp.lane_type == carla.LaneType.Driving]
@@ -70,7 +79,6 @@ class CarlaFollowEnv(CarlaWptEnv):
 
             # Spawn the ego vehicle at this waypoint
             ego_transform = ego_wp.transform
-            self.ego = self._world.spawn_actor(transform=ego_transform)
 
             # Find a waypoint ahead in the same lane for the non-ego vehicle
             distance_ahead = 10.0  # meters ahead of ego
@@ -79,14 +87,23 @@ class CarlaFollowEnv(CarlaWptEnv):
                 # fallback: just reset again to avoid failure
                 return self.on_reset()
 
-        nonego_wp = forward_wps[0]
-        nonego_transform = nonego_wp.transform
+            nonego_wp = forward_wps[0]
+            nonego_transform = nonego_wp.transform
+        else:
+            # Reset to a specific state
+            ego_transform = carla.Transform(carla.Location(*self.reset_to_state[0][:3]), carla.Rotation(*self.reset_to_state[0][3:6]))
+            nonego_transform = carla.Transform(carla.Location(*self.reset_to_state[1][:3]), carla.Rotation(*self.reset_to_state[1][3:6]))
+
+        ego_transform.location.z += 0.5
+        nonego_transform.location.z += 0.5
+        print(ego_transform, nonego_transform)
+
+        self.ego = self._world.spawn_actor(transform=ego_transform)
         self.nonego = self._world.spawn_actor(transform=nonego_transform)
 
         if self.nonego is None or self.ego is None:
             return self.on_reset()  # Reset if spawning failed
         
-        print(self.ego.get_transform(), nonego_transform)
 
         # Initialize error tracking for the PID controller
         self.prev_errors = {"last_error": 0.0, "integral": 0.0}
@@ -95,10 +112,12 @@ class CarlaFollowEnv(CarlaWptEnv):
         self.list_velocity = []
 
         # Plan a fixed destination far ahead (optional – here: 30m further)
-        planner_wp = nonego_wp.next(30.0)
-        if planner_wp:
-            dest_location = planner_wp[0].transform.location
-            self.nonego_planner = FixedEndingPlanner(self.nonego, dest_location)
+        nonego_wp = self._world._get_map().get_waypoint(nonego_transform.location, project_to_road=True)
+        if nonego_wp:
+            planner_wp = nonego_wp.next(30.0)
+            if planner_wp:
+                dest_location = planner_wp[0].transform.location
+                self.nonego_planner = FixedEndingPlanner(self.nonego, dest_location)
 
         # Take one step to initialize
         self.on_step()

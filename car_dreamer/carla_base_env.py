@@ -21,7 +21,6 @@ class CarlaBaseEnv(gym.Env):
 
         self.action_space = self._get_action_space()
         self.observation_space = self._get_observation_space()
-        self.reset_to_state = None
 
     @abstractmethod
     def on_reset(self) -> None:
