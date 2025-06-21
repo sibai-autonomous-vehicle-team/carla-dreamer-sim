@@ -9,10 +9,10 @@ from car_dreamer.carla_follow_env import CarlaFollowEnv
 config = car_dreamer.load_task_configs('carla_follow')
 env = gym.make('CarlaFollowEnv-v0', config=config.env)
 
-env.reset_to_state = [
-    [-10.856332778930664, -135.0041046142578, -0.008075752295553684, 0.06346611678600311, 1.2272632122039795, -5.211023626494615e-11], 
-    [-0.8586273193359375, -134.7899169921875, -0.008075752295553684, 0.06346611678600311, 1.2272632122039795, -5.211023626494615e-11]
-]
+# env.reset_to_state = [
+#     [-10.856332778930664, -135.0041046142578, -0.008075752295553684, 0.06346611678600311, 1.2272632122039795, -5.211023626494615e-11], 
+#     [-0.8586273193359375, -134.7899169921875, -0.008075752295553684, 0.06346611678600311, 1.2272632122039795, -5.211023626494615e-11]
+# ]
 
 observation = env.reset()
 
@@ -27,7 +27,7 @@ dataset = {
 
 
 print('Collect Initial Data')
-for i in range(35):
+for i in range(500):
     action = env.compute_continuous_action() # Sample a random action
     next_obs, reward, terminated, info = env.step(action)
 

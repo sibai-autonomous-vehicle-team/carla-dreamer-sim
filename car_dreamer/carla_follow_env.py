@@ -269,10 +269,9 @@ class CarlaFollowEnv(CarlaWptEnv):
 
         return info
     
-    # Added method for vehicle control
     def compute_continuous_action(self):
         # === Ego vehicle state ===
-        ego_pos = get_vehicle_pos(self.ego)  # (x, y)
+        ego_pos = get_vehicle_pos(self.ego)
         ego_yaw_rad = math.radians(self.ego.get_transform().rotation.yaw)
         ego_speed = np.linalg.norm(get_vehicle_velocity(self.ego))
 
@@ -286,7 +285,7 @@ class CarlaFollowEnv(CarlaWptEnv):
         # === Desired yaw (toward leader) ===
         desired_yaw_rad = math.atan2(dy, dx)
 
-        # === Heading error (wrapped to [-pi, pi]) ===
+        # === Heading error ===
         heading_error_rad = (desired_yaw_rad - ego_yaw_rad + np.pi) % (2 * np.pi) - np.pi
 
         # === Steering command ===
@@ -297,23 +296,25 @@ class CarlaFollowEnv(CarlaWptEnv):
         # === Distance control ===
         distance_to_leader = np.linalg.norm([dx, dy])
         desired_distance = 8.0
-        distance_error = distance_to_leader - desired_distance
 
-        Kp_acc = 1
+        # **Inject bias toward unsafe following**
+        unsafe_offset = random.uniform(-2.0, -1.0)  # makes distance too close
+        distance_error = distance_to_leader - (desired_distance + unsafe_offset)
+
+        Kp_acc = 0.5
         acc_cmd = Kp_acc * distance_error
-        acc_cmd = np.clip(acc_cmd, 1.0, 3.0)
+        acc_cmd = np.clip(acc_cmd, 1.0, 4.0)  # clipped to always push forward
 
-        # === Optional stabilization when close and misaligned ===
-        if distance_to_leader < 4.0 and abs(heading_error_rad) > 0.5:
-            acc_cmd = min(acc_cmd, 0.0)
+        # === Optional destabilization when aligned too well ===
+        if distance_to_leader < 4.0 and abs(heading_error_rad) < 0.1:
+            acc_cmd += 1.0  # forces overshoot at close range
 
-        # === Random noise injection (~50% chance) ===
-        if random.random() < 0.5:
-            noise_acc = np.random.normal(1.0, 2.0)  # ~collision by over/undershooting
-            acc_cmd += noise_acc
-            acc_cmd = np.clip(acc_cmd, 1.0, 3.0)
-
-
-        # print(f"[DEBUG] Leader: {leader_pos}, Ego: {ego_pos}, Distance: {distance_to_leader:.2f}, Heading Err: {np.degrees(heading_error_rad):.1f}°, Acc: {acc_cmd:.2f}, Steer: {steer_cmd:.2f}")
+        # === Random noise injection (~30% chance) ===
+        if random.random() < 0.3:
+            acc_cmd += np.random.normal(0.5, 1.5)
+            steer_cmd += np.random.normal(0.0, 0.2)
+            acc_cmd = np.clip(acc_cmd, 1.5, 4.0)
+            steer_cmd = np.clip(steer_cmd, -1.0, 1.0)
 
         return np.array([acc_cmd, steer_cmd], dtype=np.float32)
+
