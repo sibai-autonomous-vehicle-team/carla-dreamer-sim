@@ -111,7 +111,7 @@ class CarlaWrapper(CarlaFollowEnv):
         """
         obs, state = self.prepare(seed, init_state)
         obs = get_image_obs(obs)
-
+        
         obses, rewards, dones, infos = self.step_multiple(actions)
         for k in obses.keys():
             obses[k] = np.vstack([np.expand_dims(obs[k], 0), obses[k]])
