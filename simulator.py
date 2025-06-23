@@ -1,7 +1,6 @@
 import gym
 import car_dreamer
 import numpy as np
-from carla_wrapper import CarlaWrapper
 from gym.envs.registration import register
 
 # Initialize the environment
