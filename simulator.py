@@ -1,6 +1,5 @@
 import gym
 import car_dreamer
-from carla_wrapper import get_image_obs
 import numpy as np
 from carla_wrapper import CarlaWrapper
 from gym.envs.registration import register
@@ -42,14 +41,14 @@ while terminated is False:
     next_obs, reward, terminated, info = env.step(action)
 
     dataset['states'].append(np.array(env.state()))
-    dataset['observations'].append(np.array(get_image_obs(observation)))
+    dataset['observations'].append(observation)
     dataset['actions'].append(action)
     dataset['costs'].append(int(env.is_collision()))
 
     print(f"Step {i} - Reward: {reward}, Cost: {int(env.is_collision())} Terminated: {terminated} Action: {action} eval_state: {env.eval_state(reset_to_state, env.state())}")
     observation = next_obs
     i += 1
-
+print(dataset['observations'])
 
 env.rollout(42, init_state=dataset['states'][0], actions=dataset['actions'])
    
