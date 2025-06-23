@@ -24,14 +24,14 @@ def collect_carla_dataset(
     states_list = []
     seq_lengths = []
 
-    for idx in trange(n_traj, desc="Collecting Dubins Trajectories"):
-        config = car_dreamer.load_task_configs('carla_follow')
-        register(
-            id='CarlaFollowWrapperEnv-v0',
-            entry_point='carla_wrapper:CarlaWrapper',
-        )
-        env = gym.make('CarlaFollowWrapperEnv-v0', config=config.env)
+    config = car_dreamer.load_task_configs('carla_follow')
+    register(
+        id='CarlaFollowWrapperEnv-v0',
+        entry_point='carla_wrapper:CarlaWrapper',
+    )
+    env = gym.make('CarlaFollowWrapperEnv-v0', config=config.env)
 
+    for idx in trange(n_traj, desc="Collecting Carla Trajectories"):
         obs, full_state = env.reset()
         visuals = []
         actions = []
@@ -41,12 +41,11 @@ def collect_carla_dataset(
         max_len = np.random.randint(min_traj_len, max_traj_len + 1)
         while not done and t < max_len:
             # random action
-            action = env.action_space.sample()
+            action = env.compute_continuous_action() 
             obs, reward, done, info = env.step(action)
-            img = obs["visual"]
-            visuals.append(img)
+            visuals.append(obs['visual'])
             actions.append(action)
-            states.append(info["state"])
+            states.append(env.state())
             t += 1
         # Save trajectory visuals (images)
         visuals = np.stack(visuals).astype(np.uint8)  # [T, H, W, C]
@@ -63,4 +62,4 @@ def collect_carla_dataset(
     print(f"Saved {n_traj} trajectories to {outdir}")
 
 if __name__ == "__main__":
-    collect_carla_dataset()
+    collect_carla_dataset(outdir='./dataset', n_traj=10)
