@@ -32,6 +32,7 @@ class CarlaWrapper(CarlaFollowEnv):
         Return two random states: one as the initial state and one as the goal state.
         """
         _, init_state = self.reset()
+        self.step([0, 0])
         _, goal_state = self.reset()
         return init_state, goal_state
 
@@ -67,7 +68,7 @@ class CarlaWrapper(CarlaFollowEnv):
         pos_diff = np.linalg.norm(cur - goal)
 
         success = pos_diff < 1.0  # Define success condition based on distance threshold
-        state_dist = np.linalg.norm(cur_state - goal_state)
+        state_dist = np.linalg.norm(np.array(cur_state) - np.array(goal_state))
 
         return {
             'success': success,
@@ -87,7 +88,7 @@ class CarlaWrapper(CarlaFollowEnv):
         Perform multiple steps in the environment with the given actions.
         This method can be used to execute a sequence of actions in the environment.
         """
-        observations = []
+        obses = []
         rewards = []
         dones = []
         infos = []

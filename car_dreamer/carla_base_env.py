@@ -100,7 +100,6 @@ class CarlaBaseEnv(gym.Env):
 
         print("[CARLA] Environment reset")
         self.obs, _ = self._observer.get_observation(self.get_state())
-        print(self.get_state())
         return self.obs
 
     def get_vehicle_control(self, action):

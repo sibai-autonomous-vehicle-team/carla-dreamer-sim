@@ -96,7 +96,6 @@ class CarlaFollowEnv(CarlaWptEnv):
 
         ego_transform.location.z += 0.5
         nonego_transform.location.z += 0.5
-        print(ego_transform, nonego_transform)
 
         self.ego = self._world.spawn_actor(transform=ego_transform)
         self.nonego = self._world.spawn_actor(transform=nonego_transform)

@@ -34,21 +34,26 @@ dataset = {
 
 
 print('Collect Initial Data')
-for i in range(50):
+i = 1
+terminated = False
+# Collect data until the episode is terminated
+while terminated is False:
     action = env.compute_continuous_action() # Sample a random action
     next_obs, reward, terminated, info = env.step(action)
 
     dataset['states'].append(np.array(env.state()))
-    # dataset['observations'].append(np.array(get_image_obs(observation)))
     dataset['observations'].append(np.array(get_image_obs(observation)))
     dataset['actions'].append(action)
     dataset['costs'].append(int(env.is_collision()))
 
-    print(f"Step {i} - Reward: {reward}, Cost: {int(env.is_collision())} Terminated: {terminated} Action: {action}")
+    print(f"Step {i} - Reward: {reward}, Cost: {int(env.is_collision())} Terminated: {terminated} Action: {action} eval_state: {env.eval_state(reset_to_state, env.state())}")
     observation = next_obs
-    if terminated:
-        observation, state = env.reset(reset_to_state=reset_to_state)
-print(dataset['observations'][1], dataset['observations'][1].shape)
+    i += 1
+
+
+env.rollout(42, init_state=dataset['states'][0], actions=dataset['actions'])
+   
+
 
 env.close()
 
