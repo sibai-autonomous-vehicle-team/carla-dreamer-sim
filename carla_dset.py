@@ -10,15 +10,12 @@ class CarlaDataset(TrajDataset):
     def __init__(
         self,
         data_path: str,
-        transform: Optional[Callable] = None,
         normalize_action: bool = True,
-        normalize_states: bool = True,
         n_rollout: Optional[int] = None,
-        with_costs: bool = True
     ):
         self.data_path = Path(data_path)
 
-        self.states = torch.load(self.data_path / "states.pth").float()
+        self.states = torch.tensor(torch.load(self.data_path / "states.pth"), dtype=torch.float32)
         self.actions = torch.load(self.data_path / "actions.pth").float()
         self.seq_lengths = torch.load(self.data_path / "seq_lengths.pth").long()
         self.costs = torch.load(self.data_path / "costs.pth").float()
@@ -110,30 +107,19 @@ class CarlaDataset(TrajDataset):
         data_std = torch.std(all_data, dim=0)
         return data_mean, data_std
         
-def load_maniskill_slice_train_val(
-        transform,
+def load_carla_slice_train_val(
         data_path,
         n_rollout = 50,
         normalize_action = True,
-        normalize_states = True,
         split_ratio = 0.8,
         num_hist = 0,
         num_pred = 0,
         frameskip = 0,
-        with_costs = True,
 ):
     dset = CarlaDataset(
         data_path=data_path,
-        transform=transform,
         normalize_action=normalize_action,
-        normalize_states=normalize_states,
         n_rollout=n_rollout,
-        with_costs = with_costs
-    )
-
-    train_dset, val_dset = split_traj_datasets(
-        dset,
-        train_fraction=split_ratio
     )
     
     dset_train, dset_val, train_slices, val_slices = get_train_val_sliced(

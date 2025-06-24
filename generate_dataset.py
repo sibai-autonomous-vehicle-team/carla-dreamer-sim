@@ -11,9 +11,6 @@ from tqdm import trange
 def collect_carla_dataset(
     outdir="/storage1/sibai/Active/ihab/research_new/datasets_dino/dubins",
     n_traj=5000,
-    min_traj_len=349,
-    max_traj_len=350,
-    render_size=255,
     seed=42
 ):
     np.random.seed(seed)
@@ -38,8 +35,7 @@ def collect_carla_dataset(
         states = []
         done = False
         t = 0
-        max_len = np.random.randint(min_traj_len, max_traj_len + 1)
-        while not done and t < max_len:
+        while not done:
             # random action
             action = env.compute_continuous_action() 
             obs, reward, done, info = env.step(action)
