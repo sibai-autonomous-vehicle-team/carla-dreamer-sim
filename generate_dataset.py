@@ -20,6 +20,7 @@ def collect_carla_dataset(
     actions_list = []
     states_list = []
     seq_lengths = []
+    costs_list = []
 
     config = car_dreamer.load_task_configs('carla_follow')
     register(
@@ -33,6 +34,7 @@ def collect_carla_dataset(
         visuals = []
         actions = []
         states = []
+        costs = []
         done = False
         t = 0
         while not done:
@@ -41,7 +43,10 @@ def collect_carla_dataset(
             obs, reward, done, info = env.step(action)
             visuals.append(obs['visual'])
             actions.append(action)
-            states.append(env.state())
+            state = env.state()
+            states.append(state)
+            cost = np.linalg.norm(np.array(state[0][:2]) - np.array(state[1][:2]))
+            costs.append(cost)
             t += 1
         # Save trajectory visuals (images)
         visuals = np.stack(visuals).astype(np.uint8)  # [T, H, W, C]
@@ -50,11 +55,13 @@ def collect_carla_dataset(
         actions_list.append(torch.tensor(np.stack(actions), dtype=torch.float32))
         states_list.append(torch.tensor(np.stack(states), dtype=torch.float32))
         seq_lengths.append(t)
+        costs_list.append(torch.tensor(np.stack(costs), dtype=torch.float32))
 
     # Save lists of tensors (not stacked!)
     torch.save(actions_list, Path(outdir) / "actions.pth")
     torch.save(states_list, Path(outdir) / "states.pth")
     torch.save(torch.tensor(seq_lengths, dtype=torch.long), Path(outdir) / "seq_lengths.pth")
+    torch.save()
     print(f"Saved {n_traj} trajectories to {outdir}")
 
 if __name__ == "__main__":
