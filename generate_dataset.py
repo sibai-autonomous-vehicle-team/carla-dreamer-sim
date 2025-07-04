@@ -45,7 +45,7 @@ def collect_carla_dataset(
             actions.append(action)
             state = env.state()
             states.append(state)
-            cost = np.linalg.norm(np.array(state[0][:2]) - np.array(state[1][:2]))
+            cost = np.linalg.norm(np.array(state[0:2]) - np.array(state[6:8]))
             costs.append(cost)
             t += 1
         # Save trajectory visuals (images)
@@ -65,4 +65,4 @@ def collect_carla_dataset(
     print(f"Saved {n_traj} trajectories to {outdir}")
 
 if __name__ == "__main__":
-    collect_carla_dataset(outdir='./dataset', n_traj=10)
+    collect_carla_dataset(outdir='./dataset', n_traj=2000)
