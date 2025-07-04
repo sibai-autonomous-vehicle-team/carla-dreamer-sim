@@ -61,7 +61,7 @@ def collect_carla_dataset(
     torch.save(actions_list, Path(outdir) / "actions.pth")
     torch.save(states_list, Path(outdir) / "states.pth")
     torch.save(torch.tensor(seq_lengths, dtype=torch.long), Path(outdir) / "seq_lengths.pth")
-    torch.save()
+    torch.save(costs_list, Path(outdir) / "costs.pth")
     print(f"Saved {n_traj} trajectories to {outdir}")
 
 if __name__ == "__main__":
