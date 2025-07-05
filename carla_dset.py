@@ -10,15 +10,19 @@ class CarlaDataset(TrajDataset):
     def __init__(
         self,
         data_path: str,
+        transform: Optional[Callable] = None,
         normalize_action: bool = True,
+        normalize_states: bool = True,
         n_rollout: Optional[int] = None,
+        with_costs: bool = True
     ):
         self.data_path = Path(data_path)
+        self.transform = transform 
 
-        self.states = torch.tensor(torch.load(self.data_path / "states.pth"), dtype=torch.float32)
-        self.actions = torch.load(self.data_path / "actions.pth").float()
+        self.states = [traj.float() for traj in torch.load(self.data_path / "states.pth")]
+        self.actions = [traj.float() for traj in torch.load(self.data_path / "actions.pth")]
         self.seq_lengths = torch.load(self.data_path / "seq_lengths.pth").long()
-        self.costs = torch.load(self.data_path / "costs.pth").float()
+        self.costs = [traj.float() for traj in torch.load(self.data_path / "costs.pth")]
 
         self.n_rollout = n_rollout
         if self.n_rollout:
@@ -30,11 +34,12 @@ class CarlaDataset(TrajDataset):
         self.actions = self.actions[:n]
         self.seq_lengths = self.seq_lengths[:n]
         
-        self.proprios = self.states[0].clone()
+        self.proprios = [traj[:, :6] for traj in self.states] 
 
-        self.action_dim = self.actions.shape[-1]
-        self.state_dim = self.states.shape[-1]
-        self.proprio_dim = self.proprios.shape[-1]
+        self.action_dim = self.actions[0].shape[-1]
+        self.state_dim = self.states[0].shape[-1]
+        self.proprio_dim = self.proprios[0].shape[-1]
+        print(f"Action dim: {self.action_dim}, State dim: {self.state_dim}, Proprio dim: {self.proprio_dim}")
         
         if normalize_action:
             self.action_mean, self.action_std = self.get_data_mean_std(self.actions, self.seq_lengths)
@@ -48,8 +53,12 @@ class CarlaDataset(TrajDataset):
             self.proprio_mean = torch.zeros(self.proprio_dim)
             self.proprio_std = torch.ones(self.proprio_dim)
 
-        self.actions = (self.actions - self.action_mean) / self.action_std
-        self.proprios = (self.proprios - self.proprio_mean) / self.proprio_std
+        self.actions = [
+            (traj - self.action_mean) / self.action_std for traj in self.actions
+        ]
+        self.proprios = [
+            (traj - self.proprio_mean) / self.proprio_std for traj in self.proprios
+        ]
 
 
 
@@ -60,21 +69,22 @@ class CarlaDataset(TrajDataset):
         result = []
         for i in range(len(self.seq_lengths)):
             T = self.get_seq_length(i)
-            result.append(self.actions[i, :T, :])
+            result.append(self.actions[i][:T, :])
         return torch.cat(result, dim = 0)
 
     def get_frames(self, idx, frames):
-        obs_file = self.data_path / "obses" / f"episode_{idx}.pth"
-        images = torch.load(obs_file, map_location="cpu")
+        obs_file = self.data_path / "obses" / f"episode_{int(idx):03d}.pth"
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        images = torch.load(obs_file, map_location=device)
         images = images.float() / 255.0
         images = rearrange(images, "T H W C -> T C H W")
         if self.transform:
             images = self.transform(images)
 
         image = images[frames]
-        actions = self.actions[idx, frames]
-        full_states = self.states[idx, frames]
-        proprio_states = self.proprios[idx, frames]
+        actions = self.actions[idx][frames]
+        full_states = self.states[idx][frames]
+        proprio_states = self.proprios[idx][frames]
             
         obs = {
             "visual" : image,
@@ -100,7 +110,7 @@ class CarlaDataset(TrajDataset):
         all_data = []
         for traj in range(len(traj_lengths)):
             traj_len = traj_lengths[traj]
-            traj_data = data[traj, :traj_len]
+            traj_data = data[traj][:traj_len]
             all_data.append(traj_data)
         all_data = torch.vstack(all_data)
         data_mean = torch.mean(all_data, dim=0)
