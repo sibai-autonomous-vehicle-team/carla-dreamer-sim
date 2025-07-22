@@ -302,7 +302,7 @@ class CarlaFollowEnv(CarlaWptEnv):
 
         Kp_acc = 0.5
         acc_cmd = Kp_acc * distance_error
-        acc_cmd = np.clip(acc_cmd, 1.0, 4.0)  # clipped to always push forward
+        acc_cmd = np.clip(acc_cmd, 1.25, 4.0)  # clipped to always push forward
 
         # === Optional destabilization when aligned too well ===
         if distance_to_leader < 4.0 and abs(heading_error_rad) < 0.1:

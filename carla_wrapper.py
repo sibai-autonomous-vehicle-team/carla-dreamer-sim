@@ -20,7 +20,7 @@ def aggregate_dcts(dcts):
 class CarlaWrapper(CarlaFollowEnv):
     def __init__(self, config):
         super().__init__(config)
-        # self.action_space = self._get_action_space().
+        self.collision_count = 0
 
     def get_obs(self, obs):
         """
@@ -242,6 +242,18 @@ class CarlaWrapper(CarlaFollowEnv):
         """
         obs, reward, done, info = super().step(action)
         obs = self.get_obs(obs)
+        if self.is_collision():
+            self.collision_count += 1
         return obs, reward, done, info
+    
+    def _is_terminal(self):
+        terminal = False
+        if self.collision_count > 5:
+            terminal = True
+            self.collision_count = 0
+        return terminal, {
+            "collision_count": self.collision_count,
+            "distance": self.get_distance(),
+        }
 
 

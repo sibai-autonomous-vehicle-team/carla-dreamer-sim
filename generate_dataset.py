@@ -9,7 +9,7 @@ from tqdm import trange
 
 
 def collect_carla_dataset(
-    outdir="/storage1/sibai/Active/ihab/research_new/datasets_dino/dubins",
+    outdir="/storage1/sibai/Active/ihab/research_new/datasets_dino/carla",
     n_traj=5000,
     seed=42
 ):
@@ -42,7 +42,7 @@ def collect_carla_dataset(
         while not done:
             # random action
             action = env.compute_continuous_action() 
-            obs, reward, done, info = env.step(action)
+            obs, reward, done, _ = env.step(action)
             visuals.append(obs['visual'])
             actions.append(action)
             state = env.state()
@@ -50,7 +50,6 @@ def collect_carla_dataset(
             cost = int(env.is_collision())  
             costs.append(cost)
             distances.append(env.get_distance())
-            print(f'Distance: {env.get_distance()}, Cost: {cost}')
             t += 1
         # Save trajectory visuals (images)
         visuals = np.stack(visuals).astype(np.uint8)  # [T, H, W, C]
