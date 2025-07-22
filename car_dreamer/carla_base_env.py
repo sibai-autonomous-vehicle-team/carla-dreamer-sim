@@ -145,7 +145,11 @@ class CarlaBaseEnv(gym.Env):
         env_state = self.get_state()
         is_terminal, terminal_conds = self._is_terminal()
         self.obs, obs_info = self._observer.get_observation(env_state)
-        reward, reward_info = self.reward()
+        try:
+            reward, reward_info = self.reward()
+        except Exception as e:
+            print(f"Reward error: {e}")
+            reward, reward_info = 0.0, {}
 
         info = {
             **env_state,
