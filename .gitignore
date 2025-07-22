@@ -2,3 +2,4 @@ cardreamer/__pycache__/
 __pycache__/
 *.pyc
 dataset/
+dataset.zip
