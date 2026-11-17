@@ -407,7 +407,7 @@ carla_follow:
     terminal:
       time_limit: 500 # maximum timesteps per episode
       out_lane_thres: 5 # threshold for out of lane
-      terminal_dist: 30
+      terminal_dist: 10
 
     direction: -1    # determining which direction we are testing
                     # 0: straight

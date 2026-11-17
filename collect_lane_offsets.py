@@ -64,7 +64,7 @@ def collect_episode(world, road_map, traffic, args, rng):
         frame_ids = []
         pending_offsets = {}
         warmup_steps = 5
-        last_record_step = warmup_steps + args.frames
+        last_record_step = warmup_steps + args.frames + 30
         # GPU camera callbacks can arrive several ticks after their world snapshot.
         for step in range(last_record_step + 30):
             frame = world.tick()
@@ -113,7 +113,9 @@ def collect_episode(world, road_map, traffic, args, rng):
                 camera.stop()
                 camera.destroy()
         finally:
-            ego.destroy()
+            if ego.is_alive:
+                ego.set_autopilot(False, traffic.get_port())
+                ego.destroy()
 
 
 def main():

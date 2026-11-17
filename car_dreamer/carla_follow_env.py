@@ -70,6 +70,7 @@ class CarlaFollowEnv(CarlaWptEnv):
     #     self.on_step()
 
     def on_reset(self) -> None:
+        self._lane_reference_planner = None
         self.random_num = 0
         if self.reset_to_state is None:
             # Get a random valid waypoint on the driving lane for the ego vehicle
@@ -123,6 +124,12 @@ class CarlaFollowEnv(CarlaWptEnv):
 
 
     def on_step(self) -> None:
+        if self._lane_reference_planner is None:
+            x, y, z = self._config.lane_end_points[self.random_num][:3]
+            finish = carla.Location(x=x, y=y, z=z)
+            self._lane_reference_planner = FixedEndingPlanner(self.ego, finish)
+            self._lane_reference_planner.run_step()
+
         # makes the nonego vehicle the destination of the ego vehicle
         nonego_x, nonego_y = get_vehicle_pos(self.nonego)
         dest_location = carla.Location(x=nonego_x, y=nonego_y, z=self._config.lane_end_points[self.random_num][2])
@@ -255,15 +262,126 @@ class CarlaFollowEnv(CarlaWptEnv):
         total_reward += p_dist + p_waypoints + p_velocity
         return total_reward, info
 
+    def get_distance(self):
+        """
+        Uses bounding boxes of vehicles to compute more accurate distance
+        """
+        def get_face_vertices(actor: carla.Actor, face: str) -> carla.Location:
+            """
+            face: 'front' or 'back'
+            """
+            bb = actor.bounding_box
+            transform = actor.get_transform()
+            x = bb.extent.x
+            y = bb.extent.y
+            z = bb.extent.z
+
+            x_face = +x if face == 'front' else -x
+
+            local_verts = [
+                carla.Location(x=x_face, y=-y, z=-z),
+                carla.Location(x=x_face, y= y, z=-z),
+                carla.Location(x=x_face, y= y, z= z),
+                carla.Location(x=x_face, y=-y, z= z),
+            ]
+
+            return [transform.transform(bb.location + v) for v in local_verts]
+
+        def get_edges_from_verts(verts: list[carla.Location]) -> list[tuple[np.ndarray, np.ndarray]]:
+            verts_np = [np.array([v.x, v.y, v.z]) for v in verts]
+            return [
+                (verts_np[0], verts_np[1]),
+                (verts_np[1], verts_np[2]),
+                (verts_np[2], verts_np[3]),
+                (verts_np[3], verts_np[0]),
+            ]
+
+        def segment_distance(p1, p2, q1, q2):
+            """Compute shortest distance between two 3D line segments [p1,p2] and [q1,q2]."""
+            # From https://stackoverflow.com/a/52551983
+            u = p2 - p1
+            v = q2 - q1
+            w = p1 - q1
+            a = np.dot(u, u)
+            b = np.dot(u, v)
+            c = np.dot(v, v)
+            d = np.dot(u, w)
+            e = np.dot(v, w)
+
+            D = a * c - b * b
+            sc, sN, sD = 0.0, 0.0, D
+            tc, tN, tD = 0.0, 0.0, D
+
+            SMALL_NUM = 1e-8
+
+            if D < SMALL_NUM:
+                sN = 0.0
+                sD = 1.0
+                tN = e
+                tD = c
+            else:
+                sN = (b * e - c * d)
+                tN = (a * e - b * d)
+                if sN < 0.0:
+                    sN = 0.0
+                    tN = e
+                    tD = c
+                elif sN > sD:
+                    sN = sD
+                    tN = e + b
+                    tD = c
+
+            if tN < 0.0:
+                tN = 0.0
+                if -d < 0.0:
+                    sN = 0.0
+                elif -d > a:
+                    sN = sD
+                else:
+                    sN = -d
+                    sD = a
+            elif tN > tD:
+                tN = tD
+                if (-d + b) < 0.0:
+                    sN = 0
+                elif (-d + b) > a:
+                    sN = sD
+                else:
+                    sN = (-d + b)
+                    sD = a
+
+            sc = 0.0 if abs(sN) < SMALL_NUM else sN / sD
+            tc = 0.0 if abs(tN) < SMALL_NUM else tN / tD
+
+            dP = w + sc * u - tc * v
+            return np.linalg.norm(dP)
+
+        def min_edge_distance(edges1, edges2):
+            min_dist = float("inf")
+            for (p1, p2) in edges1:
+                for (q1, q2) in edges2:
+                    dist = segment_distance(p1, p2, q1, q2)
+                    min_dist = min(min_dist, dist)
+            return min_dist
+
+        ego_face = get_face_vertices(self.ego, 'front')
+        other_face = get_face_vertices(self.nonego, 'back')
+        ego_edges = get_edges_from_verts(ego_face)
+        other_edges = get_edges_from_verts(other_face)
+
+        distance = min_edge_distance(ego_edges, other_edges)
+        return distance
+
     def get_terminal_conditions(self):
         terminal_config = self._config.terminal
         info = super().get_terminal_conditions()
 
+        ego_location = get_vehicle_pos(self.ego)
+        route_distance = self._lane_reference_planner.distance_to_route(ego_location)
+        info["out_of_lane"] = route_distance > terminal_config.out_lane_thres
+
         # if the distance between the two vehicles is too long, reset the scenario
-        ego_x, ego_y = get_vehicle_pos(self.ego)
-        nonego_loc = self.nonego.get_transform().location
-        dist = math.sqrt((ego_x - nonego_loc.x) ** 2 + (ego_y - nonego_loc.y) ** 2)
-        if dist > terminal_config.terminal_dist:
+        if self.get_distance() > terminal_config.terminal_dist:
             info["terminal_dist"] = True
 
         return info

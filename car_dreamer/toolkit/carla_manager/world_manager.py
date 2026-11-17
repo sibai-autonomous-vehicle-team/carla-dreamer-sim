@@ -36,7 +36,7 @@ class WorldManager:
 
         print(f"[CARLA] Connecting to Carla server at {self._config.carla_port}...")
         self._client = carla.Client("localhost", self._config.carla_port)
-        self._client.set_timeout(20.0)
+        self._client.set_timeout(120.0)
         self._world = self._client.load_world(self._config.town)
         self._map = self._world.get_map()
         print(f"[CARLA] Map {self._config.town} loaded")
