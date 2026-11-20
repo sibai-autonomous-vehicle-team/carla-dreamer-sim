@@ -1,0 +1,175 @@
+/home/ahmad/drl_project/carla-dreamer-sim/.venv/lib/python3.10/site-packages/gym/wrappers/monitoring/video_recorder.py:9: DeprecationWarning: The distutils package is deprecated and slated for removal in Python 3.12. Use setuptools or check PEP 632 for potential alternatives
+  import distutils.spawn
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[CARLA] Connecting to Carla server at 2000...
+[CARLA] Map Town03 loaded
+[CARLA] Traffic Manager Port: 8000
+/home/ahmad/drl_project/carla-dreamer-sim/.venv/lib/python3.10/site-packages/gym/spaces/box.py:84: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(f"Box bound precision lowered by casting to {self.dtype}")
+Condition: night_rainy | sun altitude -30 degrees
+Active thresholds: true gap > 9 m, route deviation > 5 m, environment steps > 500, dt=0.1 s
+Gap input: CNN | target 6 m
+Route: left_turn_road17_-1_30 | ego finish 41 m along route
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=109.740608, y=-135.921371, z=8.500000) with yaw -178.77273559570312
+[CARLA] Trying to spawn at Location(x=99.742897, y=-136.135544, z=8.500000) with yaw -178.77273559570312
+[CARLA] Environment reset
+step=001 | true=5.717 m | CNN=None | command=+0.000 | next true=5.717 m
+step=002 | true=5.717 m | CNN=None | command=+0.000 | next true=5.716 m
+step=003 | true=5.716 m | CNN=5.818571090698242 | command=+0.000 | next true=5.716 m
+step=004 | true=5.716 m | CNN=5.818571090698242 | command=+0.000 | next true=5.722 m
+step=005 | true=5.722 m | CNN=5.941648483276367 | command=+0.000 | next true=5.788 m
+step=006 | true=5.788 m | CNN=6.11592960357666 | command=+0.105 | next true=5.902 m
+step=007 | true=5.902 m | CNN=6.11643123626709 | command=+0.107 | next true=6.059 m
+step=008 | true=6.059 m | CNN=6.248329162597656 | command=+0.424 | next true=6.256 m
+step=009 | true=6.256 m | CNN=6.514956474304199 | command=+0.868 | next true=6.487 m
+step=010 | true=6.487 m | CNN=6.694886207580566 | command=+0.904 | next true=6.735 m
+step=011 | true=6.735 m | CNN=6.7968668937683105 | command=+0.883 | next true=6.985 m
+step=012 | true=6.985 m | CNN=7.000339508056641 | command=+1.223 | next true=7.226 m
+step=013 | true=7.226 m | CNN=7.162043571472168 | command=+1.312 | next true=7.459 m
+step=014 | true=7.459 m | CNN=7.467918395996094 | command=+1.811 | next true=7.684 m
+step=015 | true=7.684 m | CNN=7.442951202392578 | command=+1.299 | next true=7.902 m
+step=016 | true=7.902 m | CNN=7.542663097381592 | command=+1.583 | next true=8.113 m
+step=017 | true=8.113 m | CNN=7.817391395568848 | command=+2.102 | next true=8.316 m
+step=018 | true=8.316 m | CNN=7.9178619384765625 | command=+1.941 | next true=8.513 m
+step=019 | true=8.513 m | CNN=7.889150619506836 | command=+1.731 | next true=8.673 m
+step=020 | true=8.673 m | CNN=8.046544075012207 | command=+2.162 | next true=8.745 m
+step=021 | true=8.745 m | CNN=8.157949447631836 | command=+2.204 | next true=8.822 m
+step=022 | true=8.822 m | CNN=8.182414054870605 | command=+2.106 | next true=8.912 m
+step=023 | true=8.912 m | CNN=8.076234817504883 | command=+1.825 | next true=8.997 m
+[CARLA] Terminal condition triggered: terminal_dist
+step=024 | true=8.997 m | CNN=8.021353721618652 | command=+1.863 | next true=9.063 m
+Episode 1: 24 steps | min true gap 5.72 m | mean gap tracking error 1.43 m | end: terminal_dist
+Route: right_turn_road2_-2_85 | ego finish 41 m along route
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=-87.509811, y=-170.815231, z=0.500000) with yaw 93.27017211914062
+[CARLA] Trying to spawn at Location(x=-88.073532, y=-160.776550, z=0.500000) with yaw 92.91339111328125
+[CARLA] Environment reset
+step=001 | true=5.533 m | CNN=None | command=+0.000 | next true=5.533 m
+step=002 | true=5.533 m | CNN=None | command=+0.000 | next true=5.533 m
+step=003 | true=5.533 m | CNN=None | command=+0.000 | next true=5.533 m
+step=004 | true=5.533 m | CNN=5.55178165435791 | command=+0.000 | next true=5.533 m
+step=005 | true=5.533 m | CNN=5.55178165435791 | command=+0.000 | next true=5.540 m
+step=006 | true=5.540 m | CNN=5.70700740814209 | command=-0.265 | next true=5.604 m
+step=007 | true=5.604 m | CNN=5.70700740814209 | command=-0.267 | next true=5.705 m
+step=008 | true=5.705 m | CNN=5.704617500305176 | command=-0.274 | next true=5.819 m
+step=009 | true=5.819 m | CNN=5.704617500305176 | command=-0.272 | next true=5.931 m
+step=010 | true=5.931 m | CNN=5.948969841003418 | command=+0.314 | next true=6.040 m
+step=011 | true=6.040 m | CNN=5.948969841003418 | command=-0.052 | next true=6.149 m
+step=012 | true=6.149 m | CNN=5.97960090637207 | command=+0.021 | next true=6.276 m
+step=013 | true=6.276 m | CNN=5.97960090637207 | command=-0.025 | next true=6.440 m
+step=014 | true=6.440 m | CNN=6.195642948150635 | command=+0.495 | next true=6.620 m
+step=015 | true=6.620 m | CNN=6.195642948150635 | command=+0.171 | next true=6.827 m
+step=016 | true=6.827 m | CNN=6.391692638397217 | command=+0.644 | next true=7.091 m
+step=017 | true=7.091 m | CNN=6.391692638397217 | command=+0.352 | next true=7.369 m
+step=018 | true=7.369 m | CNN=6.7064104080200195 | command=+1.111 | next true=7.647 m
+step=019 | true=7.647 m | CNN=6.7064104080200195 | command=+0.642 | next true=7.922 m
+step=020 | true=7.922 m | CNN=6.972734451293945 | command=+1.286 | next true=8.192 m
+step=021 | true=8.192 m | CNN=6.972734451293945 | command=+0.892 | next true=8.453 m
+step=022 | true=8.453 m | CNN=7.282707214355469 | command=+1.642 | next true=8.697 m
+step=023 | true=8.697 m | CNN=7.282707214355469 | command=+1.183 | next true=8.875 m
+[CARLA] Terminal condition triggered: terminal_dist
+step=024 | true=8.875 m | CNN=7.365544319152832 | command=+1.389 | next true=9.001 m
+Episode 2: 24 steps | min true gap 5.53 m | mean gap tracking error 1.04 m | end: terminal_dist
+Route: bend_road65_-1_65 | ego finish 40 m along route
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=223.749756, y=-186.440033, z=0.500000) with yaw 47.54995346069336
+[CARLA] Trying to spawn at Location(x=228.714554, y=-179.373917, z=0.500000) with yaw 62.17742156982422
+[CARLA] Environment reset
+step=001 | true=3.901 m | CNN=None | command=+0.000 | next true=3.901 m
+step=002 | true=3.901 m | CNN=None | command=+0.000 | next true=3.901 m
+step=003 | true=3.901 m | CNN=None | command=+0.000 | next true=3.901 m
+step=004 | true=3.901 m | CNN=4.504315376281738 | command=+0.000 | next true=3.901 m
+step=005 | true=3.901 m | CNN=4.667717933654785 | command=+0.000 | next true=3.908 m
+step=006 | true=3.908 m | CNN=4.667717933654785 | command=-1.206 | next true=3.970 m
+step=007 | true=3.970 m | CNN=4.715384483337402 | command=-1.098 | next true=4.067 m
+step=008 | true=4.067 m | CNN=4.757299423217773 | command=-1.075 | next true=4.182 m
+step=009 | true=4.182 m | CNN=4.757299423217773 | command=-1.144 | next true=4.296 m
+step=010 | true=4.296 m | CNN=4.771559238433838 | command=-1.116 | next true=4.410 m
+step=011 | true=4.410 m | CNN=4.612846374511719 | command=-1.525 | next true=4.522 m
+step=012 | true=4.522 m | CNN=4.612846374511719 | command=-1.294 | next true=4.655 m
+step=013 | true=4.655 m | CNN=4.788535118103027 | command=-0.878 | next true=4.840 m
+step=014 | true=4.840 m | CNN=4.80095100402832 | command=-1.118 | next true=5.037 m
+step=015 | true=5.037 m | CNN=4.808773040771484 | command=-1.124 | next true=5.262 m
+step=016 | true=5.262 m | CNN=4.825191020965576 | command=-1.102 | next true=5.511 m
+step=017 | true=5.511 m | CNN=4.714560508728027 | command=-1.399 | next true=5.761 m
+step=018 | true=5.761 m | CNN=4.714560508728027 | command=-1.239 | next true=6.011 m
+step=019 | true=6.011 m | CNN=4.798542022705078 | command=-1.044 | next true=6.257 m
+step=020 | true=6.257 m | CNN=4.777583122253418 | command=-1.226 | next true=6.495 m
+step=021 | true=6.495 m | CNN=4.865394592285156 | command=-0.989 | next true=6.723 m
+step=022 | true=6.723 m | CNN=4.865394592285156 | command=-1.127 | next true=6.939 m
+step=023 | true=6.939 m | CNN=4.873321533203125 | command=-1.113 | next true=7.145 m
+step=024 | true=7.145 m | CNN=4.906793594360352 | command=-1.051 | next true=7.340 m
+step=025 | true=7.340 m | CNN=4.906793594360352 | command=-1.106 | next true=7.525 m
+step=026 | true=7.525 m | CNN=4.894716262817383 | command=-1.141 | next true=7.704 m
+step=027 | true=7.704 m | CNN=4.910199165344238 | command=-1.091 | next true=7.878 m
+step=028 | true=7.878 m | CNN=4.866495132446289 | command=-1.225 | next true=8.049 m
+step=029 | true=8.049 m | CNN=4.85066032409668 | command=-1.203 | next true=8.219 m
+step=030 | true=8.219 m | CNN=4.908423900604248 | command=-1.046 | next true=8.386 m
+step=031 | true=8.386 m | CNN=4.908423900604248 | command=-1.138 | next true=8.560 m
+step=032 | true=8.560 m | CNN=4.948299407958984 | command=-1.048 | next true=8.752 m
+step=033 | true=8.752 m | CNN=4.964818477630615 | command=-1.073 | next true=8.967 m
+[CARLA] Terminal condition triggered: terminal_dist
+step=034 | true=8.967 m | CNN=4.964818477630615 | command=-1.103 | next true=9.193 m
+Episode 3: 34 steps | min true gap 3.90 m | mean gap tracking error 1.59 m | end: terminal_dist
+Route: straight_road4_3_65 | ego finish 41 m along route
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=-74.109863, y=93.532051, z=0.978706) with yaw 269.84375
+[CARLA] Trying to spawn at Location(x=-74.137131, y=83.532089, z=1.155416) with yaw 269.84375
+[CARLA] Environment reset
+step=001 | true=5.718 m | CNN=None | command=+0.000 | next true=5.719 m
+step=002 | true=5.719 m | CNN=None | command=+0.000 | next true=5.719 m
+step=003 | true=5.719 m | CNN=None | command=+0.000 | next true=5.719 m
+step=004 | true=5.719 m | CNN=5.5210676193237305 | command=+0.000 | next true=5.724 m
+step=005 | true=5.724 m | CNN=5.5210676193237305 | command=+0.000 | next true=5.783 m
+step=006 | true=5.783 m | CNN=5.486081600189209 | command=-0.465 | next true=5.894 m
+step=007 | true=5.894 m | CNN=5.486081600189209 | command=-0.468 | next true=6.047 m
+step=008 | true=6.047 m | CNN=5.875290393829346 | command=+0.466 | next true=6.241 m
+step=009 | true=6.241 m | CNN=5.875290393829346 | command=-0.119 | next true=6.466 m
+step=010 | true=6.466 m | CNN=6.204569339752197 | command=+0.673 | next true=6.708 m
+step=011 | true=6.708 m | CNN=6.204569339752197 | command=+0.180 | next true=6.949 m
+step=012 | true=6.949 m | CNN=6.446495532989502 | command=+0.763 | next true=7.180 m
+step=013 | true=7.180 m | CNN=6.446495532989502 | command=+0.402 | next true=7.402 m
+step=014 | true=7.402 m | CNN=7.113597393035889 | command=+2.009 | next true=7.616 m
+step=015 | true=7.616 m | CNN=7.113597393035889 | command=+1.013 | next true=7.821 m
+step=016 | true=7.821 m | CNN=7.3428850173950195 | command=+1.571 | next true=8.018 m
+step=017 | true=8.018 m | CNN=7.3428850173950195 | command=+1.233 | next true=8.202 m
+step=018 | true=8.202 m | CNN=7.488674163818359 | command=+1.591 | next true=8.386 m
+step=019 | true=8.386 m | CNN=7.488674163818359 | command=+1.379 | next true=8.591 m
+step=020 | true=8.591 m | CNN=7.59221076965332 | command=+1.636 | next true=8.822 m
+[CARLA] Terminal condition triggered: terminal_dist
+step=021 | true=8.822 m | CNN=7.59221076965332 | command=+1.488 | next true=9.069 m
+Episode 4: 21 steps | min true gap 5.72 m | mean gap tracking error 1.19 m | end: terminal_dist
+Route: bend_road23_1_55 | ego finish 41 m along route
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=-103.013008, y=132.800262, z=0.500000) with yaw 178.7032012939453
+[CARLA] Trying to spawn at Location(x=-113.010445, y=133.026581, z=0.500000) with yaw 178.7032012939453
+[CARLA] Environment reset
+step=001 | true=5.478 m | CNN=None | command=+0.000 | next true=5.478 m
+step=002 | true=5.478 m | CNN=None | command=+0.000 | next true=5.478 m
+step=003 | true=5.478 m | CNN=None | command=+0.000 | next true=5.478 m
+step=004 | true=5.478 m | CNN=5.4997968673706055 | command=+0.000 | next true=5.483 m
+step=005 | true=5.483 m | CNN=5.460904121398926 | command=+0.000 | next true=5.544 m
+step=006 | true=5.544 m | CNN=5.460904121398926 | command=-0.488 | next true=5.657 m
+step=007 | true=5.657 m | CNN=5.795063018798828 | command=+0.313 | next true=5.815 m
+step=008 | true=5.815 m | CNN=5.965765953063965 | command=+0.221 | next true=6.013 m
+step=009 | true=6.013 m | CNN=5.965765953063965 | command=-0.035 | next true=6.244 m
+step=010 | true=6.244 m | CNN=6.190969944000244 | command=+0.507 | next true=6.493 m
+step=011 | true=6.493 m | CNN=6.29487943649292 | command=+0.420 | next true=6.741 m
+step=012 | true=6.741 m | CNN=6.29487943649292 | command=+0.265 | next true=6.984 m
+step=013 | true=6.984 m | CNN=6.599233627319336 | command=+0.999 | next true=7.217 m
+step=014 | true=7.217 m | CNN=6.8419904708862305 | command=+1.129 | next true=7.443 m
+step=015 | true=7.443 m | CNN=6.8419904708862305 | command=+0.769 | next true=7.661 m
+step=016 | true=7.661 m | CNN=7.094676971435547 | command=+1.381 | next true=7.872 m
+step=017 | true=7.872 m | CNN=7.256457805633545 | command=+1.396 | next true=8.075 m
+step=018 | true=8.075 m | CNN=7.335536479949951 | command=+1.350 | next true=8.264 m
+step=019 | true=8.264 m | CNN=7.505306243896484 | command=+1.647 | next true=8.386 m
+step=020 | true=8.386 m | CNN=7.640872001647949 | command=+1.726 | next true=8.480 m
+step=021 | true=8.480 m | CNN=7.640872001647949 | command=+1.530 | next true=8.588 m
+step=022 | true=8.588 m | CNN=7.648853302001953 | command=+1.558 | next true=8.722 m
+step=023 | true=8.722 m | CNN=7.6752166748046875 | command=+1.617 | next true=8.863 m
+[CARLA] Terminal condition triggered: terminal_dist
+step=024 | true=8.863 m | CNN=7.6752166748046875 | command=+1.586 | next true=9.007 m
+Episode 5: 24 steps | min true gap 5.48 m | mean gap tracking error 1.34 m | end: terminal_dist

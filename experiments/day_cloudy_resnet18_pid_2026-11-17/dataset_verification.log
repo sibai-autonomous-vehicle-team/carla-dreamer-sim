@@ -1,0 +1,2 @@
+{'episodes': 800, 'raw_steps': 61788, 'aligned_frames': 60988, 'terminal_collision_labels': 499, 'split_episodes': [640, 80, 80], 'split_aligned_frames': [48229, 6689, 6070]}
+All 800 merged image files match their documented Linux source files byte for byte.

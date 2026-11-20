@@ -1,0 +1,31 @@
+train: 48 episodes, 8 route groups, 2484 frames
+validation: 18 episodes, 3 route groups, 914 frames
+test: 30 episodes, 5 route groups, 1591 frames
+Device: cuda. Legacy replay: 0 frames.
+Starting checkpoint validation score: 0.890 m
+Validation gate close_0_to_3_m: baseline 0.737, max MAE 0.600 m
+Validation gate standard_3_to_8_m: baseline 0.560, max MAE 0.660 m
+Validation gate standard_8_to_12_m: baseline 1.372, max MAE 1.472 m
+Epoch 01/20: loss 0.260, validation MAE 0.385 m, score 0.367 m, eligible
+Epoch 02/20: loss 0.142, validation MAE 0.414 m, score 0.410 m, eligible
+Epoch 03/20: loss 0.113, validation MAE 0.412 m, score 0.405 m, eligible
+Epoch 04/20: loss 0.091, validation MAE 0.390 m, score 0.375 m, eligible
+Epoch 05/20: loss 0.078, validation MAE 0.380 m, score 0.374 m, eligible
+Epoch 06/20: loss 0.063, validation MAE 0.388 m, score 0.387 m, eligible
+Epoch 07/20: loss 0.055, validation MAE 0.393 m, score 0.393 m, eligible
+Epoch 08/20: loss 0.046, validation MAE 0.438 m, score 0.432 m, eligible
+Epoch 09/20: loss 0.042, validation MAE 0.400 m, score 0.402 m, eligible
+Epoch 10/20: loss 0.046, validation MAE 0.377 m, score 0.371 m, eligible
+Epoch 11/20: loss 0.040, validation MAE 0.379 m, score 0.365 m, eligible
+Epoch 12/20: loss 0.030, validation MAE 0.372 m, score 0.361 m, eligible
+Epoch 13/20: loss 0.028, validation MAE 0.382 m, score 0.379 m, eligible
+Epoch 14/20: loss 0.026, validation MAE 0.387 m, score 0.378 m, eligible
+Epoch 15/20: loss 0.028, validation MAE 0.394 m, score 0.387 m, eligible
+Epoch 16/20: loss 0.022, validation MAE 0.377 m, score 0.371 m, eligible
+Epoch 17/20: loss 0.022, validation MAE 0.389 m, score 0.381 m, eligible
+Epoch 18/20: loss 0.019, validation MAE 0.396 m, score 0.389 m, eligible
+Epoch 19/20: loss 0.018, validation MAE 0.376 m, score 0.370 m, eligible
+Epoch 20/20: loss 0.020, validation MAE 0.391 m, score 0.386 m, eligible
+original: test MAE 1.228 m | above-10 recall 0/287
+finetuned: test MAE 0.600 m | above-10 recall 211/287
+Selected epoch: 12. Saved checkpoint: experiments/all_specialists_2026-11-17/day_rainy/sync_model/best.pth

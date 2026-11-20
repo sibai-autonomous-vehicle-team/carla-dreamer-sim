@@ -1,0 +1,41 @@
+{
+  "dataset_path": "/home/ahmad/drl_project/carla-dreamer-sim/dataset/combined_800/sunset_cloudy",
+  "checkpoint_path": "/home/ahmad/drl_project/carla-dreamer-sim/specialists/day_cloudy/cnn.pth",
+  "split_source": "external",
+  "split_path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/sunset_cloudy_specialist_2026-11-17/archive/split.json",
+  "test_episodes": 80,
+  "test_frames": 6312,
+  "checkpoint_epoch": 20,
+  "mae_m": 0.4141925871372223,
+  "rmse_m": 0.5961393713951111,
+  "signed_error_m": 0.062309570610523224,
+  "p95_absolute_error_m": 1.1967328786849976,
+  "max_absolute_error_m": 4.416349411010742,
+  "bins": {
+    "[0, 3) m": {
+      "frames": 809,
+      "mae_m": 0.4107763469219208,
+      "signed_error_m": 0.3662222623825073
+    },
+    "[3, 6) m": {
+      "frames": 2473,
+      "mae_m": 0.32616567611694336,
+      "signed_error_m": 0.2216038703918457
+    },
+    "[6, 8) m": {
+      "frames": 2115,
+      "mae_m": 0.3582223057746887,
+      "signed_error_m": 0.032094504684209824
+    },
+    "[8, 10] m": {
+      "frames": 715,
+      "mae_m": 0.5893846750259399,
+      "signed_error_m": -0.31574466824531555
+    },
+    ">10 m": {
+      "frames": 200,
+      "mae_m": 1.4820388555526733,
+      "signed_error_m": -1.465623140335083
+    }
+  }
+}

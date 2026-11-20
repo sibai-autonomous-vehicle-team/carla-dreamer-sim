@@ -1,0 +1,40 @@
+Device: cuda
+Test episodes: 800
+Checkpoint epoch: 20
+{
+  "test_episodes": 800,
+  "test_frames": 60936,
+  "checkpoint_epoch": 20,
+  "mae_m": 0.4403156340122223,
+  "rmse_m": 0.6504700779914856,
+  "signed_error_m": 0.03108939900994301,
+  "p95_absolute_error_m": 1.211490511894226,
+  "max_absolute_error_m": 7.204973220825195,
+  "bins": {
+    "[0, 3) m": {
+      "frames": 7828,
+      "mae_m": 0.4204040467739105,
+      "signed_error_m": 0.37479937076568604
+    },
+    "[3, 6) m": {
+      "frames": 21968,
+      "mae_m": 0.36009514331817627,
+      "signed_error_m": 0.24120859801769257
+    },
+    "[6, 8) m": {
+      "frames": 21448,
+      "mae_m": 0.3731745779514313,
+      "signed_error_m": -0.004915337078273296
+    },
+    "[8, 10] m": {
+      "frames": 7024,
+      "mae_m": 0.5497279763221741,
+      "signed_error_m": -0.36980587244033813
+    },
+    ">10 m": {
+      "frames": 2668,
+      "mae_m": 1.4109605550765991,
+      "signed_error_m": -1.3625918626785278
+    }
+  }
+}

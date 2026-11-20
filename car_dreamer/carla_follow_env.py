@@ -262,7 +262,7 @@ class CarlaFollowEnv(CarlaWptEnv):
         total_reward += p_dist + p_waypoints + p_velocity
         return total_reward, info
 
-    def get_distance(self):
+    def get_distance(self, ego_transform=None, leader_transform=None):
         """
         Uses bounding boxes of vehicles to compute more accurate distance
         """
@@ -271,7 +271,9 @@ class CarlaFollowEnv(CarlaWptEnv):
             face: 'front' or 'back'
             """
             bb = actor.bounding_box
-            transform = actor.get_transform()
+            transform = (ego_transform if actor is self.ego else leader_transform)
+            if transform is None:
+                transform = actor.get_transform()
             x = bb.extent.x
             y = bb.extent.y
             z = bb.extent.z

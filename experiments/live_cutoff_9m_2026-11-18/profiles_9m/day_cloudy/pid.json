@@ -1,0 +1,18 @@
+{
+  "condition": "day_cloudy",
+  "status": "pending_validation",
+  "target_gap": 6.0,
+  "kp": 0.9,
+  "ki": 0.05,
+  "kd": 0.15,
+  "seed": 42,
+  "episodes": 5,
+  "steps": 360,
+  "warmup_steps": 5,
+  "terminal_dist": 9,
+  "out_lane_thres": 5,
+  "shared_route": true,
+  "route_manifest": "../routes.json",
+  "cnn_sha256": "e0eb503badc1bf584de90d184752f7a3f2e0882300c877f341fe522c1e08d286",
+  "cnn_source": "experiments/day_cloudy_cnn_close_v3_2026-11-17/finetune_v3/best.pth"
+}

@@ -8,6 +8,7 @@ import torch
 from gym.envs.registration import register
 from pathlib import Path
 from tqdm import trange
+from collection_controllers import FullRangeFollowingController
 
 
 TIME_OF_DAY = {'day': 45.0, 'sunset': 5.0, 'night': -30.0}
@@ -43,6 +44,29 @@ def save_atomic(data, path):
     os.replace(temporary_path, path)
 
 
+def reset_with_camera(env, max_attempts=10, warmup_steps=20):
+    """Retry failed initializations without consuming a saved episode index."""
+    for attempt in range(max_attempts):
+        obs, full_state = env.reset()
+        reason = 'camera produced no nonzero image'
+        for step in range(warmup_steps + 1):
+            if np.any(obs['visual']):
+                return obs, full_state
+            if step == warmup_steps:
+                break
+            obs, _, done, info = env.step(np.zeros(2, dtype=np.float32))
+            full_state = env.state()
+            if done:
+                conditions = [key for key in (
+                    'is_collision', 'time_exceeded', 'out_of_lane',
+                    'destination_reached', 'terminal_dist',
+                ) if np.any(info.get(key, False))]
+                reason = 'episode terminated: ' + (', '.join(conditions) or 'unknown condition')
+                break
+        print(f'Camera initialization attempt {attempt + 1}/{max_attempts} failed: {reason}', flush=True)
+    raise RuntimeError(f'Camera initialization failed after {max_attempts} resets: {reason}')
+
+
 def collect_carla_dataset(
     outdir="/storage1/sibai/Active/ihab/research_new/datasets_dino/carla",
     n_traj=5000,
@@ -51,7 +75,11 @@ def collect_carla_dataset(
     time_of_day='day',
     weather='sunny',
     port=2000,
+    controller='original',
 ):
+    if controller not in ('original', 'full-range'):
+        raise ValueError(f'Unknown controller: {controller}')
+    policy = FullRangeFollowingController(seed=seed) if controller == 'full-range' else None
     weather_params = make_weather(time_of_day, weather)
     np.random.seed(seed)
     os.makedirs(outdir, exist_ok=True)
@@ -72,20 +100,12 @@ def collect_carla_dataset(
     env = gym.make('CarlaFollowWrapperEnv-v0', config=config.env)
     # Apply after map loading; ordinary episode resets preserve this weather.
     env.unwrapped._world.carla_world.set_weather(weather_params)
-    print(f"Collecting with time_of_day={time_of_day}, weather={weather}")
+    print(f"Collecting with time_of_day={time_of_day}, weather={weather}, controller={controller}")
 
     for idx in trange(n_traj, desc="Collecting Carla Trajectories"):
-        obs, full_state = env.reset()
-        # Sensors are attached during reset and initially return a zero placeholder.
-        for _ in range(20):
-            if np.any(obs['visual']):
-                break
-            obs, _, done, _ = env.step(np.zeros(2, dtype=np.float32))
-            full_state = env.state()
-            if done:
-                raise RuntimeError("Episode ended during camera warm-up; retry collection.")
-        if not np.any(obs['visual']):
-            raise RuntimeError("Camera produced no nonzero image after 20 warm-up steps.")
+        obs, full_state = reset_with_camera(env)
+        if policy is not None:
+            policy.reset()
         visuals = []
         actions = []
         states = []
@@ -98,7 +118,7 @@ def collect_carla_dataset(
             # Sensor arrays may reference buffers reused by later callbacks.
             visuals.append(obs['visual'].copy())
             states.append(full_state)
-            action = env.compute_continuous_action() 
+            action = env.compute_continuous_action() if policy is None else policy(env.unwrapped)
             obs, reward, done, _ = env.step(action)
             actions.append(action)
             full_state = env.state()
@@ -130,6 +150,7 @@ if __name__ == "__main__":
     parser.add_argument('--outdir', default='./dataset')
     parser.add_argument('--n-traj', type=int, default=2000)
     parser.add_argument('--seed', type=int, default=42)
+    parser.add_argument('--controller', choices=['original', 'full-range'], default='original')
     parser.add_argument('--port', type=int, default=2000, help='CARLA server RPC port.')
     parser.add_argument('--headless', action='store_true', help='Disable the Flask observation monitor.')
     parser.add_argument('--time-of-day', choices=TIME_OF_DAY, default='day',
@@ -139,4 +160,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     collect_carla_dataset(outdir=args.outdir, n_traj=args.n_traj, seed=args.seed,
                           display=not args.headless, time_of_day=args.time_of_day,
-                          weather=args.weather, port=args.port)
+                          weather=args.weather, port=args.port, controller=args.controller)

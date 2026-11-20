@@ -1,0 +1,816 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="2790" viewBox="0 0 1380 2790">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,sans-serif;fill:#172b42;font-size:13px}</style>
+<text x="30" y="30" style="font-size:23px">Following distance distributions by condition</text>
+<text x="30" y="56">Stored unsigned edge distances • 1 m bins • percentage of recorded steps • all values included</text>
+<text x="70" y="100" style="font-size:17px">carla_following / day_sunny (n=22,059)</text>
+<path d="M70 310.0h590" stroke="#e1e6eb"/>
+<text x="62" y="314.0" text-anchor="end">0%</text>
+<path d="M70 262.5h590" stroke="#e1e6eb"/>
+<text x="62" y="266.5" text-anchor="end">7%</text>
+<path d="M70 215.0h590" stroke="#e1e6eb"/>
+<text x="62" y="219.0" text-anchor="end">14%</text>
+<path d="M70 167.50000000000003h590" stroke="#e1e6eb"/>
+<text x="62" y="171.50000000000003" text-anchor="end">20%</text>
+<path d="M70 120.0h590" stroke="#e1e6eb"/>
+<text x="62" y="124.0" text-anchor="end">27%</text>
+<rect x="70.00" y="208.10" width="21.85" height="101.90" fill="#2976b8"/>
+<rect x="91.85" y="245.59" width="21.85" height="64.41" fill="#2976b8"/>
+<rect x="113.70" y="240.75" width="21.85" height="69.25" fill="#2976b8"/>
+<rect x="135.56" y="225.34" width="21.85" height="84.66" fill="#2976b8"/>
+<rect x="157.41" y="219.83" width="21.85" height="90.17" fill="#2976b8"/>
+<rect x="179.26" y="166.14" width="21.85" height="143.86" fill="#2976b8"/>
+<rect x="201.11" y="177.47" width="21.85" height="132.53" fill="#2976b8"/>
+<rect x="222.96" y="300.32" width="21.85" height="9.68" fill="#2976b8"/>
+<rect x="244.81" y="308.89" width="21.85" height="1.11" fill="#2976b8"/>
+<rect x="266.67" y="309.68" width="21.85" height="0.32" fill="#2976b8"/>
+<rect x="288.52" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="310.37" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="332.22" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="354.07" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="375.93" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="397.78" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="419.63" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="441.48" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="463.33" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="485.19" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="507.04" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="528.89" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="550.74" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="572.59" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="594.44" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="616.30" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="638.15" y="310.00" width="21.85" height="0.00" fill="#2976b8"/>
+<text x="70.0" y="330" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="330" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="330" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="330" text-anchor="middle">15</text>
+<text x="507.037037037037" y="330" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="330" text-anchor="middle">25</text>
+<text x="365.0" y="353" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="100" style="font-size:17px">full_range_300 / day_sunny (n=40,078)</text>
+<path d="M750 310.0h590" stroke="#e1e6eb"/>
+<text x="742" y="314.0" text-anchor="end">0%</text>
+<path d="M750 262.5h590" stroke="#e1e6eb"/>
+<text x="742" y="266.5" text-anchor="end">7%</text>
+<path d="M750 215.0h590" stroke="#e1e6eb"/>
+<text x="742" y="219.0" text-anchor="end">14%</text>
+<path d="M750 167.50000000000003h590" stroke="#e1e6eb"/>
+<text x="742" y="171.50000000000003" text-anchor="end">20%</text>
+<path d="M750 120.0h590" stroke="#e1e6eb"/>
+<text x="742" y="124.0" text-anchor="end">27%</text>
+<rect x="750.00" y="309.65" width="21.85" height="0.35" fill="#dc8036"/>
+<rect x="771.85" y="308.90" width="21.85" height="1.10" fill="#dc8036"/>
+<rect x="793.70" y="303.78" width="21.85" height="6.22" fill="#dc8036"/>
+<rect x="815.56" y="281.41" width="21.85" height="28.59" fill="#dc8036"/>
+<rect x="837.41" y="245.22" width="21.85" height="64.78" fill="#dc8036"/>
+<rect x="859.26" y="195.86" width="21.85" height="114.14" fill="#dc8036"/>
+<rect x="881.11" y="139.40" width="21.85" height="170.60" fill="#dc8036"/>
+<rect x="902.96" y="173.84" width="21.85" height="136.16" fill="#dc8036"/>
+<rect x="924.81" y="225.68" width="21.85" height="84.32" fill="#dc8036"/>
+<rect x="946.67" y="266.75" width="21.85" height="43.25" fill="#dc8036"/>
+<rect x="968.52" y="286.56" width="21.85" height="23.44" fill="#dc8036"/>
+<rect x="990.37" y="298.05" width="21.85" height="11.95" fill="#dc8036"/>
+<rect x="1012.22" y="303.49" width="21.85" height="6.51" fill="#dc8036"/>
+<rect x="1034.07" y="307.37" width="21.85" height="2.63" fill="#dc8036"/>
+<rect x="1055.93" y="308.15" width="21.85" height="1.85" fill="#dc8036"/>
+<rect x="1077.78" y="308.82" width="21.85" height="1.18" fill="#dc8036"/>
+<rect x="1099.63" y="309.20" width="21.85" height="0.80" fill="#dc8036"/>
+<rect x="1121.48" y="309.97" width="21.85" height="0.03" fill="#dc8036"/>
+<rect x="1143.33" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1165.19" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1187.04" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1208.89" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1230.74" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1252.59" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1274.44" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1296.30" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1318.15" y="310.00" width="21.85" height="0.00" fill="#dc8036"/>
+<text x="750.0" y="330" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="330" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="330" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="330" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="330" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="330" text-anchor="middle">25</text>
+<text x="1045.0" y="353" text-anchor="middle">Stored distance (m)</text>
+<text x="70" y="400" style="font-size:17px">carla_following / day_cloudy (n=22,098)</text>
+<path d="M70 610.0h590" stroke="#e1e6eb"/>
+<text x="62" y="614.0" text-anchor="end">0%</text>
+<path d="M70 562.5h590" stroke="#e1e6eb"/>
+<text x="62" y="566.5" text-anchor="end">7%</text>
+<path d="M70 515.0h590" stroke="#e1e6eb"/>
+<text x="62" y="519.0" text-anchor="end">14%</text>
+<path d="M70 467.5h590" stroke="#e1e6eb"/>
+<text x="62" y="471.5" text-anchor="end">20%</text>
+<path d="M70 420.0h590" stroke="#e1e6eb"/>
+<text x="62" y="424.0" text-anchor="end">27%</text>
+<rect x="70.00" y="505.40" width="21.85" height="104.60" fill="#2976b8"/>
+<rect x="91.85" y="544.97" width="21.85" height="65.03" fill="#2976b8"/>
+<rect x="113.70" y="539.70" width="21.85" height="70.30" fill="#2976b8"/>
+<rect x="135.56" y="532.85" width="21.85" height="77.15" fill="#2976b8"/>
+<rect x="157.41" y="517.24" width="21.85" height="92.76" fill="#2976b8"/>
+<rect x="179.26" y="465.20" width="21.85" height="144.80" fill="#2976b8"/>
+<rect x="201.11" y="481.11" width="21.85" height="128.89" fill="#2976b8"/>
+<rect x="222.96" y="597.37" width="21.85" height="12.63" fill="#2976b8"/>
+<rect x="244.81" y="608.52" width="21.85" height="1.48" fill="#2976b8"/>
+<rect x="266.67" y="609.75" width="21.85" height="0.25" fill="#2976b8"/>
+<rect x="288.52" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="310.37" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="332.22" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="354.07" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="375.93" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="397.78" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="419.63" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="441.48" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="463.33" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="485.19" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="507.04" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="528.89" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="550.74" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="572.59" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="594.44" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="616.30" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="638.15" y="610.00" width="21.85" height="0.00" fill="#2976b8"/>
+<text x="70.0" y="630" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="630" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="630" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="630" text-anchor="middle">15</text>
+<text x="507.037037037037" y="630" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="630" text-anchor="middle">25</text>
+<text x="365.0" y="653" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="400" style="font-size:17px">full_range_300 / day_cloudy (n=39,690)</text>
+<path d="M750 610.0h590" stroke="#e1e6eb"/>
+<text x="742" y="614.0" text-anchor="end">0%</text>
+<path d="M750 562.5h590" stroke="#e1e6eb"/>
+<text x="742" y="566.5" text-anchor="end">7%</text>
+<path d="M750 515.0h590" stroke="#e1e6eb"/>
+<text x="742" y="519.0" text-anchor="end">14%</text>
+<path d="M750 467.5h590" stroke="#e1e6eb"/>
+<text x="742" y="471.5" text-anchor="end">20%</text>
+<path d="M750 420.0h590" stroke="#e1e6eb"/>
+<text x="742" y="424.0" text-anchor="end">27%</text>
+<rect x="750.00" y="609.67" width="21.85" height="0.33" fill="#dc8036"/>
+<rect x="771.85" y="608.66" width="21.85" height="1.34" fill="#dc8036"/>
+<rect x="793.70" y="602.65" width="21.85" height="7.35" fill="#dc8036"/>
+<rect x="815.56" y="576.49" width="21.85" height="33.51" fill="#dc8036"/>
+<rect x="837.41" y="521.96" width="21.85" height="88.04" fill="#dc8036"/>
+<rect x="859.26" y="477.61" width="21.85" height="132.39" fill="#dc8036"/>
+<rect x="881.11" y="450.57" width="21.85" height="159.43" fill="#dc8036"/>
+<rect x="902.96" y="487.71" width="21.85" height="122.29" fill="#dc8036"/>
+<rect x="924.81" y="541.18" width="21.85" height="68.82" fill="#dc8036"/>
+<rect x="946.67" y="572.02" width="21.85" height="37.98" fill="#dc8036"/>
+<rect x="968.52" y="589.50" width="21.85" height="20.50" fill="#dc8036"/>
+<rect x="990.37" y="598.48" width="21.85" height="11.52" fill="#dc8036"/>
+<rect x="1012.22" y="602.49" width="21.85" height="7.51" fill="#dc8036"/>
+<rect x="1034.07" y="606.57" width="21.85" height="3.43" fill="#dc8036"/>
+<rect x="1055.93" y="608.03" width="21.85" height="1.97" fill="#dc8036"/>
+<rect x="1077.78" y="609.00" width="21.85" height="1.00" fill="#dc8036"/>
+<rect x="1099.63" y="609.86" width="21.85" height="0.14" fill="#dc8036"/>
+<rect x="1121.48" y="609.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1143.33" y="609.98" width="21.85" height="0.02" fill="#dc8036"/>
+<rect x="1165.19" y="609.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1187.04" y="609.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1208.89" y="609.98" width="21.85" height="0.02" fill="#dc8036"/>
+<rect x="1230.74" y="609.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1252.59" y="609.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1274.44" y="609.91" width="21.85" height="0.09" fill="#dc8036"/>
+<rect x="1296.30" y="609.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1318.15" y="610.00" width="21.85" height="0.00" fill="#dc8036"/>
+<text x="750.0" y="630" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="630" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="630" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="630" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="630" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="630" text-anchor="middle">25</text>
+<text x="1045.0" y="653" text-anchor="middle">Stored distance (m)</text>
+<text x="70" y="700" style="font-size:17px">carla_following / day_rainy (n=22,686)</text>
+<path d="M70 910.0h590" stroke="#e1e6eb"/>
+<text x="62" y="914.0" text-anchor="end">0%</text>
+<path d="M70 862.5h590" stroke="#e1e6eb"/>
+<text x="62" y="866.5" text-anchor="end">7%</text>
+<path d="M70 815.0h590" stroke="#e1e6eb"/>
+<text x="62" y="819.0" text-anchor="end">14%</text>
+<path d="M70 767.5h590" stroke="#e1e6eb"/>
+<text x="62" y="771.5" text-anchor="end">20%</text>
+<path d="M70 720.0h590" stroke="#e1e6eb"/>
+<text x="62" y="724.0" text-anchor="end">27%</text>
+<rect x="70.00" y="804.61" width="21.85" height="105.39" fill="#2976b8"/>
+<rect x="91.85" y="844.20" width="21.85" height="65.80" fill="#2976b8"/>
+<rect x="113.70" y="842.32" width="21.85" height="67.68" fill="#2976b8"/>
+<rect x="135.56" y="835.83" width="21.85" height="74.17" fill="#2976b8"/>
+<rect x="157.41" y="815.53" width="21.85" height="94.47" fill="#2976b8"/>
+<rect x="179.26" y="772.80" width="21.85" height="137.20" fill="#2976b8"/>
+<rect x="201.11" y="769.44" width="21.85" height="140.56" fill="#2976b8"/>
+<rect x="222.96" y="898.22" width="21.85" height="11.78" fill="#2976b8"/>
+<rect x="244.81" y="909.17" width="21.85" height="0.83" fill="#2976b8"/>
+<rect x="266.67" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="288.52" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="310.37" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="332.22" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="354.07" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="375.93" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="397.78" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="419.63" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="441.48" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="463.33" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="485.19" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="507.04" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="528.89" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="550.74" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="572.59" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="594.44" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="616.30" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="638.15" y="910.00" width="21.85" height="0.00" fill="#2976b8"/>
+<text x="70.0" y="930" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="930" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="930" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="930" text-anchor="middle">15</text>
+<text x="507.037037037037" y="930" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="930" text-anchor="middle">25</text>
+<text x="365.0" y="953" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="700" style="font-size:17px">full_range_300 / day_rainy (n=39,172)</text>
+<path d="M750 910.0h590" stroke="#e1e6eb"/>
+<text x="742" y="914.0" text-anchor="end">0%</text>
+<path d="M750 862.5h590" stroke="#e1e6eb"/>
+<text x="742" y="866.5" text-anchor="end">7%</text>
+<path d="M750 815.0h590" stroke="#e1e6eb"/>
+<text x="742" y="819.0" text-anchor="end">14%</text>
+<path d="M750 767.5h590" stroke="#e1e6eb"/>
+<text x="742" y="771.5" text-anchor="end">20%</text>
+<path d="M750 720.0h590" stroke="#e1e6eb"/>
+<text x="742" y="724.0" text-anchor="end">27%</text>
+<rect x="750.00" y="909.63" width="21.85" height="0.37" fill="#dc8036"/>
+<rect x="771.85" y="908.66" width="21.85" height="1.34" fill="#dc8036"/>
+<rect x="793.70" y="902.82" width="21.85" height="7.18" fill="#dc8036"/>
+<rect x="815.56" y="884.63" width="21.85" height="25.37" fill="#dc8036"/>
+<rect x="837.41" y="847.70" width="21.85" height="62.30" fill="#dc8036"/>
+<rect x="859.26" y="794.77" width="21.85" height="115.23" fill="#dc8036"/>
+<rect x="881.11" y="737.27" width="21.85" height="172.73" fill="#dc8036"/>
+<rect x="902.96" y="778.93" width="21.85" height="131.07" fill="#dc8036"/>
+<rect x="924.81" y="828.79" width="21.85" height="81.21" fill="#dc8036"/>
+<rect x="946.67" y="862.07" width="21.85" height="47.93" fill="#dc8036"/>
+<rect x="968.52" y="885.09" width="21.85" height="24.91" fill="#dc8036"/>
+<rect x="990.37" y="897.56" width="21.85" height="12.44" fill="#dc8036"/>
+<rect x="1012.22" y="902.36" width="21.85" height="7.64" fill="#dc8036"/>
+<rect x="1034.07" y="905.55" width="21.85" height="4.45" fill="#dc8036"/>
+<rect x="1055.93" y="907.61" width="21.85" height="2.39" fill="#dc8036"/>
+<rect x="1077.78" y="908.84" width="21.85" height="1.16" fill="#dc8036"/>
+<rect x="1099.63" y="909.82" width="21.85" height="0.18" fill="#dc8036"/>
+<rect x="1121.48" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1143.33" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1165.19" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1187.04" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1208.89" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1230.74" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1252.59" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1274.44" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1296.30" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1318.15" y="910.00" width="21.85" height="0.00" fill="#dc8036"/>
+<text x="750.0" y="930" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="930" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="930" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="930" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="930" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="930" text-anchor="middle">25</text>
+<text x="1045.0" y="953" text-anchor="middle">Stored distance (m)</text>
+<text x="70" y="1000" style="font-size:17px">carla_following / sunset_sunny (n=22,100)</text>
+<path d="M70 1210.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1214.0" text-anchor="end">0%</text>
+<path d="M70 1162.5h590" stroke="#e1e6eb"/>
+<text x="62" y="1166.5" text-anchor="end">7%</text>
+<path d="M70 1115.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1119.0" text-anchor="end">14%</text>
+<path d="M70 1067.5h590" stroke="#e1e6eb"/>
+<text x="62" y="1071.5" text-anchor="end">20%</text>
+<path d="M70 1020.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1024.0" text-anchor="end">27%</text>
+<rect x="70.00" y="1102.70" width="21.85" height="107.30" fill="#2976b8"/>
+<rect x="91.85" y="1142.80" width="21.85" height="67.20" fill="#2976b8"/>
+<rect x="113.70" y="1140.62" width="21.85" height="69.38" fill="#2976b8"/>
+<rect x="135.56" y="1131.97" width="21.85" height="78.03" fill="#2976b8"/>
+<rect x="157.41" y="1117.79" width="21.85" height="92.21" fill="#2976b8"/>
+<rect x="179.26" y="1058.80" width="21.85" height="151.20" fill="#2976b8"/>
+<rect x="201.11" y="1089.91" width="21.85" height="120.09" fill="#2976b8"/>
+<rect x="222.96" y="1202.39" width="21.85" height="7.61" fill="#2976b8"/>
+<rect x="244.81" y="1207.82" width="21.85" height="2.18" fill="#2976b8"/>
+<rect x="266.67" y="1209.02" width="21.85" height="0.98" fill="#2976b8"/>
+<rect x="288.52" y="1208.86" width="21.85" height="1.14" fill="#2976b8"/>
+<rect x="310.37" y="1209.43" width="21.85" height="0.57" fill="#2976b8"/>
+<rect x="332.22" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="354.07" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="375.93" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="397.78" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="419.63" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="441.48" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="463.33" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="485.19" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="507.04" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="528.89" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="550.74" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="572.59" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="594.44" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="616.30" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="638.15" y="1210.00" width="21.85" height="0.00" fill="#2976b8"/>
+<text x="70.0" y="1230" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="1230" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="1230" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="1230" text-anchor="middle">15</text>
+<text x="507.037037037037" y="1230" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="1230" text-anchor="middle">25</text>
+<text x="365.0" y="1253" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="1000" style="font-size:17px">full_range_300 / sunset_sunny (n=40,900)</text>
+<path d="M750 1210.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1214.0" text-anchor="end">0%</text>
+<path d="M750 1162.5h590" stroke="#e1e6eb"/>
+<text x="742" y="1166.5" text-anchor="end">7%</text>
+<path d="M750 1115.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1119.0" text-anchor="end">14%</text>
+<path d="M750 1067.5h590" stroke="#e1e6eb"/>
+<text x="742" y="1071.5" text-anchor="end">20%</text>
+<path d="M750 1020.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1024.0" text-anchor="end">27%</text>
+<rect x="750.00" y="1209.62" width="21.85" height="0.38" fill="#dc8036"/>
+<rect x="771.85" y="1206.76" width="21.85" height="3.24" fill="#dc8036"/>
+<rect x="793.70" y="1199.23" width="21.85" height="10.77" fill="#dc8036"/>
+<rect x="815.56" y="1170.96" width="21.85" height="39.04" fill="#dc8036"/>
+<rect x="837.41" y="1128.61" width="21.85" height="81.39" fill="#dc8036"/>
+<rect x="859.26" y="1077.86" width="21.85" height="132.14" fill="#dc8036"/>
+<rect x="881.11" y="1052.06" width="21.85" height="157.94" fill="#dc8036"/>
+<rect x="902.96" y="1092.45" width="21.85" height="117.55" fill="#dc8036"/>
+<rect x="924.81" y="1138.15" width="21.85" height="71.85" fill="#dc8036"/>
+<rect x="946.67" y="1172.70" width="21.85" height="37.30" fill="#dc8036"/>
+<rect x="968.52" y="1189.59" width="21.85" height="20.41" fill="#dc8036"/>
+<rect x="990.37" y="1199.30" width="21.85" height="10.70" fill="#dc8036"/>
+<rect x="1012.22" y="1203.75" width="21.85" height="6.25" fill="#dc8036"/>
+<rect x="1034.07" y="1206.35" width="21.85" height="3.65" fill="#dc8036"/>
+<rect x="1055.93" y="1207.88" width="21.85" height="2.12" fill="#dc8036"/>
+<rect x="1077.78" y="1208.57" width="21.85" height="1.43" fill="#dc8036"/>
+<rect x="1099.63" y="1209.08" width="21.85" height="0.92" fill="#dc8036"/>
+<rect x="1121.48" y="1209.80" width="21.85" height="0.20" fill="#dc8036"/>
+<rect x="1143.33" y="1209.88" width="21.85" height="0.12" fill="#dc8036"/>
+<rect x="1165.19" y="1209.93" width="21.85" height="0.07" fill="#dc8036"/>
+<rect x="1187.04" y="1209.93" width="21.85" height="0.07" fill="#dc8036"/>
+<rect x="1208.89" y="1209.78" width="21.85" height="0.22" fill="#dc8036"/>
+<rect x="1230.74" y="1209.86" width="21.85" height="0.14" fill="#dc8036"/>
+<rect x="1252.59" y="1210.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1274.44" y="1210.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1296.30" y="1210.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1318.15" y="1210.00" width="21.85" height="0.00" fill="#dc8036"/>
+<text x="750.0" y="1230" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="1230" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="1230" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="1230" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="1230" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="1230" text-anchor="middle">25</text>
+<text x="1045.0" y="1253" text-anchor="middle">Stored distance (m)</text>
+<text x="70" y="1300" style="font-size:17px">carla_following / sunset_cloudy (n=22,715)</text>
+<path d="M70 1510.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1514.0" text-anchor="end">0%</text>
+<path d="M70 1462.5h590" stroke="#e1e6eb"/>
+<text x="62" y="1466.5" text-anchor="end">7%</text>
+<path d="M70 1415.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1419.0" text-anchor="end">14%</text>
+<path d="M70 1367.5h590" stroke="#e1e6eb"/>
+<text x="62" y="1371.5" text-anchor="end">20%</text>
+<path d="M70 1320.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1324.0" text-anchor="end">27%</text>
+<rect x="70.00" y="1405.39" width="21.85" height="104.61" fill="#2976b8"/>
+<rect x="91.85" y="1444.22" width="21.85" height="65.78" fill="#2976b8"/>
+<rect x="113.70" y="1439.98" width="21.85" height="70.02" fill="#2976b8"/>
+<rect x="135.56" y="1436.42" width="21.85" height="73.58" fill="#2976b8"/>
+<rect x="157.41" y="1418.60" width="21.85" height="91.40" fill="#2976b8"/>
+<rect x="179.26" y="1363.79" width="21.85" height="146.21" fill="#2976b8"/>
+<rect x="201.11" y="1374.42" width="21.85" height="135.58" fill="#2976b8"/>
+<rect x="222.96" y="1501.27" width="21.85" height="8.73" fill="#2976b8"/>
+<rect x="244.81" y="1508.40" width="21.85" height="1.60" fill="#2976b8"/>
+<rect x="266.67" y="1509.63" width="21.85" height="0.37" fill="#2976b8"/>
+<rect x="288.52" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="310.37" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="332.22" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="354.07" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="375.93" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="397.78" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="419.63" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="441.48" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="463.33" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="485.19" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="507.04" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="528.89" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="550.74" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="572.59" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="594.44" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="616.30" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="638.15" y="1510.00" width="21.85" height="0.00" fill="#2976b8"/>
+<text x="70.0" y="1530" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="1530" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="1530" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="1530" text-anchor="middle">15</text>
+<text x="507.037037037037" y="1530" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="1530" text-anchor="middle">25</text>
+<text x="365.0" y="1553" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="1300" style="font-size:17px">full_range_300 / sunset_cloudy (n=39,021)</text>
+<path d="M750 1510.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1514.0" text-anchor="end">0%</text>
+<path d="M750 1462.5h590" stroke="#e1e6eb"/>
+<text x="742" y="1466.5" text-anchor="end">7%</text>
+<path d="M750 1415.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1419.0" text-anchor="end">14%</text>
+<path d="M750 1367.5h590" stroke="#e1e6eb"/>
+<text x="742" y="1371.5" text-anchor="end">20%</text>
+<path d="M750 1320.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1324.0" text-anchor="end">27%</text>
+<rect x="750.00" y="1509.39" width="21.85" height="0.61" fill="#dc8036"/>
+<rect x="771.85" y="1508.35" width="21.85" height="1.65" fill="#dc8036"/>
+<rect x="793.70" y="1503.19" width="21.85" height="6.81" fill="#dc8036"/>
+<rect x="815.56" y="1477.18" width="21.85" height="32.82" fill="#dc8036"/>
+<rect x="837.41" y="1443.15" width="21.85" height="66.85" fill="#dc8036"/>
+<rect x="859.26" y="1396.45" width="21.85" height="113.55" fill="#dc8036"/>
+<rect x="881.11" y="1338.27" width="21.85" height="171.73" fill="#dc8036"/>
+<rect x="902.96" y="1380.03" width="21.85" height="129.97" fill="#dc8036"/>
+<rect x="924.81" y="1426.82" width="21.85" height="83.18" fill="#dc8036"/>
+<rect x="946.67" y="1467.59" width="21.85" height="42.41" fill="#dc8036"/>
+<rect x="968.52" y="1488.04" width="21.85" height="21.96" fill="#dc8036"/>
+<rect x="990.37" y="1497.84" width="21.85" height="12.16" fill="#dc8036"/>
+<rect x="1012.22" y="1503.67" width="21.85" height="6.33" fill="#dc8036"/>
+<rect x="1034.07" y="1506.78" width="21.85" height="3.22" fill="#dc8036"/>
+<rect x="1055.93" y="1507.55" width="21.85" height="2.45" fill="#dc8036"/>
+<rect x="1077.78" y="1509.02" width="21.85" height="0.98" fill="#dc8036"/>
+<rect x="1099.63" y="1509.46" width="21.85" height="0.54" fill="#dc8036"/>
+<rect x="1121.48" y="1509.59" width="21.85" height="0.41" fill="#dc8036"/>
+<rect x="1143.33" y="1509.84" width="21.85" height="0.16" fill="#dc8036"/>
+<rect x="1165.19" y="1509.91" width="21.85" height="0.09" fill="#dc8036"/>
+<rect x="1187.04" y="1510.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1208.89" y="1510.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1230.74" y="1510.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1252.59" y="1510.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1274.44" y="1510.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1296.30" y="1510.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1318.15" y="1510.00" width="21.85" height="0.00" fill="#dc8036"/>
+<text x="750.0" y="1530" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="1530" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="1530" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="1530" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="1530" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="1530" text-anchor="middle">25</text>
+<text x="1045.0" y="1553" text-anchor="middle">Stored distance (m)</text>
+<text x="70" y="1600" style="font-size:17px">carla_following / sunset_rainy (n=22,734)</text>
+<path d="M70 1810.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1814.0" text-anchor="end">0%</text>
+<path d="M70 1762.5h590" stroke="#e1e6eb"/>
+<text x="62" y="1766.5" text-anchor="end">7%</text>
+<path d="M70 1715.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1719.0" text-anchor="end">14%</text>
+<path d="M70 1667.5h590" stroke="#e1e6eb"/>
+<text x="62" y="1671.5" text-anchor="end">20%</text>
+<path d="M70 1620.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1624.0" text-anchor="end">27%</text>
+<rect x="70.00" y="1707.87" width="21.85" height="102.13" fill="#2976b8"/>
+<rect x="91.85" y="1742.86" width="21.85" height="67.14" fill="#2976b8"/>
+<rect x="113.70" y="1741.08" width="21.85" height="68.92" fill="#2976b8"/>
+<rect x="135.56" y="1730.71" width="21.85" height="79.29" fill="#2976b8"/>
+<rect x="157.41" y="1716.92" width="21.85" height="93.08" fill="#2976b8"/>
+<rect x="179.26" y="1664.83" width="21.85" height="145.17" fill="#2976b8"/>
+<rect x="201.11" y="1681.71" width="21.85" height="128.29" fill="#2976b8"/>
+<rect x="222.96" y="1797.81" width="21.85" height="12.19" fill="#2976b8"/>
+<rect x="244.81" y="1808.56" width="21.85" height="1.44" fill="#2976b8"/>
+<rect x="266.67" y="1809.75" width="21.85" height="0.25" fill="#2976b8"/>
+<rect x="288.52" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="310.37" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="332.22" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="354.07" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="375.93" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="397.78" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="419.63" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="441.48" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="463.33" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="485.19" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="507.04" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="528.89" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="550.74" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="572.59" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="594.44" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="616.30" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="638.15" y="1810.00" width="21.85" height="0.00" fill="#2976b8"/>
+<text x="70.0" y="1830" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="1830" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="1830" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="1830" text-anchor="middle">15</text>
+<text x="507.037037037037" y="1830" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="1830" text-anchor="middle">25</text>
+<text x="365.0" y="1853" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="1600" style="font-size:17px">full_range_300 / sunset_rainy (n=40,752)</text>
+<path d="M750 1810.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1814.0" text-anchor="end">0%</text>
+<path d="M750 1762.5h590" stroke="#e1e6eb"/>
+<text x="742" y="1766.5" text-anchor="end">7%</text>
+<path d="M750 1715.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1719.0" text-anchor="end">14%</text>
+<path d="M750 1667.5h590" stroke="#e1e6eb"/>
+<text x="742" y="1671.5" text-anchor="end">20%</text>
+<path d="M750 1620.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1624.0" text-anchor="end">27%</text>
+<rect x="750.00" y="1809.38" width="21.85" height="0.62" fill="#dc8036"/>
+<rect x="771.85" y="1807.47" width="21.85" height="2.53" fill="#dc8036"/>
+<rect x="793.70" y="1802.21" width="21.85" height="7.79" fill="#dc8036"/>
+<rect x="815.56" y="1776.13" width="21.85" height="33.87" fill="#dc8036"/>
+<rect x="837.41" y="1732.76" width="21.85" height="77.24" fill="#dc8036"/>
+<rect x="859.26" y="1681.80" width="21.85" height="128.20" fill="#dc8036"/>
+<rect x="881.11" y="1650.12" width="21.85" height="159.88" fill="#dc8036"/>
+<rect x="902.96" y="1683.27" width="21.85" height="126.73" fill="#dc8036"/>
+<rect x="924.81" y="1733.54" width="21.85" height="76.46" fill="#dc8036"/>
+<rect x="946.67" y="1770.12" width="21.85" height="39.88" fill="#dc8036"/>
+<rect x="968.52" y="1789.14" width="21.85" height="20.86" fill="#dc8036"/>
+<rect x="990.37" y="1797.76" width="21.85" height="12.24" fill="#dc8036"/>
+<rect x="1012.22" y="1803.49" width="21.85" height="6.51" fill="#dc8036"/>
+<rect x="1034.07" y="1806.66" width="21.85" height="3.34" fill="#dc8036"/>
+<rect x="1055.93" y="1808.92" width="21.85" height="1.08" fill="#dc8036"/>
+<rect x="1077.78" y="1809.61" width="21.85" height="0.39" fill="#dc8036"/>
+<rect x="1099.63" y="1809.79" width="21.85" height="0.21" fill="#dc8036"/>
+<rect x="1121.48" y="1809.95" width="21.85" height="0.05" fill="#dc8036"/>
+<rect x="1143.33" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1165.19" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1187.04" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1208.89" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1230.74" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1252.59" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1274.44" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1296.30" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1318.15" y="1810.00" width="21.85" height="0.00" fill="#dc8036"/>
+<text x="750.0" y="1830" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="1830" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="1830" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="1830" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="1830" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="1830" text-anchor="middle">25</text>
+<text x="1045.0" y="1853" text-anchor="middle">Stored distance (m)</text>
+<text x="70" y="1900" style="font-size:17px">carla_following / night_sunny (n=21,585)</text>
+<path d="M70 2110.0h590" stroke="#e1e6eb"/>
+<text x="62" y="2114.0" text-anchor="end">0%</text>
+<path d="M70 2062.5h590" stroke="#e1e6eb"/>
+<text x="62" y="2066.5" text-anchor="end">7%</text>
+<path d="M70 2015.0h590" stroke="#e1e6eb"/>
+<text x="62" y="2019.0" text-anchor="end">14%</text>
+<path d="M70 1967.5h590" stroke="#e1e6eb"/>
+<text x="62" y="1971.5" text-anchor="end">20%</text>
+<path d="M70 1920.0h590" stroke="#e1e6eb"/>
+<text x="62" y="1924.0" text-anchor="end">27%</text>
+<rect x="70.00" y="2001.95" width="21.85" height="108.05" fill="#2976b8"/>
+<rect x="91.85" y="2044.82" width="21.85" height="65.18" fill="#2976b8"/>
+<rect x="113.70" y="2041.04" width="21.85" height="68.96" fill="#2976b8"/>
+<rect x="135.56" y="2029.04" width="21.85" height="80.96" fill="#2976b8"/>
+<rect x="157.41" y="2018.14" width="21.85" height="91.86" fill="#2976b8"/>
+<rect x="179.26" y="1952.80" width="21.85" height="157.20" fill="#2976b8"/>
+<rect x="201.11" y="1995.03" width="21.85" height="114.97" fill="#2976b8"/>
+<rect x="222.96" y="2104.99" width="21.85" height="5.01" fill="#2976b8"/>
+<rect x="244.81" y="2109.64" width="21.85" height="0.36" fill="#2976b8"/>
+<rect x="266.67" y="2109.61" width="21.85" height="0.39" fill="#2976b8"/>
+<rect x="288.52" y="2109.64" width="21.85" height="0.36" fill="#2976b8"/>
+<rect x="310.37" y="2109.74" width="21.85" height="0.26" fill="#2976b8"/>
+<rect x="332.22" y="2109.48" width="21.85" height="0.52" fill="#2976b8"/>
+<rect x="354.07" y="2109.26" width="21.85" height="0.74" fill="#2976b8"/>
+<rect x="375.93" y="2109.68" width="21.85" height="0.32" fill="#2976b8"/>
+<rect x="397.78" y="2109.74" width="21.85" height="0.26" fill="#2976b8"/>
+<rect x="419.63" y="2109.77" width="21.85" height="0.23" fill="#2976b8"/>
+<rect x="441.48" y="2109.68" width="21.85" height="0.32" fill="#2976b8"/>
+<rect x="463.33" y="2109.87" width="21.85" height="0.13" fill="#2976b8"/>
+<rect x="485.19" y="2109.90" width="21.85" height="0.10" fill="#2976b8"/>
+<rect x="507.04" y="2109.81" width="21.85" height="0.19" fill="#2976b8"/>
+<rect x="528.89" y="2109.81" width="21.85" height="0.19" fill="#2976b8"/>
+<rect x="550.74" y="2109.42" width="21.85" height="0.58" fill="#2976b8"/>
+<rect x="572.59" y="2109.71" width="21.85" height="0.29" fill="#2976b8"/>
+<rect x="594.44" y="2109.74" width="21.85" height="0.26" fill="#2976b8"/>
+<rect x="616.30" y="2109.94" width="21.85" height="0.06" fill="#2976b8"/>
+<rect x="638.15" y="2109.87" width="21.85" height="0.13" fill="#2976b8"/>
+<text x="70.0" y="2130" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="2130" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="2130" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="2130" text-anchor="middle">15</text>
+<text x="507.037037037037" y="2130" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="2130" text-anchor="middle">25</text>
+<text x="365.0" y="2153" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="1900" style="font-size:17px">full_range_300 / night_sunny (n=37,842)</text>
+<path d="M750 2110.0h590" stroke="#e1e6eb"/>
+<text x="742" y="2114.0" text-anchor="end">0%</text>
+<path d="M750 2062.5h590" stroke="#e1e6eb"/>
+<text x="742" y="2066.5" text-anchor="end">7%</text>
+<path d="M750 2015.0h590" stroke="#e1e6eb"/>
+<text x="742" y="2019.0" text-anchor="end">14%</text>
+<path d="M750 1967.5h590" stroke="#e1e6eb"/>
+<text x="742" y="1971.5" text-anchor="end">20%</text>
+<path d="M750 1920.0h590" stroke="#e1e6eb"/>
+<text x="742" y="1924.0" text-anchor="end">27%</text>
+<rect x="750.00" y="2109.32" width="21.85" height="0.68" fill="#dc8036"/>
+<rect x="771.85" y="2109.35" width="21.85" height="0.65" fill="#dc8036"/>
+<rect x="793.70" y="2104.76" width="21.85" height="5.24" fill="#dc8036"/>
+<rect x="815.56" y="2078.09" width="21.85" height="31.91" fill="#dc8036"/>
+<rect x="837.41" y="2039.62" width="21.85" height="70.38" fill="#dc8036"/>
+<rect x="859.26" y="1986.68" width="21.85" height="123.32" fill="#dc8036"/>
+<rect x="881.11" y="1950.33" width="21.85" height="159.67" fill="#dc8036"/>
+<rect x="902.96" y="1983.58" width="21.85" height="126.42" fill="#dc8036"/>
+<rect x="924.81" y="2026.46" width="21.85" height="83.54" fill="#dc8036"/>
+<rect x="946.67" y="2062.94" width="21.85" height="47.06" fill="#dc8036"/>
+<rect x="968.52" y="2087.19" width="21.85" height="22.81" fill="#dc8036"/>
+<rect x="990.37" y="2100.58" width="21.85" height="9.42" fill="#dc8036"/>
+<rect x="1012.22" y="2104.26" width="21.85" height="5.74" fill="#dc8036"/>
+<rect x="1034.07" y="2105.83" width="21.85" height="4.17" fill="#dc8036"/>
+<rect x="1055.93" y="2107.38" width="21.85" height="2.62" fill="#dc8036"/>
+<rect x="1077.78" y="2108.80" width="21.85" height="1.20" fill="#dc8036"/>
+<rect x="1099.63" y="2108.69" width="21.85" height="1.31" fill="#dc8036"/>
+<rect x="1121.48" y="2109.00" width="21.85" height="1.00" fill="#dc8036"/>
+<rect x="1143.33" y="2109.76" width="21.85" height="0.24" fill="#dc8036"/>
+<rect x="1165.19" y="2109.80" width="21.85" height="0.20" fill="#dc8036"/>
+<rect x="1187.04" y="2109.85" width="21.85" height="0.15" fill="#dc8036"/>
+<rect x="1208.89" y="2109.83" width="21.85" height="0.17" fill="#dc8036"/>
+<rect x="1230.74" y="2110.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1252.59" y="2110.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1274.44" y="2110.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1296.30" y="2110.00" width="21.85" height="0.00" fill="#dc8036"/>
+<rect x="1318.15" y="2110.00" width="21.85" height="0.00" fill="#dc8036"/>
+<text x="750.0" y="2130" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="2130" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="2130" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="2130" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="2130" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="2130" text-anchor="middle">25</text>
+<text x="1045.0" y="2153" text-anchor="middle">Stored distance (m)</text>
+<text x="70" y="2200" style="font-size:17px">carla_following / night_cloudy (n=23,053)</text>
+<path d="M70 2410.0h590" stroke="#e1e6eb"/>
+<text x="62" y="2414.0" text-anchor="end">0%</text>
+<path d="M70 2362.5h590" stroke="#e1e6eb"/>
+<text x="62" y="2366.5" text-anchor="end">7%</text>
+<path d="M70 2315.0h590" stroke="#e1e6eb"/>
+<text x="62" y="2319.0" text-anchor="end">14%</text>
+<path d="M70 2267.5h590" stroke="#e1e6eb"/>
+<text x="62" y="2271.5" text-anchor="end">20%</text>
+<path d="M70 2220.0h590" stroke="#e1e6eb"/>
+<text x="62" y="2224.0" text-anchor="end">27%</text>
+<rect x="70.00" y="2304.35" width="21.85" height="105.65" fill="#2976b8"/>
+<rect x="91.85" y="2341.10" width="21.85" height="68.90" fill="#2976b8"/>
+<rect x="113.70" y="2340.64" width="21.85" height="69.36" fill="#2976b8"/>
+<rect x="135.56" y="2329.62" width="21.85" height="80.38" fill="#2976b8"/>
+<rect x="157.41" y="2320.39" width="21.85" height="89.61" fill="#2976b8"/>
+<rect x="179.26" y="2273.62" width="21.85" height="136.38" fill="#2976b8"/>
+<rect x="201.11" y="2277.31" width="21.85" height="132.69" fill="#2976b8"/>
+<rect x="222.96" y="2403.16" width="21.85" height="6.84" fill="#2976b8"/>
+<rect x="244.81" y="2408.67" width="21.85" height="1.33" fill="#2976b8"/>
+<rect x="266.67" y="2408.79" width="21.85" height="1.21" fill="#2976b8"/>
+<rect x="288.52" y="2409.09" width="21.85" height="0.91" fill="#2976b8"/>
+<rect x="310.37" y="2409.52" width="21.85" height="0.48" fill="#2976b8"/>
+<rect x="332.22" y="2409.30" width="21.85" height="0.70" fill="#2976b8"/>
+<rect x="354.07" y="2409.42" width="21.85" height="0.58" fill="#2976b8"/>
+<rect x="375.93" y="2409.55" width="21.85" height="0.45" fill="#2976b8"/>
+<rect x="397.78" y="2409.64" width="21.85" height="0.36" fill="#2976b8"/>
+<rect x="419.63" y="2409.21" width="21.85" height="0.79" fill="#2976b8"/>
+<rect x="441.48" y="2409.79" width="21.85" height="0.21" fill="#2976b8"/>
+<rect x="463.33" y="2409.91" width="21.85" height="0.09" fill="#2976b8"/>
+<rect x="485.19" y="2409.91" width="21.85" height="0.09" fill="#2976b8"/>
+<rect x="507.04" y="2409.88" width="21.85" height="0.12" fill="#2976b8"/>
+<rect x="528.89" y="2409.91" width="21.85" height="0.09" fill="#2976b8"/>
+<rect x="550.74" y="2409.91" width="21.85" height="0.09" fill="#2976b8"/>
+<rect x="572.59" y="2409.88" width="21.85" height="0.12" fill="#2976b8"/>
+<rect x="594.44" y="2409.85" width="21.85" height="0.15" fill="#2976b8"/>
+<rect x="616.30" y="2409.82" width="21.85" height="0.18" fill="#2976b8"/>
+<rect x="638.15" y="2409.88" width="21.85" height="0.12" fill="#2976b8"/>
+<text x="70.0" y="2430" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="2430" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="2430" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="2430" text-anchor="middle">15</text>
+<text x="507.037037037037" y="2430" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="2430" text-anchor="middle">25</text>
+<text x="365.0" y="2453" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="2200" style="font-size:17px">full_range_300 / night_cloudy (n=39,499)</text>
+<path d="M750 2410.0h590" stroke="#e1e6eb"/>
+<text x="742" y="2414.0" text-anchor="end">0%</text>
+<path d="M750 2362.5h590" stroke="#e1e6eb"/>
+<text x="742" y="2366.5" text-anchor="end">7%</text>
+<path d="M750 2315.0h590" stroke="#e1e6eb"/>
+<text x="742" y="2319.0" text-anchor="end">14%</text>
+<path d="M750 2267.5h590" stroke="#e1e6eb"/>
+<text x="742" y="2271.5" text-anchor="end">20%</text>
+<path d="M750 2220.0h590" stroke="#e1e6eb"/>
+<text x="742" y="2224.0" text-anchor="end">27%</text>
+<rect x="750.00" y="2409.72" width="21.85" height="0.28" fill="#dc8036"/>
+<rect x="771.85" y="2409.10" width="21.85" height="0.90" fill="#dc8036"/>
+<rect x="793.70" y="2402.28" width="21.85" height="7.72" fill="#dc8036"/>
+<rect x="815.56" y="2373.92" width="21.85" height="36.08" fill="#dc8036"/>
+<rect x="837.41" y="2319.68" width="21.85" height="90.32" fill="#dc8036"/>
+<rect x="859.26" y="2283.19" width="21.85" height="126.81" fill="#dc8036"/>
+<rect x="881.11" y="2246.74" width="21.85" height="163.26" fill="#dc8036"/>
+<rect x="902.96" y="2286.85" width="21.85" height="123.15" fill="#dc8036"/>
+<rect x="924.81" y="2339.98" width="21.85" height="70.02" fill="#dc8036"/>
+<rect x="946.67" y="2371.89" width="21.85" height="38.11" fill="#dc8036"/>
+<rect x="968.52" y="2389.12" width="21.85" height="20.88" fill="#dc8036"/>
+<rect x="990.37" y="2400.64" width="21.85" height="9.36" fill="#dc8036"/>
+<rect x="1012.22" y="2404.82" width="21.85" height="5.18" fill="#dc8036"/>
+<rect x="1034.07" y="2406.71" width="21.85" height="3.29" fill="#dc8036"/>
+<rect x="1055.93" y="2408.98" width="21.85" height="1.02" fill="#dc8036"/>
+<rect x="1077.78" y="2409.54" width="21.85" height="0.46" fill="#dc8036"/>
+<rect x="1099.63" y="2409.77" width="21.85" height="0.23" fill="#dc8036"/>
+<rect x="1121.48" y="2409.68" width="21.85" height="0.32" fill="#dc8036"/>
+<rect x="1143.33" y="2409.86" width="21.85" height="0.14" fill="#dc8036"/>
+<rect x="1165.19" y="2409.89" width="21.85" height="0.11" fill="#dc8036"/>
+<rect x="1187.04" y="2409.91" width="21.85" height="0.09" fill="#dc8036"/>
+<rect x="1208.89" y="2409.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1230.74" y="2409.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1252.59" y="2409.96" width="21.85" height="0.04" fill="#dc8036"/>
+<rect x="1274.44" y="2409.98" width="21.85" height="0.02" fill="#dc8036"/>
+<rect x="1296.30" y="2409.98" width="21.85" height="0.02" fill="#dc8036"/>
+<rect x="1318.15" y="2409.98" width="21.85" height="0.02" fill="#dc8036"/>
+<text x="750.0" y="2430" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="2430" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="2430" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="2430" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="2430" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="2430" text-anchor="middle">25</text>
+<text x="1045.0" y="2453" text-anchor="middle">Stored distance (m)</text>
+<text x="70" y="2500" style="font-size:17px">carla_following / night_rainy (n=22,278)</text>
+<path d="M70 2710.0h590" stroke="#e1e6eb"/>
+<text x="62" y="2714.0" text-anchor="end">0%</text>
+<path d="M70 2662.5h590" stroke="#e1e6eb"/>
+<text x="62" y="2666.5" text-anchor="end">7%</text>
+<path d="M70 2615.0h590" stroke="#e1e6eb"/>
+<text x="62" y="2619.0" text-anchor="end">14%</text>
+<path d="M70 2567.5h590" stroke="#e1e6eb"/>
+<text x="62" y="2571.5" text-anchor="end">20%</text>
+<path d="M70 2520.0h590" stroke="#e1e6eb"/>
+<text x="62" y="2524.0" text-anchor="end">27%</text>
+<rect x="70.00" y="2604.68" width="21.85" height="105.32" fill="#2976b8"/>
+<rect x="91.85" y="2642.30" width="21.85" height="67.70" fill="#2976b8"/>
+<rect x="113.70" y="2638.51" width="21.85" height="71.49" fill="#2976b8"/>
+<rect x="135.56" y="2633.72" width="21.85" height="76.28" fill="#2976b8"/>
+<rect x="157.41" y="2622.88" width="21.85" height="87.12" fill="#2976b8"/>
+<rect x="179.26" y="2559.29" width="21.85" height="150.71" fill="#2976b8"/>
+<rect x="201.11" y="2585.45" width="21.85" height="124.55" fill="#2976b8"/>
+<rect x="222.96" y="2702.07" width="21.85" height="7.93" fill="#2976b8"/>
+<rect x="244.81" y="2708.93" width="21.85" height="1.07" fill="#2976b8"/>
+<rect x="266.67" y="2709.00" width="21.85" height="1.00" fill="#2976b8"/>
+<rect x="288.52" y="2709.34" width="21.85" height="0.66" fill="#2976b8"/>
+<rect x="310.37" y="2709.40" width="21.85" height="0.60" fill="#2976b8"/>
+<rect x="332.22" y="2709.25" width="21.85" height="0.75" fill="#2976b8"/>
+<rect x="354.07" y="2709.28" width="21.85" height="0.72" fill="#2976b8"/>
+<rect x="375.93" y="2709.50" width="21.85" height="0.50" fill="#2976b8"/>
+<rect x="397.78" y="2709.66" width="21.85" height="0.34" fill="#2976b8"/>
+<rect x="419.63" y="2709.47" width="21.85" height="0.53" fill="#2976b8"/>
+<rect x="441.48" y="2709.94" width="21.85" height="0.06" fill="#2976b8"/>
+<rect x="463.33" y="2709.97" width="21.85" height="0.03" fill="#2976b8"/>
+<rect x="485.19" y="2709.94" width="21.85" height="0.06" fill="#2976b8"/>
+<rect x="507.04" y="2709.94" width="21.85" height="0.06" fill="#2976b8"/>
+<rect x="528.89" y="2709.94" width="21.85" height="0.06" fill="#2976b8"/>
+<rect x="550.74" y="2709.84" width="21.85" height="0.16" fill="#2976b8"/>
+<rect x="572.59" y="2709.81" width="21.85" height="0.19" fill="#2976b8"/>
+<rect x="594.44" y="2710.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="616.30" y="2710.00" width="21.85" height="0.00" fill="#2976b8"/>
+<rect x="638.15" y="2710.00" width="21.85" height="0.00" fill="#2976b8"/>
+<text x="70.0" y="2730" text-anchor="middle">0</text>
+<text x="179.25925925925924" y="2730" text-anchor="middle">5</text>
+<text x="288.5185185185185" y="2730" text-anchor="middle">10</text>
+<text x="397.77777777777777" y="2730" text-anchor="middle">15</text>
+<text x="507.037037037037" y="2730" text-anchor="middle">20</text>
+<text x="616.2962962962963" y="2730" text-anchor="middle">25</text>
+<text x="365.0" y="2753" text-anchor="middle">Stored distance (m)</text>
+<text x="750" y="2500" style="font-size:17px">full_range_300 / night_rainy (n=38,818)</text>
+<path d="M750 2710.0h590" stroke="#e1e6eb"/>
+<text x="742" y="2714.0" text-anchor="end">0%</text>
+<path d="M750 2662.5h590" stroke="#e1e6eb"/>
+<text x="742" y="2666.5" text-anchor="end">7%</text>
+<path d="M750 2615.0h590" stroke="#e1e6eb"/>
+<text x="742" y="2619.0" text-anchor="end">14%</text>
+<path d="M750 2567.5h590" stroke="#e1e6eb"/>
+<text x="742" y="2571.5" text-anchor="end">20%</text>
+<path d="M750 2520.0h590" stroke="#e1e6eb"/>
+<text x="742" y="2524.0" text-anchor="end">27%</text>
+<rect x="750.00" y="2709.28" width="21.85" height="0.72" fill="#dc8036"/>
+<rect x="771.85" y="2707.77" width="21.85" height="2.23" fill="#dc8036"/>
+<rect x="793.70" y="2699.63" width="21.85" height="10.37" fill="#dc8036"/>
+<rect x="815.56" y="2679.45" width="21.85" height="30.55" fill="#dc8036"/>
+<rect x="837.41" y="2645.04" width="21.85" height="64.96" fill="#dc8036"/>
+<rect x="859.26" y="2604.81" width="21.85" height="105.19" fill="#dc8036"/>
+<rect x="881.11" y="2540.37" width="21.85" height="169.63" fill="#dc8036"/>
+<rect x="902.96" y="2577.14" width="21.85" height="132.86" fill="#dc8036"/>
+<rect x="924.81" y="2630.14" width="21.85" height="79.86" fill="#dc8036"/>
+<rect x="946.67" y="2666.92" width="21.85" height="43.08" fill="#dc8036"/>
+<rect x="968.52" y="2685.89" width="21.85" height="24.11" fill="#dc8036"/>
+<rect x="990.37" y="2697.15" width="21.85" height="12.85" fill="#dc8036"/>
+<rect x="1012.22" y="2702.34" width="21.85" height="7.66" fill="#dc8036"/>
+<rect x="1034.07" y="2705.61" width="21.85" height="4.39" fill="#dc8036"/>
+<rect x="1055.93" y="2707.07" width="21.85" height="2.93" fill="#dc8036"/>
+<rect x="1077.78" y="2707.90" width="21.85" height="2.10" fill="#dc8036"/>
+<rect x="1099.63" y="2708.98" width="21.85" height="1.02" fill="#dc8036"/>
+<rect x="1121.48" y="2709.07" width="21.85" height="0.93" fill="#dc8036"/>
+<rect x="1143.33" y="2708.80" width="21.85" height="1.20" fill="#dc8036"/>
+<rect x="1165.19" y="2709.66" width="21.85" height="0.34" fill="#dc8036"/>
+<rect x="1187.04" y="2709.77" width="21.85" height="0.23" fill="#dc8036"/>
+<rect x="1208.89" y="2709.91" width="21.85" height="0.09" fill="#dc8036"/>
+<rect x="1230.74" y="2709.89" width="21.85" height="0.11" fill="#dc8036"/>
+<rect x="1252.59" y="2709.82" width="21.85" height="0.18" fill="#dc8036"/>
+<rect x="1274.44" y="2709.87" width="21.85" height="0.13" fill="#dc8036"/>
+<rect x="1296.30" y="2709.91" width="21.85" height="0.09" fill="#dc8036"/>
+<rect x="1318.15" y="2709.93" width="21.85" height="0.07" fill="#dc8036"/>
+<text x="750.0" y="2730" text-anchor="middle">0</text>
+<text x="859.2592592592592" y="2730" text-anchor="middle">5</text>
+<text x="968.5185185185185" y="2730" text-anchor="middle">10</text>
+<text x="1077.7777777777778" y="2730" text-anchor="middle">15</text>
+<text x="1187.037037037037" y="2730" text-anchor="middle">20</text>
+<text x="1296.2962962962963" y="2730" text-anchor="middle">25</text>
+<text x="1045.0" y="2753" text-anchor="middle">Stored distance (m)</text>
+</svg>

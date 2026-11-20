@@ -1,0 +1,22 @@
+/home/ahmad/drl_project/carla-dreamer-sim/.venv/lib/python3.10/site-packages/gym/wrappers/monitoring/video_recorder.py:9: DeprecationWarning: The distutils package is deprecated and slated for removal in Python 3.12. Use setuptools or check PEP 632 for potential alternatives
+  import distutils.spawn
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[CARLA] Connecting to Carla server at 2000...
+[CARLA] Map Town03 loaded
+[CARLA] Traffic Manager Port: 8000
+/home/ahmad/drl_project/carla-dreamer-sim/.venv/lib/python3.10/site-packages/gym/spaces/box.py:84: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(f"Box bound precision lowered by casting to {self.dtype}")
+Active thresholds: true gap > 10 m, route deviation > 5 m, environment steps > 500, dt=0.1 s
+Gap input: CARLA ground truth | target 6 m
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=-15.880634, y=12.808654, z=0.500000) with yaw 49.66291809082031
+[CARLA] Trying to spawn at Location(x=-9.771303, y=21.281998, z=0.500000) with yaw -293.4644470214844
+[CARLA] Environment reset
+step=001 | true=5.942 m | CNN=None | command=+0.000 | next true=5.942 m
+step=002 | true=5.942 m | CNN=None | command=+0.000 | next true=5.942 m
+step=003 | true=5.942 m | CNN=None | command=-0.029 | next true=5.942 m
+step=004 | true=5.942 m | CNN=None | command=-0.029 | next true=5.947 m
+step=005 | true=5.947 m | CNN=None | command=+0.002 | next true=6.007 m
+Episode 1: 5 steps | min true gap 5.94 m | mean gap tracking error 0.05 m | end: step_limit

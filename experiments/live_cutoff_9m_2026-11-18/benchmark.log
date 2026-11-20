@@ -1,0 +1,56 @@
+16:18:53 All nine live PID profiles use a 9 m true-gap cutoff
+16:18:53 Running generalist in day_cloudy
+16:18:56 CARLA ready (experiments/live_cutoff_9m_2026-11-18/carla-server-1795040333785230855.log)
+16:18:56 day_cloudy: started
+16:19:26 day_cloudy: five runs saved
+16:19:26 Running specialist in day_cloudy
+16:19:26 day_cloudy: started
+16:20:01 day_cloudy: five runs saved
+16:20:01 Running generalist in day_rainy
+16:20:01 day_rainy: started
+16:20:29 day_rainy: five runs saved
+16:20:29 Running specialist in day_rainy
+16:20:29 day_rainy: started
+16:21:03 day_rainy: five runs saved
+16:21:03 Running generalist in day_sunny
+16:21:03 day_sunny: started
+16:21:34 day_sunny: five runs saved
+16:21:34 Running specialist in day_sunny
+16:21:34 day_sunny: started
+16:22:10 day_sunny: five runs saved
+16:22:10 Running generalist in night_cloudy
+16:22:10 night_cloudy: started
+16:22:40 night_cloudy: five runs saved
+16:22:40 Running specialist in night_cloudy
+16:22:40 night_cloudy: started
+16:23:19 night_cloudy: five runs saved
+16:23:19 Running generalist in night_rainy
+16:23:19 night_rainy: started
+16:23:45 night_rainy: five runs saved
+16:23:45 Running specialist in night_rainy
+16:23:45 night_rainy: started
+16:24:15 night_rainy: five runs saved
+16:24:15 Running generalist in night_sunny
+16:24:15 night_sunny: started
+16:24:45 night_sunny: five runs saved
+16:24:45 Running specialist in night_sunny
+16:24:45 night_sunny: started
+16:25:12 night_sunny: five runs saved
+16:25:12 Running generalist in sunset_cloudy
+16:25:12 sunset_cloudy: started
+16:25:43 sunset_cloudy: five runs saved
+16:25:43 Running specialist in sunset_cloudy
+16:25:43 sunset_cloudy: started
+16:26:19 sunset_cloudy: five runs saved
+16:26:19 Running generalist in sunset_rainy
+16:26:19 sunset_rainy: started
+16:26:46 sunset_rainy: five runs saved
+16:26:46 Running specialist in sunset_rainy
+16:26:46 sunset_rainy: started
+16:27:22 sunset_rainy: five runs saved
+16:27:22 Running generalist in sunset_sunny
+16:27:22 sunset_sunny: started
+16:27:55 sunset_sunny: five runs saved
+16:27:55 Running specialist in sunset_sunny
+16:27:55 sunset_sunny: started
+16:28:32 sunset_sunny: five runs saved

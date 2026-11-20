@@ -1,0 +1,6 @@
+seed,scenario,same_route_config_and_vehicle_types,max_initial_position_delta_m,max_initial_orientation_delta_deg,max_initial_velocity_delta_mps,initial_gap_delta_m,same_first_pid_step,first_pid_gap_delta_m
+42,straight_east,True,0.0,0.0,0.0,0.0,True,0.0
+43,straight_west,True,0.0,0.0,0.0,0.0,True,0.0
+44,bend,True,0.0,0.0,0.0,0.0,True,0.0
+45,left_turn,True,0.0,0.0,0.0,0.0,True,0.0
+46,right_turn,True,0.0,0.0,0.0,0.0,True,0.0

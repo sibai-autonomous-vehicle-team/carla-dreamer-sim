@@ -1,0 +1,200 @@
+[
+  {
+    "dataset": "carla_following",
+    "condition": "day_sunny",
+    "aligned_center_minus_stored_quantiles": [
+      3.004564046859741,
+      3.7157697677612305,
+      4.285111427307129,
+      4.901772201061249,
+      5.260277271270752
+    ]
+  },
+  {
+    "dataset": "carla_following",
+    "condition": "day_cloudy",
+    "aligned_center_minus_stored_quantiles": [
+      3.0870914459228516,
+      3.7175905585289,
+      4.278926849365234,
+      4.8778009653091425,
+      5.207132339477539
+    ]
+  },
+  {
+    "dataset": "carla_following",
+    "condition": "day_rainy",
+    "aligned_center_minus_stored_quantiles": [
+      3.1785459518432617,
+      3.713072180747986,
+      4.2819401025772095,
+      4.87810605764389,
+      5.267503976821899
+    ]
+  },
+  {
+    "dataset": "carla_following",
+    "condition": "sunset_sunny",
+    "aligned_center_minus_stored_quantiles": [
+      2.019282341003418,
+      3.7177772223949432,
+      4.250113222748041,
+      4.87295378446579,
+      5.261016368865967
+    ]
+  },
+  {
+    "dataset": "carla_following",
+    "condition": "sunset_cloudy",
+    "aligned_center_minus_stored_quantiles": [
+      2.929739475250244,
+      3.7179290182888507,
+      4.277801036834717,
+      4.868833994865417,
+      5.303897261619568
+    ]
+  },
+  {
+    "dataset": "carla_following",
+    "condition": "sunset_rainy",
+    "aligned_center_minus_stored_quantiles": [
+      3.249870777130127,
+      3.715703272819519,
+      4.277947902679443,
+      4.869939136505127,
+      5.262016773223877
+    ]
+  },
+  {
+    "dataset": "carla_following",
+    "condition": "night_sunny",
+    "aligned_center_minus_stored_quantiles": [
+      0.11944198608398438,
+      3.7143558144569395,
+      4.286904335021973,
+      4.883966064453125,
+      5.22554874420166
+    ]
+  },
+  {
+    "dataset": "carla_following",
+    "condition": "night_cloudy",
+    "aligned_center_minus_stored_quantiles": [
+      0.6401381492614746,
+      3.7135753631591797,
+      4.2098894119262695,
+      4.880202102661133,
+      5.257351636886597
+    ]
+  },
+  {
+    "dataset": "carla_following",
+    "condition": "night_rainy",
+    "aligned_center_minus_stored_quantiles": [
+      0.18276739120483398,
+      3.713606822490692,
+      4.281131982803345,
+      4.868251526355744,
+      5.2270965576171875
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "day_sunny",
+    "aligned_center_minus_stored_quantiles": [
+      0.22365903854370117,
+      3.7735294818878176,
+      4.392432451248169,
+      5.031477594375611,
+      5.308544874191284
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "day_cloudy",
+    "aligned_center_minus_stored_quantiles": [
+      0.6866750717163086,
+      3.7735049962997436,
+      4.374799489974976,
+      5.027862286567688,
+      5.277330160140991
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "day_rainy",
+    "aligned_center_minus_stored_quantiles": [
+      -1.6443381309509277,
+      3.7716582298278807,
+      4.371113300323486,
+      5.03457715511322,
+      5.315580368041992
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "sunset_sunny",
+    "aligned_center_minus_stored_quantiles": [
+      0.32183408737182617,
+      3.7888715267181396,
+      4.370000839233398,
+      5.037178540229797,
+      5.279783248901367
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "sunset_cloudy",
+    "aligned_center_minus_stored_quantiles": [
+      1.116135597229004,
+      3.78269100189209,
+      4.395052909851074,
+      5.035812616348267,
+      5.368165016174316
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "sunset_rainy",
+    "aligned_center_minus_stored_quantiles": [
+      0.19443416595458984,
+      3.772885465621948,
+      4.342804431915283,
+      5.00743498802185,
+      5.304481506347656
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "night_sunny",
+    "aligned_center_minus_stored_quantiles": [
+      1.2063674926757812,
+      3.7706843852996825,
+      4.3844826221466064,
+      5.0215470552444454,
+      5.346245288848877
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "night_cloudy",
+    "aligned_center_minus_stored_quantiles": [
+      -0.10999250411987305,
+      3.7795300483703613,
+      4.389501571655273,
+      5.019097900390625,
+      5.3222715854644775
+    ]
+  },
+  {
+    "dataset": "full_range_300",
+    "condition": "night_rainy",
+    "aligned_center_minus_stored_quantiles": [
+      2.2910900115966797,
+      3.800487446784973,
+      4.364455223083496,
+      5.025421845912933,
+      5.292679786682129
+    ]
+  }
+]

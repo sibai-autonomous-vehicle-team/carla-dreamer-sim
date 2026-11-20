@@ -42,6 +42,11 @@ def main():
     parser.add_argument('--server', type=Path, default=Path('.local/carla-0.9.15/CarlaUE4.sh'))
     parser.add_argument('--base-port', type=int, default=2000)
     parser.add_argument('--single', action='store_true', help='Run only the first dataset/server.')
+    parser.add_argument('--first-collector', choices=['following', 'lane-offsets'], default='following')
+    parser.add_argument('--second-collector', choices=['following', 'lane-offsets'], default='following')
+    parser.add_argument('--lane-frames', type=int, default=100, help='Frames per lane-offset episode.')
+    parser.add_argument('--controller', choices=['original', 'full-range'], default='original',
+                        help='Controller for following collectors only.')
     parser.add_argument('--first-time-of-day', choices=['day', 'sunset', 'night'], default='night')
     parser.add_argument('--first-weather', choices=['sunny', 'cloudy', 'rainy'], default='sunny')
     parser.add_argument('--second-time-of-day', choices=['day', 'sunset', 'night'], default='day')
@@ -49,6 +54,8 @@ def main():
     args = parser.parse_args()
     if args.n_traj < 1:
         parser.error('--n-traj must be positive')
+    if args.lane_frames < 1:
+        parser.error('--lane-frames must be positive')
     server = args.server.resolve()
     if not server.is_file():
         parser.error(f'CARLA launcher not found: {server}')
@@ -61,6 +68,9 @@ def main():
         for port in ports:
             for value in (port, port + 1, port + 2, port + 6000, port + 6001):
                 sock = socket.socket()
+                # Match server reuse behavior: TIME_WAIT from a completed batch
+                # is not an active server and should not block the next batch.
+                sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 reserved.append(sock)
                 try:
                     sock.bind(('0.0.0.0', value))
@@ -107,20 +117,25 @@ def main():
         collectors = []
         conditions = [(args.first_time_of_day, args.first_weather),
                       (args.second_time_of_day, args.second_weather)]
+        collector_types = [args.first_collector, args.second_collector]
         for index, (port, (daytime, weather)) in enumerate(zip(ports, conditions)):
             name = f'worker_{index}_{daytime}_{weather}'
             log = open(args.outdir / f'{name}.log', 'w')
             logs.append(log)
-            process = subprocess.Popen(
-                [sys.executable, '-B', '-u', str(Path(__file__).with_name('generate_dataset.py')),
-                 '--headless', '--port', str(port), '--n-traj', str(args.n_traj),
+            collector = collector_types[index]
+            script = 'generate_dataset.py' if collector == 'following' else 'collect_lane_offsets.py'
+            command = [sys.executable, '-B', '-u', str(Path(__file__).with_name(script)),
+                 '--port', str(port), '--n-traj', str(args.n_traj),
                  '--seed', str(42 + index), '--time-of-day', daytime, '--weather', weather,
-                 '--outdir', str(args.outdir / name)],
+                 '--outdir', str(args.outdir / name)]
+            command += ['--headless', '--controller', args.controller] if collector == 'following' else ['--frames', str(args.lane_frames)]
+            process = subprocess.Popen(
+                command,
                 stdout=log, stderr=subprocess.STDOUT, start_new_session=True,
             )
             processes.append(process)
             collectors.append(process)
-            print(f'Started {name} on {port}, PID {process.pid}', flush=True)
+            print(f'Started {name} ({collector}) on {port}, PID {process.pid}', flush=True)
         while any(p.poll() is None for p in collectors):
             if any(p.poll() not in (None, 0) for p in processes):
                 raise RuntimeError(f'A worker failed; inspect logs in {args.outdir}')

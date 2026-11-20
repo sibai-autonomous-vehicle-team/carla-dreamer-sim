@@ -1,0 +1,31 @@
+train: 48 episodes, 8 route groups, 2471 frames
+validation: 18 episodes, 3 route groups, 917 frames
+test: 30 episodes, 5 route groups, 1591 frames
+Device: cuda. Legacy replay: 0 frames.
+Starting checkpoint validation score: 0.536 m
+Validation gate close_0_to_3_m: baseline 0.496, max MAE 0.446 m
+Validation gate standard_3_to_8_m: baseline 0.451, max MAE 0.551 m
+Validation gate standard_8_to_12_m: baseline 0.662, max MAE 0.762 m
+Epoch 01/20: loss 0.189, validation MAE 0.279 m, score 0.271 m, eligible
+Epoch 02/20: loss 0.087, validation MAE 0.254 m, score 0.248 m, eligible
+Epoch 03/20: loss 0.060, validation MAE 0.267 m, score 0.264 m, eligible
+Epoch 04/20: loss 0.052, validation MAE 0.254 m, score 0.248 m, eligible
+Epoch 05/20: loss 0.037, validation MAE 0.283 m, score 0.275 m, eligible
+Epoch 06/20: loss 0.031, validation MAE 0.263 m, score 0.254 m, eligible
+Epoch 07/20: loss 0.027, validation MAE 0.264 m, score 0.255 m, eligible
+Epoch 08/20: loss 0.024, validation MAE 0.266 m, score 0.258 m, eligible
+Epoch 09/20: loss 0.022, validation MAE 0.268 m, score 0.258 m, eligible
+Epoch 10/20: loss 0.023, validation MAE 0.278 m, score 0.269 m, eligible
+Epoch 11/20: loss 0.023, validation MAE 0.298 m, score 0.288 m, eligible
+Epoch 12/20: loss 0.019, validation MAE 0.304 m, score 0.293 m, eligible
+Epoch 13/20: loss 0.019, validation MAE 0.277 m, score 0.268 m, eligible
+Epoch 14/20: loss 0.016, validation MAE 0.270 m, score 0.258 m, eligible
+Epoch 15/20: loss 0.015, validation MAE 0.273 m, score 0.261 m, eligible
+Epoch 16/20: loss 0.016, validation MAE 0.276 m, score 0.265 m, eligible
+Epoch 17/20: loss 0.013, validation MAE 0.287 m, score 0.275 m, eligible
+Epoch 18/20: loss 0.014, validation MAE 0.276 m, score 0.264 m, eligible
+Epoch 19/20: loss 0.011, validation MAE 0.266 m, score 0.254 m, eligible
+Epoch 20/20: loss 0.011, validation MAE 0.281 m, score 0.270 m, eligible
+original: test MAE 0.821 m | above-10 recall 136/287
+finetuned: test MAE 0.458 m | above-10 recall 272/287
+Selected epoch: 4. Saved checkpoint: experiments/sunset_cloudy_specialist_2026-11-17/sync_model/best.pth

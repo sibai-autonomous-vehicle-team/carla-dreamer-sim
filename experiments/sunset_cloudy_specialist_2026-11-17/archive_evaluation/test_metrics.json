@@ -1,0 +1,41 @@
+{
+  "dataset_path": "/home/ahmad/drl_project/carla-dreamer-sim/dataset/combined_800/sunset_cloudy",
+  "checkpoint_path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/sunset_cloudy_specialist_2026-11-17/archive/best.pth",
+  "split_source": "checkpoint",
+  "split_path": null,
+  "test_episodes": 80,
+  "test_frames": 6312,
+  "checkpoint_epoch": 5,
+  "mae_m": 0.5756189227104187,
+  "rmse_m": 0.7794874906539917,
+  "signed_error_m": -0.4534492492675781,
+  "p95_absolute_error_m": 1.527904987335205,
+  "max_absolute_error_m": 6.563496112823486,
+  "bins": {
+    "[0, 3) m": {
+      "frames": 809,
+      "mae_m": 0.36455705761909485,
+      "signed_error_m": -0.12140170484781265
+    },
+    "[3, 6) m": {
+      "frames": 2473,
+      "mae_m": 0.4285104274749756,
+      "signed_error_m": -0.3134210407733917
+    },
+    "[6, 8) m": {
+      "frames": 2115,
+      "mae_m": 0.5717188119888306,
+      "signed_error_m": -0.46179914474487305
+    },
+    "[8, 10] m": {
+      "frames": 715,
+      "mae_m": 0.9880253076553345,
+      "signed_error_m": -0.909697949886322
+    },
+    ">10 m": {
+      "frames": 200,
+      "mae_m": 1.815250039100647,
+      "signed_error_m": -1.808641791343689
+    }
+  }
+}

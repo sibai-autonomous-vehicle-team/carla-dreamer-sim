@@ -1,0 +1,2 @@
+step,time_s,true_gap_m,predicted_gap_m,pid_command,alternate_pid_command,throttle,brake,post_step_true_gap_m,terminal_reason
+1,0.0,5.580813024287047,,0.0,,0.0,0.0,5.5808121607659595,out_of_lane

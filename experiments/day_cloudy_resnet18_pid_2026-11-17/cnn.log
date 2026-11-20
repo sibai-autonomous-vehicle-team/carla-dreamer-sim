@@ -1,0 +1,314 @@
+/home/ahmad/drl_project/carla-dreamer-sim/.venv/lib/python3.10/site-packages/gym/wrappers/monitoring/video_recorder.py:9: DeprecationWarning: The distutils package is deprecated and slated for removal in Python 3.12. Use setuptools or check PEP 632 for potential alternatives
+  import distutils.spawn
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[CARLA] Connecting to Carla server at 2000...
+[CARLA] Map Town03 loaded
+[CARLA] Traffic Manager Port: 8000
+/home/ahmad/drl_project/carla-dreamer-sim/.venv/lib/python3.10/site-packages/gym/spaces/box.py:84: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(f"Box bound precision lowered by casting to {self.dtype}")
+Active thresholds: true gap > 10 m, route deviation > 5 m, environment steps > 500, dt=0.1 s
+Gap input: CNN | target 6 m
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=-15.880634, y=12.808654, z=0.500000) with yaw 49.66291809082031
+[CARLA] Trying to spawn at Location(x=-9.771303, y=21.281998, z=0.500000) with yaw -293.4644470214844
+[CARLA] Environment reset
+step=001 | true=5.942 m | CNN=None | command=+0.000 | next true=5.942 m
+step=002 | true=5.942 m | CNN=5.74169921875 | command=+0.000 | next true=5.942 m
+step=003 | true=5.942 m | CNN=5.74169921875 | command=+0.000 | next true=5.942 m
+step=004 | true=5.942 m | CNN=5.654705047607422 | command=+0.000 | next true=5.947 m
+step=005 | true=5.947 m | CNN=5.615166187286377 | command=+0.000 | next true=6.007 m
+step=006 | true=6.007 m | CNN=5.656768321990967 | command=-0.172 | next true=6.112 m
+step=007 | true=6.112 m | CNN=5.777078151702881 | command=+0.490 | next true=6.259 m
+step=008 | true=6.259 m | CNN=5.8003082275390625 | command=+0.016 | next true=6.446 m
+step=009 | true=6.446 m | CNN=5.879789352416992 | command=+0.337 | next true=6.666 m
+step=010 | true=6.666 m | CNN=6.387381553649902 | command=+2.732 | next true=6.901 m
+step=011 | true=6.901 m | CNN=6.518003463745117 | command=+0.912 | next true=7.139 m
+step=012 | true=7.139 m | CNN=6.649843215942383 | command=+0.984 | next true=7.365 m
+step=013 | true=7.365 m | CNN=6.844642162322998 | command=+1.396 | next true=7.585 m
+step=014 | true=7.585 m | CNN=6.950849533081055 | command=+1.006 | next true=7.798 m
+step=015 | true=7.798 m | CNN=7.1830339431762695 | command=+1.752 | next true=8.005 m
+step=016 | true=8.005 m | CNN=7.428851127624512 | command=+1.944 | next true=8.203 m
+step=017 | true=8.203 m | CNN=7.42103385925293 | command=+0.671 | next true=8.393 m
+step=018 | true=8.393 m | CNN=7.51508092880249 | command=+1.228 | next true=8.576 m
+step=019 | true=8.576 m | CNN=7.529321670532227 | command=+0.836 | next true=8.750 m
+step=020 | true=8.750 m | CNN=7.47324275970459 | command=+0.456 | next true=8.928 m
+step=021 | true=8.928 m | CNN=7.517021656036377 | command=+0.977 | next true=9.127 m
+step=022 | true=9.127 m | CNN=7.514549255371094 | command=+0.745 | next true=9.350 m
+step=023 | true=9.350 m | CNN=7.580393314361572 | command=+1.119 | next true=9.514 m
+step=024 | true=9.514 m | CNN=7.704426288604736 | command=+1.472 | next true=9.651 m
+step=025 | true=9.651 m | CNN=7.912895202636719 | command=+1.999 | next true=9.779 m
+step=026 | true=9.779 m | CNN=7.6976494789123535 | command=-0.227 | next true=9.892 m
+step=027 | true=9.892 m | CNN=7.778785705566406 | command=+1.295 | next true=9.999 m
+[CARLA] Terminal condition triggered: terminal_dist
+step=028 | true=9.999 m | CNN=7.758577346801758 | command=+0.778 | next true=10.099 m
+Episode 1: 28 steps | min true gap 5.94 m | mean gap tracking error 1.88 m | end: terminal_dist
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=153.796814, y=-121.785042, z=8.500000) with yaw 270.9964599609375
+[CARLA] Trying to spawn at Location(x=153.970734, y=-131.783524, z=8.500000) with yaw 270.9964599609375
+[CARLA] Environment reset
+step=001 | true=5.485 m | CNN=None | command=+0.000 | next true=5.485 m
+step=002 | true=5.485 m | CNN=4.887340068817139 | command=+0.000 | next true=5.485 m
+step=003 | true=5.485 m | CNN=4.887340068817139 | command=+0.000 | next true=5.485 m
+step=004 | true=5.485 m | CNN=4.9516143798828125 | command=+0.000 | next true=5.485 m
+step=005 | true=5.485 m | CNN=4.944323539733887 | command=+0.000 | next true=5.492 m
+step=006 | true=5.492 m | CNN=4.917945384979248 | command=-0.541 | next true=5.557 m
+step=007 | true=5.557 m | CNN=4.984537124633789 | command=-0.175 | next true=5.657 m
+step=008 | true=5.657 m | CNN=5.147851943969727 | command=+0.391 | next true=5.766 m
+step=009 | true=5.766 m | CNN=5.208395481109619 | command=-0.093 | next true=5.872 m
+step=010 | true=5.872 m | CNN=5.33338737487793 | command=+0.292 | next true=6.002 m
+step=011 | true=6.002 m | CNN=5.373970031738281 | command=-0.110 | next true=6.133 m
+step=012 | true=6.133 m | CNN=5.475335121154785 | command=+0.244 | next true=6.264 m
+step=013 | true=6.264 m | CNN=5.751067161560059 | command=+1.254 | next true=6.431 m
+step=014 | true=6.431 m | CNN=5.87773323059082 | command=+0.572 | next true=6.629 m
+step=015 | true=6.629 m | CNN=6.239505290985107 | command=+1.929 | next true=6.868 m
+step=016 | true=6.868 m | CNN=6.487271308898926 | command=+1.482 | next true=7.116 m
+step=017 | true=7.116 m | CNN=6.599781036376953 | command=+0.862 | next true=7.360 m
+step=018 | true=7.360 m | CNN=6.870302200317383 | command=+1.788 | next true=7.555 m
+step=019 | true=7.555 m | CNN=6.855484962463379 | command=+0.354 | next true=7.696 m
+step=020 | true=7.696 m | CNN=6.9761738777160645 | command=+1.092 | next true=7.814 m
+step=021 | true=7.814 m | CNN=7.094831466674805 | command=+1.141 | next true=7.905 m
+step=022 | true=7.905 m | CNN=7.110722541809082 | command=+0.635 | next true=7.969 m
+step=023 | true=7.969 m | CNN=7.2107439041137695 | command=+1.105 | next true=8.013 m
+step=024 | true=8.013 m | CNN=7.5512847900390625 | command=+2.478 | next true=8.033 m
+step=025 | true=8.033 m | CNN=7.541779518127441 | command=+0.723 | next true=8.018 m
+step=026 | true=8.018 m | CNN=7.618114948272705 | command=+1.191 | next true=7.979 m
+step=027 | true=7.979 m | CNN=7.552062034606934 | command=+0.446 | next true=7.925 m
+step=028 | true=7.925 m | CNN=7.436091423034668 | command=+0.138 | next true=7.868 m
+step=029 | true=7.868 m | CNN=7.418554306030273 | command=+0.622 | next true=7.813 m
+step=030 | true=7.813 m | CNN=7.34370756149292 | command=+0.298 | next true=7.762 m
+step=031 | true=7.762 m | CNN=7.191178321838379 | command=-0.167 | next true=7.747 m
+step=032 | true=7.747 m | CNN=7.444243431091309 | command=+1.987 | next true=7.779 m
+step=033 | true=7.779 m | CNN=7.232983589172363 | command=-0.440 | next true=7.839 m
+step=034 | true=7.839 m | CNN=7.326346397399902 | command=+1.130 | next true=7.906 m
+step=035 | true=7.906 m | CNN=7.374446868896484 | command=+0.928 | next true=7.964 m
+step=036 | true=7.964 m | CNN=7.266582489013672 | command=+0.094 | next true=8.010 m
+step=037 | true=8.010 m | CNN=7.436525344848633 | command=+1.568 | next true=8.046 m
+step=038 | true=8.046 m | CNN=7.411726951599121 | command=+0.582 | next true=8.064 m
+step=039 | true=8.064 m | CNN=7.483226776123047 | command=+1.099 | next true=8.062 m
+step=040 | true=8.062 m | CNN=7.526296615600586 | command=+0.978 | next true=8.039 m
+step=041 | true=8.039 m | CNN=7.398580074310303 | command=+0.061 | next true=7.999 m
+step=042 | true=7.999 m | CNN=7.436724662780762 | command=+0.909 | next true=7.947 m
+step=043 | true=7.947 m | CNN=7.342148780822754 | command=+0.198 | next true=7.882 m
+step=044 | true=7.882 m | CNN=7.218294143676758 | command=-0.010 | next true=7.812 m
+step=045 | true=7.812 m | CNN=7.385904312133789 | command=+1.531 | next true=7.742 m
+step=046 | true=7.742 m | CNN=7.254859447479248 | command=-0.028 | next true=7.666 m
+step=047 | true=7.666 m | CNN=7.11072301864624 | command=-0.165 | next true=7.592 m
+step=048 | true=7.592 m | CNN=6.979989051818848 | command=-0.164 | next true=7.531 m
+step=049 | true=7.531 m | CNN=6.957513809204102 | command=+0.366 | next true=7.482 m
+step=050 | true=7.482 m | CNN=6.993441581726074 | command=+0.676 | next true=7.442 m
+step=051 | true=7.442 m | CNN=7.0056867599487305 | command=+0.564 | next true=7.430 m
+step=052 | true=7.430 m | CNN=7.075894832611084 | command=+0.889 | next true=7.456 m
+step=053 | true=7.456 m | CNN=7.101550102233887 | command=+0.679 | next true=7.484 m
+step=054 | true=7.484 m | CNN=7.010787487030029 | command=+0.052 | next true=7.516 m
+step=055 | true=7.516 m | CNN=7.162538528442383 | command=+1.340 | next true=7.554 m
+step=056 | true=7.554 m | CNN=7.154957294464111 | command=+0.540 | next true=7.586 m
+step=057 | true=7.586 m | CNN=7.109255790710449 | command=+0.326 | next true=7.608 m
+step=058 | true=7.608 m | CNN=7.185609817504883 | command=+0.975 | next true=7.621 m
+step=059 | true=7.621 m | CNN=7.145858287811279 | command=+0.374 | next true=7.623 m
+step=060 | true=7.623 m | CNN=7.11591911315918 | command=+0.408 | next true=7.617 m
+step=061 | true=7.617 m | CNN=7.188246726989746 | command=+0.956 | next true=7.605 m
+step=062 | true=7.605 m | CNN=7.105650901794434 | command=+0.140 | next true=7.581 m
+step=063 | true=7.581 m | CNN=7.042219161987305 | command=+0.204 | next true=7.554 m
+step=064 | true=7.554 m | CNN=7.001806259155273 | command=+0.299 | next true=7.527 m
+step=065 | true=7.527 m | CNN=7.000293254852295 | command=+0.493 | next true=7.501 m
+step=066 | true=7.501 m | CNN=6.929136276245117 | command=+0.109 | next true=7.475 m
+step=067 | true=7.475 m | CNN=6.902759075164795 | command=+0.319 | next true=7.448 m
+step=068 | true=7.448 m | CNN=6.932229518890381 | command=+0.613 | next true=7.424 m
+step=069 | true=7.424 m | CNN=6.973503112792969 | command=+0.693 | next true=7.398 m
+step=070 | true=7.398 m | CNN=6.907378196716309 | command=+0.123 | next true=7.367 m
+step=071 | true=7.367 m | CNN=6.809640884399414 | command=-0.084 | next true=7.343 m
+step=072 | true=7.343 m | CNN=6.786019325256348 | command=+0.275 | next true=7.327 m
+step=073 | true=7.327 m | CNN=6.672736644744873 | command=-0.230 | next true=7.322 m
+[CARLA] Terminal condition triggered: out_of_lane
+step=074 | true=7.322 m | CNN=6.6562604904174805 | command=+0.246 | next true=7.325 m
+Episode 2: 74 steps | min true gap 5.48 m | mean gap tracking error 1.42 m | end: out_of_lane
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=-33.431534, y=-135.487732, z=0.500000) with yaw 1.227264404296875
+[CARLA] Trying to spawn at Location(x=-23.433825, y=-135.273560, z=0.500000) with yaw 1.227264404296875
+[CARLA] Environment reset
+step=001 | true=5.485 m | CNN=None | command=+0.000 | next true=5.485 m
+step=002 | true=5.485 m | CNN=4.989946365356445 | command=+0.000 | next true=5.485 m
+step=003 | true=5.485 m | CNN=4.989946365356445 | command=+0.000 | next true=5.485 m
+step=004 | true=5.485 m | CNN=5.06488037109375 | command=+0.000 | next true=5.485 m
+step=005 | true=5.485 m | CNN=5.0680952072143555 | command=+0.000 | next true=5.492 m
+step=006 | true=5.492 m | CNN=5.031925201416016 | command=-0.484 | next true=5.557 m
+step=007 | true=5.557 m | CNN=5.093813419342041 | command=-0.144 | next true=5.662 m
+step=008 | true=5.662 m | CNN=5.272462844848633 | command=+0.529 | next true=5.780 m
+step=009 | true=5.780 m | CNN=5.334878444671631 | command=-0.020 | next true=5.895 m
+step=010 | true=5.895 m | CNN=5.574668884277344 | command=+0.986 | next true=6.008 m
+step=011 | true=6.008 m | CNN=5.614771842956543 | command=+0.008 | next true=6.121 m
+step=012 | true=6.121 m | CNN=5.705972671508789 | command=+0.309 | next true=6.238 m
+step=013 | true=6.238 m | CNN=6.007051467895508 | command=+1.509 | next true=6.380 m
+step=014 | true=6.380 m | CNN=6.146706581115723 | command=+0.772 | next true=6.588 m
+step=015 | true=6.588 m | CNN=6.4705586433410645 | command=+1.855 | next true=6.833 m
+step=016 | true=6.833 m | CNN=6.842038631439209 | command=+2.278 | next true=7.086 m
+step=017 | true=7.086 m | CNN=6.9493513107299805 | command=+1.011 | next true=7.277 m
+step=018 | true=7.277 m | CNN=7.2004241943359375 | command=+1.856 | next true=7.427 m
+step=019 | true=7.427 m | CNN=7.203454971313477 | command=+0.617 | next true=7.545 m
+step=020 | true=7.545 m | CNN=7.237255096435547 | command=+0.788 | next true=7.639 m
+step=021 | true=7.639 m | CNN=7.440756797790527 | command=+1.738 | next true=7.710 m
+step=022 | true=7.710 m | CNN=7.340264797210693 | command=+0.168 | next true=7.750 m
+step=023 | true=7.750 m | CNN=7.530420303344727 | command=+1.716 | next true=7.770 m
+step=024 | true=7.770 m | CNN=7.636604309082031 | command=+1.349 | next true=7.764 m
+step=025 | true=7.764 m | CNN=7.529350280761719 | command=+0.228 | next true=7.734 m
+step=026 | true=7.734 m | CNN=7.50110387802124 | command=+0.609 | next true=7.692 m
+step=027 | true=7.692 m | CNN=7.436752796173096 | command=+0.397 | next true=7.643 m
+step=028 | true=7.643 m | CNN=7.465720176696777 | command=+0.878 | next true=7.590 m
+step=029 | true=7.590 m | CNN=7.328790664672852 | command=-0.020 | next true=7.532 m
+step=030 | true=7.532 m | CNN=7.218684196472168 | command=+0.059 | next true=7.475 m
+step=031 | true=7.475 m | CNN=7.330151081085205 | command=+1.222 | next true=7.436 m
+step=032 | true=7.436 m | CNN=7.312778472900391 | command=+0.570 | next true=7.419 m
+step=033 | true=7.419 m | CNN=7.216825485229492 | command=+0.129 | next true=7.428 m
+step=034 | true=7.428 m | CNN=7.292266368865967 | command=+1.023 | next true=7.452 m
+step=035 | true=7.452 m | CNN=7.279007911682129 | command=+0.573 | next true=7.475 m
+step=036 | true=7.475 m | CNN=7.197247505187988 | command=+0.190 | next true=7.493 m
+step=037 | true=7.493 m | CNN=7.143807411193848 | command=+0.305 | next true=7.509 m
+step=038 | true=7.509 m | CNN=7.103694915771484 | command=+0.351 | next true=7.521 m
+step=039 | true=7.521 m | CNN=7.244241237640381 | command=+1.325 | next true=7.525 m
+step=040 | true=7.525 m | CNN=7.178102493286133 | command=+0.258 | next true=7.512 m
+step=041 | true=7.512 m | CNN=7.069701671600342 | command=-0.007 | next true=7.487 m
+step=042 | true=7.487 m | CNN=7.126275539398193 | command=+0.846 | next true=7.457 m
+step=043 | true=7.457 m | CNN=7.159482002258301 | command=+0.746 | next true=7.418 m
+step=044 | true=7.418 m | CNN=7.100679397583008 | command=+0.256 | next true=7.372 m
+step=045 | true=7.372 m | CNN=7.122047424316406 | command=+0.668 | next true=7.323 m
+step=046 | true=7.323 m | CNN=7.0151777267456055 | command=-0.027 | next true=7.272 m
+step=047 | true=7.272 m | CNN=6.833389759063721 | command=-0.492 | next true=7.226 m
+step=048 | true=7.226 m | CNN=6.909742832183838 | command=+0.837 | next true=7.207 m
+step=049 | true=7.207 m | CNN=6.830070495605469 | command=+0.017 | next true=7.209 m
+step=050 | true=7.209 m | CNN=6.9326171875 | command=+0.979 | next true=7.241 m
+step=051 | true=7.241 m | CNN=6.859385967254639 | command=+0.064 | next true=7.283 m
+step=052 | true=7.283 m | CNN=6.785941123962402 | command=+0.026 | next true=7.328 m
+step=053 | true=7.328 m | CNN=7.034642219543457 | command=+1.761 | next true=7.377 m
+step=054 | true=7.377 m | CNN=7.0317463874816895 | command=+0.501 | next true=7.418 m
+step=055 | true=7.418 m | CNN=7.027451515197754 | command=+0.492 | next true=7.448 m
+step=056 | true=7.448 m | CNN=7.07939338684082 | command=+0.799 | next true=7.465 m
+step=057 | true=7.465 m | CNN=7.015115737915039 | command=+0.186 | next true=7.468 m
+step=058 | true=7.468 m | CNN=7.09661865234375 | command=+0.956 | next true=7.460 m
+step=059 | true=7.460 m | CNN=7.0867815017700195 | command=+0.494 | next true=7.439 m
+step=060 | true=7.439 m | CNN=7.0118818283081055 | command=+0.131 | next true=7.410 m
+step=061 | true=7.410 m | CNN=7.054471969604492 | command=+0.740 | next true=7.377 m
+step=062 | true=7.377 m | CNN=6.93282413482666 | command=-0.142 | next true=7.344 m
+step=063 | true=7.344 m | CNN=6.980790615081787 | command=+0.730 | next true=7.312 m
+step=064 | true=7.312 m | CNN=6.956096172332764 | command=+0.355 | next true=7.278 m
+step=065 | true=7.278 m | CNN=6.8476080894470215 | command=-0.119 | next true=7.264 m
+step=066 | true=7.264 m | CNN=6.906402587890625 | command=+0.747 | next true=7.275 m
+step=067 | true=7.275 m | CNN=6.778027534484863 | command=-0.253 | next true=7.312 m
+step=068 | true=7.312 m | CNN=6.678440570831299 | command=-0.159 | next true=7.371 m
+step=069 | true=7.371 m | CNN=6.909080982208252 | command=+1.608 | next true=7.437 m
+step=070 | true=7.437 m | CNN=6.8314313888549805 | command=+0.027 | next true=7.500 m
+step=071 | true=7.500 m | CNN=6.869499683380127 | command=+0.625 | next true=7.557 m
+step=072 | true=7.557 m | CNN=6.947042465209961 | command=+0.861 | next true=7.605 m
+step=073 | true=7.605 m | CNN=6.87164831161499 | command=+0.059 | next true=7.639 m
+step=074 | true=7.639 m | CNN=6.952552318572998 | command=+0.881 | next true=7.664 m
+step=075 | true=7.664 m | CNN=7.013383865356445 | command=+0.811 | next true=7.674 m
+step=076 | true=7.674 m | CNN=7.104534149169922 | command=+1.008 | next true=7.667 m
+step=077 | true=7.667 m | CNN=7.106341361999512 | command=+0.562 | next true=7.644 m
+step=078 | true=7.644 m | CNN=7.071502685546875 | command=+0.362 | next true=7.611 m
+step=079 | true=7.611 m | CNN=6.955612659454346 | command=-0.102 | next true=7.578 m
+step=080 | true=7.578 m | CNN=6.989815711975098 | command=+0.666 | next true=7.547 m
+step=081 | true=7.547 m | CNN=6.9446282386779785 | command=+0.246 | next true=7.516 m
+step=082 | true=7.516 m | CNN=6.848154067993164 | command=-0.058 | next true=7.505 m
+step=083 | true=7.505 m | CNN=6.879664897918701 | command=+0.597 | next true=7.519 m
+step=084 | true=7.519 m | CNN=6.817840576171875 | command=+0.100 | next true=7.565 m
+step=085 | true=7.565 m | CNN=6.853687286376953 | command=+0.606 | next true=7.628 m
+step=086 | true=7.628 m | CNN=6.864051818847656 | command=+0.484 | next true=7.690 m
+step=087 | true=7.690 m | CNN=6.984991073608398 | command=+1.097 | next true=7.749 m
+step=088 | true=7.749 m | CNN=7.004453659057617 | command=+0.600 | next true=7.797 m
+step=089 | true=7.797 m | CNN=6.9814252853393555 | command=+0.376 | next true=7.833 m
+step=090 | true=7.833 m | CNN=7.350920677185059 | command=+2.523 | next true=7.857 m
+step=091 | true=7.857 m | CNN=7.293776988983154 | command=+0.361 | next true=7.856 m
+step=092 | true=7.856 m | CNN=7.247427463531494 | command=+0.392 | next true=7.836 m
+step=093 | true=7.836 m | CNN=7.3358259201049805 | command=+1.110 | next true=7.803 m
+step=094 | true=7.803 m | CNN=7.214917182922363 | command=+0.003 | next true=7.756 m
+step=095 | true=7.756 m | CNN=7.054937362670898 | command=-0.272 | next true=7.708 m
+step=096 | true=7.708 m | CNN=6.944517135620117 | command=-0.080 | next true=7.666 m
+step=097 | true=7.666 m | CNN=6.835563659667969 | command=-0.127 | next true=7.632 m
+step=098 | true=7.632 m | CNN=6.967844009399414 | command=+1.145 | next true=7.605 m
+step=099 | true=7.605 m | CNN=6.833927154541016 | command=-0.253 | next true=7.596 m
+step=100 | true=7.596 m | CNN=6.726686954498291 | command=-0.173 | next true=7.613 m
+step=101 | true=7.613 m | CNN=6.772140979766846 | command=+0.613 | next true=7.669 m
+step=102 | true=7.669 m | CNN=6.684488773345947 | command=-0.096 | next true=7.742 m
+step=103 | true=7.742 m | CNN=6.756933212280273 | command=+0.741 | next true=7.814 m
+step=104 | true=7.814 m | CNN=7.217625617980957 | command=+2.912 | next true=7.872 m
+step=105 | true=7.872 m | CNN=7.070940971374512 | command=-0.198 | next true=7.900 m
+step=106 | true=7.900 m | CNN=7.145568370819092 | command=+0.946 | next true=7.909 m
+step=107 | true=7.909 m | CNN=7.093427658081055 | command=+0.286 | next true=7.906 m
+step=108 | true=7.906 m | CNN=7.040018081665039 | command=+0.253 | next true=7.894 m
+step=109 | true=7.894 m | CNN=7.251570224761963 | command=+1.684 | next true=7.875 m
+step=110 | true=7.875 m | CNN=7.04918909072876 | command=-0.487 | next true=7.843 m
+step=111 | true=7.843 m | CNN=6.920079231262207 | command=-0.186 | next true=7.809 m
+step=112 | true=7.809 m | CNN=7.237958908081055 | command=+2.208 | next true=7.777 m
+step=113 | true=7.777 m | CNN=7.141303062438965 | command=+0.087 | next true=7.739 m
+step=114 | true=7.739 m | CNN=7.171648025512695 | command=+0.738 | next true=7.697 m
+step=115 | true=7.697 m | CNN=6.956321716308594 | command=-0.598 | next true=7.675 m
+step=116 | true=7.675 m | CNN=6.954039573669434 | command=+0.466 | next true=7.686 m
+step=117 | true=7.686 m | CNN=6.815641403198242 | command=-0.284 | next true=7.732 m
+step=118 | true=7.732 m | CNN=6.8088202476501465 | command=+0.370 | next true=7.800 m
+step=119 | true=7.800 m | CNN=6.937255859375 | command=+1.111 | next true=7.868 m
+step=120 | true=7.868 m | CNN=7.244890213012695 | command=+2.161 | next true=7.925 m
+step=121 | true=7.925 m | CNN=7.156832695007324 | command=+0.138 | next true=7.954 m
+step=122 | true=7.954 m | CNN=7.28647518157959 | command=+1.291 | next true=7.963 m
+step=123 | true=7.963 m | CNN=7.151332855224609 | command=-0.100 | next true=7.953 m
+step=124 | true=7.953 m | CNN=7.089383602142334 | command=+0.235 | next true=7.932 m
+step=125 | true=7.932 m | CNN=7.191530704498291 | command=+1.107 | next true=7.901 m
+step=126 | true=7.901 m | CNN=7.147481918334961 | command=+0.353 | next true=7.856 m
+[CARLA] Terminal condition triggered: out_of_lane
+step=127 | true=7.856 m | CNN=6.9557905197143555 | command=-0.481 | next true=7.803 m
+Episode 3: 127 steps | min true gap 5.48 m | mean gap tracking error 1.45 m | end: out_of_lane
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=220.636536, y=-184.643112, z=0.500000) with yaw 46.07960510253906
+[CARLA] Trying to spawn at Location(x=225.243927, y=-178.432190, z=0.500000) with yaw 60.783084869384766
+[CARLA] Environment reset
+step=001 | true=3.240 m | CNN=None | command=+0.000 | next true=3.240 m
+step=002 | true=3.240 m | CNN=3.2595393657684326 | command=+0.000 | next true=3.240 m
+step=003 | true=3.240 m | CNN=3.2595393657684326 | command=+0.000 | next true=3.240 m
+step=004 | true=3.240 m | CNN=3.23226261138916 | command=+0.000 | next true=3.246 m
+step=005 | true=3.246 m | CNN=3.2615184783935547 | command=+0.000 | next true=3.305 m
+step=006 | true=3.305 m | CNN=3.3161962032318115 | command=-1.342 | next true=3.414 m
+step=007 | true=3.414 m | CNN=3.359241247177124 | command=-1.105 | next true=3.566 m
+step=008 | true=3.566 m | CNN=3.433314085006714 | command=-0.913 | next true=3.756 m
+step=009 | true=3.756 m | CNN=3.5427916049957275 | command=-0.681 | next true=3.980 m
+step=010 | true=3.980 m | CNN=3.7665023803710938 | command=+0.002 | next true=4.222 m
+step=011 | true=4.222 m | CNN=4.007574558258057 | command=+0.209 | next true=4.466 m
+step=012 | true=4.466 m | CNN=4.205658912658691 | command=+0.093 | next true=4.702 m
+step=013 | true=4.702 m | CNN=4.448065757751465 | command=+0.436 | next true=4.931 m
+step=014 | true=4.931 m | CNN=4.599672317504883 | command=+0.058 | next true=5.152 m
+step=015 | true=5.152 m | CNN=4.834349632263184 | command=+0.591 | next true=5.365 m
+step=016 | true=5.365 m | CNN=5.024392604827881 | command=+0.462 | next true=5.571 m
+step=017 | true=5.571 m | CNN=5.158420085906982 | command=+0.249 | next true=5.771 m
+step=018 | true=5.771 m | CNN=5.309492111206055 | command=+0.410 | next true=5.959 m
+step=019 | true=5.959 m | CNN=5.458489418029785 | command=+0.474 | next true=6.149 m
+step=020 | true=6.149 m | CNN=5.546947479248047 | command=+0.216 | next true=6.360 m
+step=021 | true=6.360 m | CNN=5.83203125 | command=+1.341 | next true=6.583 m
+step=022 | true=6.583 m | CNN=5.989946365356445 | command=+0.785 | next true=6.809 m
+step=023 | true=6.809 m | CNN=6.330841064453125 | command=+1.870 | next true=7.029 m
+step=024 | true=7.029 m | CNN=6.492663860321045 | command=+1.055 | next true=7.242 m
+step=025 | true=7.242 m | CNN=6.745863914489746 | command=+1.639 | next true=7.449 m
+step=026 | true=7.449 m | CNN=6.781103134155273 | command=+0.567 | next true=7.648 m
+step=027 | true=7.648 m | CNN=6.941596031188965 | command=+1.273 | next true=7.836 m
+step=028 | true=7.836 m | CNN=6.950634002685547 | command=+0.521 | next true=8.026 m
+step=029 | true=8.026 m | CNN=7.165796279907227 | command=+1.659 | next true=8.237 m
+step=030 | true=8.237 m | CNN=7.307646751403809 | command=+1.363 | next true=8.460 m
+step=031 | true=8.460 m | CNN=7.50831413269043 | command=+1.757 | next true=8.686 m
+step=032 | true=8.686 m | CNN=7.520773887634277 | command=+0.823 | next true=8.837 m
+step=033 | true=8.837 m | CNN=7.489626407623291 | command=+0.589 | next true=8.955 m
+step=034 | true=8.955 m | CNN=7.503535270690918 | command=+0.821 | next true=9.071 m
+step=035 | true=9.071 m | CNN=7.44683837890625 | command=+0.440 | next true=9.188 m
+step=036 | true=9.188 m | CNN=7.526256561279297 | command=+1.160 | next true=9.299 m
+step=037 | true=9.299 m | CNN=7.625449180603027 | command=+1.309 | next true=9.416 m
+step=038 | true=9.416 m | CNN=7.691987991333008 | command=+1.179 | next true=9.553 m
+step=039 | true=9.553 m | CNN=7.782176971435547 | command=+1.342 | next true=9.701 m
+step=040 | true=9.701 m | CNN=7.765658378601074 | command=+0.800 | next true=9.848 m
+step=041 | true=9.848 m | CNN=7.733194351196289 | command=+0.704 | next true=9.989 m
+[CARLA] Terminal condition triggered: terminal_dist
+step=042 | true=9.989 m | CNN=7.78571081161499 | command=+1.155 | next true=10.126 m
+Episode 4: 42 steps | min true gap 3.24 m | mean gap tracking error 2.08 m | end: terminal_dist
+[CARLA] Reset environment
+[CARLA] Trying to spawn at Location(x=-7.603102, y=-138.220856, z=0.500000) with yaw -171.5826416015625
+[CARLA] Trying to spawn at Location(x=-17.807022, y=-138.653824, z=0.500000) with yaw -178.77273559570312
+[CARLA] Environment reset
+[CARLA] Terminal condition triggered: out_of_lane
+step=001 | true=5.581 m | CNN=None | command=+0.000 | next true=5.581 m
+Episode 5: 1 steps | min true gap 5.58 m | mean gap tracking error 0.42 m | end: out_of_lane

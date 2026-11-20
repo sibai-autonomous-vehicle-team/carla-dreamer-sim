@@ -1,0 +1,44 @@
+Device: cuda
+Test episodes: 80
+Checkpoint epoch: 9
+{
+  "dataset_path": "/home/ahmad/drl_project/carla-dreamer-sim/dataset/combined_800/night_rainy",
+  "checkpoint_path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/generalist_all_conditions_2026-11-18/training/best.pth",
+  "split_source": "external",
+  "split_path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/generalist_all_conditions_2026-11-18/training/splits/night_rainy.json",
+  "test_episodes": 80,
+  "test_frames": 7171,
+  "checkpoint_epoch": 9,
+  "mae_m": 1.0569641590118408,
+  "rmse_m": 1.5761200189590454,
+  "signed_error_m": -0.6650036573410034,
+  "p95_absolute_error_m": 3.4381940364837646,
+  "max_absolute_error_m": 8.131754875183105,
+  "bins": {
+    "[0, 3) m": {
+      "frames": 839,
+      "mae_m": 0.8753318786621094,
+      "signed_error_m": 0.7794841527938843
+    },
+    "[3, 6) m": {
+      "frames": 3123,
+      "mae_m": 0.46413955092430115,
+      "signed_error_m": -0.021541137248277664
+    },
+    "[6, 8) m": {
+      "frames": 2493,
+      "mae_m": 1.2588359117507935,
+      "signed_error_m": -1.2438702583312988
+    },
+    "[8, 10] m": {
+      "frames": 589,
+      "mae_m": 2.757599353790283,
+      "signed_error_m": -2.752821683883667
+    },
+    ">10 m": {
+      "frames": 127,
+      "mae_m": 4.9848456382751465,
+      "signed_error_m": -4.9848456382751465
+    }
+  }
+}

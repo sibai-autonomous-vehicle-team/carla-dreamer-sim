@@ -1,0 +1,19 @@
+{
+  "repository": "https://github.com/smartonion/contextual-safety-filters",
+  "archive": "contextual-safety-filters-main.zip",
+  "archive_sha256": "ad6e35b4e2208cbdc86c0d2eeb65dd1432dccec1071b2931f92fcab5a5417694",
+  "note": "Selective source import from uploaded ZIP; no commit history supplied. See README.md for local adaptations.",
+  "original_file_sha256": {
+    "training/train_ddpg.py": "3499edb6604d2c9645329d832f10a2044de69cf32db7af88c7537aa188bc115e",
+    "training/train_risk.py": "04b7cb1052ee729dfd31ca428e9d8992b4540550f8e8ea63d46f4377217c28b2",
+    "training/dataset.py": "d09ebac7f1654676cb5c0c088db1417d1667e140921c8dab67436eba8f6a3574",
+    "training/config.py": "9b9aad6249cc8b9b59ce02f2fa8a183e3dd1f7f941c3491ef39c81c2f645e0f2",
+    "training/evaluate_ddpg.py": "50e55483bbc07642ec6170f1d8532c9d532844c3921f08e4b8220347af8793f1",
+    "training/prepare_data.py": "5fe1838d4854bfbb5104e5f903a256d260dc335ab62a22fd688337687babad32",
+    "training/models.py": "64ac0e13d6ff84562f4de38f5ab9b9b5c6d0cb62319fc767c8af5820ad2647f0",
+    "training/closed_loop.py": "8c044d6fd5729732c69f4def09595925542e4d9964c6a797518277053833f358",
+    "tests/test_hj_inference.py": "6013584a4c8c9c4e284f4637e4772bacf1792c94cef9db686c2adeba89b03a28",
+    "tests/test_hj_training.py": "7b7eb196099d2a39288d1eba1c04163f3ed104d825e112acf3cf4de643910e85",
+    "tests/test_hj_data.py": "41ce85e7a3b54f28b3f4ee16d65ef29addd86e4af27fb1a24c67e974591e8abf"
+  }
+}

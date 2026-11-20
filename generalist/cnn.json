@@ -1,0 +1,20 @@
+{
+  "architecture": "ResNet-18 with one gap regression output",
+  "conditions": [
+    "day_cloudy",
+    "day_rainy",
+    "day_sunny",
+    "night_cloudy",
+    "night_rainy",
+    "night_sunny",
+    "sunset_cloudy",
+    "sunset_rainy",
+    "sunset_sunny"
+  ],
+  "cnn_sha256": "a5a23ac060cfca8273ccf54db060580fbcd3b234f4d71ac3f4d12bf1656d0f2e",
+  "cnn_source": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/generalist_all_conditions_2026-11-18/training/best.pth",
+  "seed": 42,
+  "selected_epoch": 9,
+  "validation_mae_m": 0.7196797954524246,
+  "archived_test_summary": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/generalist_all_conditions_2026-11-18/summary.json"
+}

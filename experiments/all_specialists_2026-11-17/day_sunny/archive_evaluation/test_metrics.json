@@ -1,0 +1,41 @@
+{
+  "dataset_path": "/home/ahmad/drl_project/carla-dreamer-sim/dataset/combined_800/day_sunny",
+  "checkpoint_path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/day_sunny/archive/best.pth",
+  "split_source": "checkpoint",
+  "split_path": null,
+  "test_episodes": 80,
+  "test_frames": 6449,
+  "checkpoint_epoch": 10,
+  "mae_m": 0.6188936233520508,
+  "rmse_m": 0.8694851994514465,
+  "signed_error_m": -0.5059512853622437,
+  "p95_absolute_error_m": 1.7050989866256714,
+  "max_absolute_error_m": 5.315825939178467,
+  "bins": {
+    "[0, 3) m": {
+      "frames": 706,
+      "mae_m": 0.306006520986557,
+      "signed_error_m": -0.08702712506055832
+    },
+    "[3, 6) m": {
+      "frames": 2219,
+      "mae_m": 0.4481756389141083,
+      "signed_error_m": -0.3402462899684906
+    },
+    "[6, 8) m": {
+      "frames": 2190,
+      "mae_m": 0.558040976524353,
+      "signed_error_m": -0.421439528465271
+    },
+    "[8, 10] m": {
+      "frames": 866,
+      "mae_m": 0.7542484998703003,
+      "signed_error_m": -0.7225812673568726
+    },
+    ">10 m": {
+      "frames": 468,
+      "mae_m": 1.9346452951431274,
+      "signed_error_m": -1.9182140827178955
+    }
+  }
+}

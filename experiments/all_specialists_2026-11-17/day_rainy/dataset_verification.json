@@ -1,0 +1,42 @@
+{
+  "condition": "day_rainy",
+  "archive": "dataset/combined_800/day_rainy",
+  "episodes": 800,
+  "raw_steps": 61858,
+  "aligned_frames": 61058,
+  "documented_sources": [
+    {
+      "path": "dataset/carla_following/day_rainy",
+      "episodes": 500,
+      "raw_steps": 22686,
+      "aligned_frames": 22186
+    },
+    {
+      "path": "dataset/full_range_300/day_rainy",
+      "episodes": 300,
+      "raw_steps": 39172,
+      "aligned_frames": 38872
+    }
+  ],
+  "image_files_verified": 800,
+  "image_byte_matches": 800,
+  "image_shape": "episode length \u00d7 224 \u00d7 224 \u00d7 3",
+  "image_dtype": "uint8",
+  "numeric_tensors_finite_and_source_equal": [
+    "actions",
+    "costs",
+    "distances",
+    "states",
+    "seq_lengths"
+  ],
+  "aligned_gap_bin_counts": {
+    "0_to_3": 7770,
+    "3_to_6": 21245,
+    "6_to_8": 21872,
+    "8_to_10": 7209,
+    "above_10": 2962
+  },
+  "checksum_entry_count": 807,
+  "checksum_verification_working_directory": "repository root",
+  "mac_source_verified": false
+}

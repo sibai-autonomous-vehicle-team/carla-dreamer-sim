@@ -1,0 +1,32 @@
+train: 48 episodes, 8 route groups, 2492 frames
+validation: 18 episodes, 3 route groups, 924 frames
+test: 30 episodes, 5 route groups, 1595 frames
+Device: cuda. Legacy replay: 0 frames.
+Starting checkpoint validation score: 1.360 m
+Validation gate close_0_to_3_m: baseline 0.346, max MAE 0.311 m
+Validation gate standard_3_to_8_m: baseline 0.911, max MAE 1.011 m
+Validation gate standard_8_to_12_m: baseline 2.824, max MAE 2.924 m
+Epoch 01/20: loss 0.289, validation MAE 0.878 m, score 0.839 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 02/20: loss 0.140, validation MAE 0.874 m, score 0.854 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 03/20: loss 0.102, validation MAE 0.882 m, score 0.859 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 04/20: loss 0.084, validation MAE 0.850 m, score 0.821 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 05/20: loss 0.067, validation MAE 0.887 m, score 0.864 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 06/20: loss 0.064, validation MAE 0.850 m, score 0.819 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 07/20: loss 0.052, validation MAE 0.963 m, score 0.944 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 08/20: loss 0.044, validation MAE 0.866 m, score 0.843 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 09/20: loss 0.036, validation MAE 0.846 m, score 0.814 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 10/20: loss 0.035, validation MAE 0.861 m, score 0.836 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 11/20: loss 0.032, validation MAE 0.866 m, score 0.842 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 12/20: loss 0.029, validation MAE 0.869 m, score 0.844 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 13/20: loss 0.025, validation MAE 0.874 m, score 0.847 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 14/20: loss 0.025, validation MAE 0.848 m, score 0.821 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 15/20: loss 0.023, validation MAE 0.882 m, score 0.856 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 16/20: loss 0.019, validation MAE 0.860 m, score 0.833 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 17/20: loss 0.018, validation MAE 0.873 m, score 0.847 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 18/20: loss 0.016, validation MAE 0.866 m, score 0.836 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 19/20: loss 0.016, validation MAE 0.849 m, score 0.817 m, failed gates close_0_to_3_m, severe_false_far
+Epoch 20/20: loss 0.016, validation MAE 0.886 m, score 0.862 m, failed gates close_0_to_3_m, severe_false_far
+No epoch met the validation gates. Retaining experiments/all_specialists_2026-11-17/night_sunny/archive/best.pth as the selected model.
+original: test MAE 1.257 m | above-10 recall 0/288
+finetuned: test MAE 0.601 m | above-10 recall 189/288
+Evaluated diagnostic epoch: 9. Saved checkpoint: experiments/all_specialists_2026-11-17/night_sunny/sync_model/best_diagnostic.pth

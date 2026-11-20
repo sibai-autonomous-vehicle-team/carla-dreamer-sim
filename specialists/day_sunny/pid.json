@@ -1,0 +1,19 @@
+{
+  "condition": "day_sunny",
+  "status": "tested",
+  "target_gap": 6.0,
+  "kp": 0.9,
+  "ki": 0.05,
+  "kd": 0.15,
+  "seed": 42,
+  "episodes": 5,
+  "steps": 360,
+  "warmup_steps": 5,
+  "terminal_dist": 9,
+  "out_lane_thres": 5,
+  "shared_route": true,
+  "route_manifest": "../routes.json",
+  "cnn_sha256": "c6261bef062162c1dbf0efbaede6fb59cf1efec4f2db620ce87e7c47f1389e41",
+  "cnn_source": "experiments/all_specialists_2026-11-17/day_sunny/sync_model/best.pth",
+  "live_report": "experiments/live_cutoff_9m_2026-11-18/summary.json"
+}

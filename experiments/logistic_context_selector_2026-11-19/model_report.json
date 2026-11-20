@@ -1,0 +1,1228 @@
+{
+  "label_counts": {
+    "train": {
+      "day_sunny": {
+        "success": 82,
+        "failure": 17,
+        "censored": 2
+      },
+      "day_cloudy": {
+        "success": 78,
+        "failure": 19,
+        "censored": 2
+      },
+      "day_rainy": {
+        "success": 84,
+        "failure": 14,
+        "censored": 2
+      },
+      "sunset_sunny": {
+        "success": 88,
+        "failure": 12,
+        "censored": 2
+      },
+      "sunset_cloudy": {
+        "success": 78,
+        "failure": 20,
+        "censored": 2
+      },
+      "sunset_rainy": {
+        "success": 85,
+        "failure": 13,
+        "censored": 2
+      },
+      "night_sunny": {
+        "success": 47,
+        "failure": 43,
+        "censored": 2
+      },
+      "night_cloudy": {
+        "success": 72,
+        "failure": 27,
+        "censored": 1
+      },
+      "night_rainy": {
+        "success": 58,
+        "failure": 32,
+        "censored": 2
+      }
+    },
+    "validation": {
+      "day_sunny": {
+        "success": 43,
+        "failure": 8,
+        "censored": 0
+      },
+      "day_cloudy": {
+        "success": 41,
+        "failure": 9,
+        "censored": 0
+      },
+      "day_rainy": {
+        "success": 40,
+        "failure": 9,
+        "censored": 0
+      },
+      "sunset_sunny": {
+        "success": 46,
+        "failure": 5,
+        "censored": 0
+      },
+      "sunset_cloudy": {
+        "success": 44,
+        "failure": 8,
+        "censored": 0
+      },
+      "sunset_rainy": {
+        "success": 38,
+        "failure": 10,
+        "censored": 0
+      },
+      "night_sunny": {
+        "success": 22,
+        "failure": 23,
+        "censored": 0
+      },
+      "night_cloudy": {
+        "success": 43,
+        "failure": 10,
+        "censored": 0
+      },
+      "night_rainy": {
+        "success": 27,
+        "failure": 19,
+        "censored": 0
+      }
+    },
+    "test": {
+      "day_sunny": {
+        "success": 44,
+        "failure": 7,
+        "censored": 0
+      },
+      "day_cloudy": {
+        "success": 43,
+        "failure": 8,
+        "censored": 0
+      },
+      "day_rainy": {
+        "success": 42,
+        "failure": 8,
+        "censored": 0
+      },
+      "sunset_sunny": {
+        "success": 47,
+        "failure": 5,
+        "censored": 0
+      },
+      "sunset_cloudy": {
+        "success": 44,
+        "failure": 8,
+        "censored": 0
+      },
+      "sunset_rainy": {
+        "success": 46,
+        "failure": 5,
+        "censored": 0
+      },
+      "night_sunny": {
+        "success": 31,
+        "failure": 17,
+        "censored": 0
+      },
+      "night_cloudy": {
+        "success": 39,
+        "failure": 13,
+        "censored": 0
+      },
+      "night_rainy": {
+        "success": 32,
+        "failure": 16,
+        "censored": 0
+      }
+    }
+  },
+  "controllers_without_two_train_classes": [],
+  "examples": "experiments/logistic_context_selector_2026-11-19/examples.jsonl",
+  "validation_threshold": {
+    "source": "Highest score on complete matched starting cases",
+    "criterion": "Highest validation balanced accuracy, then maximum coverage",
+    "selected": {
+      "threshold": 0.9222694662037101,
+      "successes": 24,
+      "failures": 3,
+      "accepted": 11,
+      "coverage": 0.4074074074074074,
+      "accepted_failures": 0,
+      "failure_rate_when_accepted": 0.0,
+      "balanced_accuracy": 0.7291666666666666
+    },
+    "operating_points": [
+      {
+        "threshold": 0.0,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 27,
+        "coverage": 1.0,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.1111111111111111,
+        "balanced_accuracy": 0.5
+      },
+      {
+        "threshold": 0.8175138134433181,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 27,
+        "coverage": 1.0,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.1111111111111111,
+        "balanced_accuracy": 0.5
+      },
+      {
+        "threshold": 0.8306881066716287,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 26,
+        "coverage": 0.9629629629629629,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.11538461538461539,
+        "balanced_accuracy": 0.4791666666666667
+      },
+      {
+        "threshold": 0.8430964993223431,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 25,
+        "coverage": 0.9259259259259259,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.12,
+        "balanced_accuracy": 0.4583333333333333
+      },
+      {
+        "threshold": 0.8469510869427546,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 24,
+        "coverage": 0.8888888888888888,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.125,
+        "balanced_accuracy": 0.4375
+      },
+      {
+        "threshold": 0.8772675308107402,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 23,
+        "coverage": 0.8518518518518519,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.13043478260869565,
+        "balanced_accuracy": 0.4166666666666667
+      },
+      {
+        "threshold": 0.883543237628507,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 22,
+        "coverage": 0.8148148148148148,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.13636363636363635,
+        "balanced_accuracy": 0.3958333333333333
+      },
+      {
+        "threshold": 0.884771744083986,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 21,
+        "coverage": 0.7777777777777778,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.14285714285714285,
+        "balanced_accuracy": 0.375
+      },
+      {
+        "threshold": 0.8972910535115688,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 20,
+        "coverage": 0.7407407407407407,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.15,
+        "balanced_accuracy": 0.3541666666666667
+      },
+      {
+        "threshold": 0.899272345238619,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 19,
+        "coverage": 0.7037037037037037,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.15789473684210525,
+        "balanced_accuracy": 0.3333333333333333
+      },
+      {
+        "threshold": 0.9028382309621754,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 18,
+        "coverage": 0.6666666666666666,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.16666666666666666,
+        "balanced_accuracy": 0.3125
+      },
+      {
+        "threshold": 0.9069238555655609,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 17,
+        "coverage": 0.6296296296296297,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.17647058823529413,
+        "balanced_accuracy": 0.2916666666666667
+      },
+      {
+        "threshold": 0.9094162058472731,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 16,
+        "coverage": 0.5925925925925926,
+        "accepted_failures": 3,
+        "failure_rate_when_accepted": 0.1875,
+        "balanced_accuracy": 0.2708333333333333
+      },
+      {
+        "threshold": 0.9122184009810838,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 15,
+        "coverage": 0.5555555555555556,
+        "accepted_failures": 2,
+        "failure_rate_when_accepted": 0.13333333333333333,
+        "balanced_accuracy": 0.4375
+      },
+      {
+        "threshold": 0.9172603729782165,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 14,
+        "coverage": 0.5185185185185185,
+        "accepted_failures": 2,
+        "failure_rate_when_accepted": 0.14285714285714285,
+        "balanced_accuracy": 0.41666666666666663
+      },
+      {
+        "threshold": 0.9183012817960723,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 13,
+        "coverage": 0.48148148148148145,
+        "accepted_failures": 1,
+        "failure_rate_when_accepted": 0.07692307692307693,
+        "balanced_accuracy": 0.5833333333333333
+      },
+      {
+        "threshold": 0.9195382658881682,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 12,
+        "coverage": 0.4444444444444444,
+        "accepted_failures": 1,
+        "failure_rate_when_accepted": 0.08333333333333333,
+        "balanced_accuracy": 0.5625
+      },
+      {
+        "threshold": 0.9222694662037101,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 11,
+        "coverage": 0.4074074074074074,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.7291666666666666
+      },
+      {
+        "threshold": 0.9354029845874163,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 10,
+        "coverage": 0.37037037037037035,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.7083333333333334
+      },
+      {
+        "threshold": 0.9380445519757704,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 9,
+        "coverage": 0.3333333333333333,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.6875
+      },
+      {
+        "threshold": 0.9396725988589758,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 8,
+        "coverage": 0.2962962962962963,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.6666666666666666
+      },
+      {
+        "threshold": 0.9517745072299428,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 7,
+        "coverage": 0.25925925925925924,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.6458333333333334
+      },
+      {
+        "threshold": 0.973387792602541,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 6,
+        "coverage": 0.2222222222222222,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.625
+      },
+      {
+        "threshold": 0.9782751933877815,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 5,
+        "coverage": 0.18518518518518517,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.6041666666666666
+      },
+      {
+        "threshold": 0.9785849010384979,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 4,
+        "coverage": 0.14814814814814814,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.5833333333333334
+      },
+      {
+        "threshold": 0.9794630659997757,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 3,
+        "coverage": 0.1111111111111111,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.5625
+      },
+      {
+        "threshold": 0.982743568989217,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 2,
+        "coverage": 0.07407407407407407,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.5416666666666666
+      },
+      {
+        "threshold": 0.9859199314314343,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 1,
+        "coverage": 0.037037037037037035,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.5208333333333334
+      },
+      {
+        "threshold": 1.0,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 0,
+        "coverage": 0.0,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": null,
+        "balanced_accuracy": 0.5
+      }
+    ],
+    "active_live_gate": false
+  },
+  "validation": {
+    "pooled": {
+      "n": 445,
+      "log_loss": 0.4644267058215727,
+      "brier": 0.14593699272199714,
+      "accuracy_at_0_5": 0.8112359550561797
+    },
+    "by_controller": {
+      "day_sunny": {
+        "n": 51,
+        "log_loss": 0.44478715726274104,
+        "brier": 0.13752997835401293,
+        "accuracy_at_0_5": 0.8431372549019608
+      },
+      "day_cloudy": {
+        "n": 50,
+        "log_loss": 0.45681767981989024,
+        "brier": 0.1456952374688234,
+        "accuracy_at_0_5": 0.82
+      },
+      "day_rainy": {
+        "n": 49,
+        "log_loss": 0.5152494328504419,
+        "brier": 0.16265440982739057,
+        "accuracy_at_0_5": 0.8163265306122449
+      },
+      "sunset_sunny": {
+        "n": 51,
+        "log_loss": 0.3654203418752743,
+        "brier": 0.10037241254136692,
+        "accuracy_at_0_5": 0.9019607843137255
+      },
+      "sunset_cloudy": {
+        "n": 52,
+        "log_loss": 0.4076229529222636,
+        "brier": 0.1283336325683671,
+        "accuracy_at_0_5": 0.7692307692307693
+      },
+      "sunset_rainy": {
+        "n": 48,
+        "log_loss": 0.5655412037519438,
+        "brier": 0.17891881368082052,
+        "accuracy_at_0_5": 0.7916666666666666
+      },
+      "night_sunny": {
+        "n": 45,
+        "log_loss": 0.45982350097676,
+        "brier": 0.14968771691830438,
+        "accuracy_at_0_5": 0.8
+      },
+      "night_cloudy": {
+        "n": 53,
+        "log_loss": 0.45939916467189723,
+        "brier": 0.1456758071541033,
+        "accuracy_at_0_5": 0.7547169811320755
+      },
+      "night_rainy": {
+        "n": 46,
+        "log_loss": 0.5191002354408499,
+        "brier": 0.17034554086772574,
+        "accuracy_at_0_5": 0.8043478260869565
+      }
+    },
+    "matched": {
+      "starting_cases": 27,
+      "complete_cases": 27,
+      "selected_successes": 24,
+      "weather_matched_successes": 23,
+      "best_observed_successes": 27,
+      "max_shared_estimator_start_gap_spread_m": 0.7828700542449951,
+      "probability_metrics": {
+        "n": 27,
+        "log_loss": 0.3537871954358759,
+        "brier": 0.10154157258545345,
+        "accuracy_at_0_5": 0.8888888888888888
+      },
+      "advisory_threshold": {
+        "threshold": 0.9222694662037101,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 11,
+        "coverage": 0.4074074074074074,
+        "accepted_failures": 0,
+        "failure_rate_when_accepted": 0.0,
+        "balanced_accuracy": 0.7291666666666666
+      },
+      "cases": [
+        {
+          "case_id": "validation_01_straight_day_cloudy",
+          "condition": "day_cloudy",
+          "context_controller": "day_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.982743568989217,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.03058004379272461
+        },
+        {
+          "case_id": "validation_01_straight_day_rainy",
+          "condition": "day_rainy",
+          "context_controller": "day_rainy",
+          "controller": "sunset_rainy",
+          "probability": 0.9794630659997757,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.15128540992736816
+        },
+        {
+          "case_id": "validation_01_straight_day_sunny",
+          "condition": "day_sunny",
+          "context_controller": "day_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.973387792602541,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.060736656188964844
+        },
+        {
+          "case_id": "validation_01_straight_night_cloudy",
+          "condition": "night_cloudy",
+          "context_controller": "night_cloudy",
+          "controller": "night_cloudy",
+          "probability": 0.8772675308107402,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.019957542419433594
+        },
+        {
+          "case_id": "validation_01_straight_night_rainy",
+          "condition": "night_rainy",
+          "context_controller": "night_rainy",
+          "controller": "sunset_sunny",
+          "probability": 0.899272345238619,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.7101702690124512
+        },
+        {
+          "case_id": "validation_01_straight_night_sunny",
+          "condition": "night_sunny",
+          "context_controller": "night_sunny",
+          "controller": "night_cloudy",
+          "probability": 0.8306881066716287,
+          "selected_label": 1,
+          "weather_matched_label": 0,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.035297393798828125
+        },
+        {
+          "case_id": "validation_01_straight_sunset_cloudy",
+          "condition": "sunset_cloudy",
+          "context_controller": "sunset_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9172603729782165,
+          "selected_label": 0,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.04108142852783203
+        },
+        {
+          "case_id": "validation_01_straight_sunset_rainy",
+          "condition": "sunset_rainy",
+          "context_controller": "sunset_rainy",
+          "controller": "sunset_sunny",
+          "probability": 0.9183012817960723,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.21563339233398438
+        },
+        {
+          "case_id": "validation_01_straight_sunset_sunny",
+          "condition": "sunset_sunny",
+          "context_controller": "sunset_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.884771744083986,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.03699016571044922
+        },
+        {
+          "case_id": "validation_02_bend_day_cloudy",
+          "condition": "day_cloudy",
+          "context_controller": "day_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9517745072299428,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.055419921875
+        },
+        {
+          "case_id": "validation_02_bend_day_rainy",
+          "condition": "day_rainy",
+          "context_controller": "day_rainy",
+          "controller": "day_rainy",
+          "probability": 0.9354029845874163,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.1456918716430664
+        },
+        {
+          "case_id": "validation_02_bend_day_sunny",
+          "condition": "day_sunny",
+          "context_controller": "day_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.9195382658881682,
+          "selected_label": 0,
+          "weather_matched_label": 0,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.0508875846862793
+        },
+        {
+          "case_id": "validation_02_bend_night_cloudy",
+          "condition": "night_cloudy",
+          "context_controller": "night_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9396725988589758,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.047600746154785156
+        },
+        {
+          "case_id": "validation_02_bend_night_rainy",
+          "condition": "night_rainy",
+          "context_controller": "night_rainy",
+          "controller": "sunset_sunny",
+          "probability": 0.9380445519757704,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.7828700542449951
+        },
+        {
+          "case_id": "validation_02_bend_night_sunny",
+          "condition": "night_sunny",
+          "context_controller": "night_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.9122184009810838,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.10773158073425293
+        },
+        {
+          "case_id": "validation_02_bend_sunset_cloudy",
+          "condition": "sunset_cloudy",
+          "context_controller": "sunset_cloudy",
+          "controller": "sunset_cloudy",
+          "probability": 0.9069238555655609,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.0476531982421875
+        },
+        {
+          "case_id": "validation_02_bend_sunset_rainy",
+          "condition": "sunset_rainy",
+          "context_controller": "sunset_rainy",
+          "controller": "day_sunny",
+          "probability": 0.9094162058472731,
+          "selected_label": 0,
+          "weather_matched_label": 0,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.09418153762817383
+        },
+        {
+          "case_id": "validation_02_bend_sunset_sunny",
+          "condition": "sunset_sunny",
+          "context_controller": "sunset_sunny",
+          "controller": "day_sunny",
+          "probability": 0.8469510869427546,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.04559612274169922
+        },
+        {
+          "case_id": "validation_03_turn_day_cloudy",
+          "condition": "day_cloudy",
+          "context_controller": "day_cloudy",
+          "controller": "sunset_cloudy",
+          "probability": 0.9222694662037101,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.033806800842285156
+        },
+        {
+          "case_id": "validation_03_turn_day_rainy",
+          "condition": "day_rainy",
+          "context_controller": "day_rainy",
+          "controller": "sunset_cloudy",
+          "probability": 0.9028382309621754,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.1922745704650879
+        },
+        {
+          "case_id": "validation_03_turn_day_sunny",
+          "condition": "day_sunny",
+          "context_controller": "day_sunny",
+          "controller": "day_sunny",
+          "probability": 0.8430964993223431,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.03599262237548828
+        },
+        {
+          "case_id": "validation_03_turn_night_cloudy",
+          "condition": "night_cloudy",
+          "context_controller": "night_cloudy",
+          "controller": "sunset_sunny",
+          "probability": 0.883543237628507,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.006313323974609375
+        },
+        {
+          "case_id": "validation_03_turn_night_rainy",
+          "condition": "night_rainy",
+          "context_controller": "night_rainy",
+          "controller": "sunset_sunny",
+          "probability": 0.8972910535115688,
+          "selected_label": 1,
+          "weather_matched_label": 0,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.09602785110473633
+        },
+        {
+          "case_id": "validation_03_turn_night_sunny",
+          "condition": "night_sunny",
+          "context_controller": "night_sunny",
+          "controller": "night_cloudy",
+          "probability": 0.8175138134433181,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.011949539184570312
+        },
+        {
+          "case_id": "validation_03_turn_sunset_cloudy",
+          "condition": "sunset_cloudy",
+          "context_controller": "sunset_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9859199314314343,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.011122703552246094
+        },
+        {
+          "case_id": "validation_03_turn_sunset_rainy",
+          "condition": "sunset_rainy",
+          "context_controller": "sunset_rainy",
+          "controller": "sunset_rainy",
+          "probability": 0.9785849010384979,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.10472440719604492
+        },
+        {
+          "case_id": "validation_03_turn_sunset_sunny",
+          "condition": "sunset_sunny",
+          "context_controller": "sunset_sunny",
+          "controller": "night_sunny",
+          "probability": 0.9782751933877815,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.015188932418823242
+        }
+      ]
+    }
+  },
+  "test": {
+    "pooled": {
+      "n": 455,
+      "log_loss": 0.4104130303137532,
+      "brier": 0.1284219161676071,
+      "accuracy_at_0_5": 0.8197802197802198
+    },
+    "by_controller": {
+      "day_sunny": {
+        "n": 51,
+        "log_loss": 0.38153412841112644,
+        "brier": 0.11574876070517545,
+        "accuracy_at_0_5": 0.8627450980392157
+      },
+      "day_cloudy": {
+        "n": 51,
+        "log_loss": 0.4311732625529964,
+        "brier": 0.13202212969073113,
+        "accuracy_at_0_5": 0.8431372549019608
+      },
+      "day_rainy": {
+        "n": 50,
+        "log_loss": 0.40764393309438374,
+        "brier": 0.12710294605824596,
+        "accuracy_at_0_5": 0.84
+      },
+      "sunset_sunny": {
+        "n": 52,
+        "log_loss": 0.27567270967703017,
+        "brier": 0.07727557165497224,
+        "accuracy_at_0_5": 0.9038461538461539
+      },
+      "sunset_cloudy": {
+        "n": 52,
+        "log_loss": 0.39879549528339,
+        "brier": 0.12415025309165308,
+        "accuracy_at_0_5": 0.8076923076923077
+      },
+      "sunset_rainy": {
+        "n": 51,
+        "log_loss": 0.317114979993034,
+        "brier": 0.08778821865239798,
+        "accuracy_at_0_5": 0.9019607843137255
+      },
+      "night_sunny": {
+        "n": 48,
+        "log_loss": 0.5112117799743298,
+        "brier": 0.17452567668613425,
+        "accuracy_at_0_5": 0.6666666666666666
+      },
+      "night_cloudy": {
+        "n": 52,
+        "log_loss": 0.5200518867777343,
+        "brier": 0.16903702465966117,
+        "accuracy_at_0_5": 0.7307692307692307
+      },
+      "night_rainy": {
+        "n": 48,
+        "log_loss": 0.4600329377098267,
+        "brier": 0.15254186128800123,
+        "accuracy_at_0_5": 0.8125
+      }
+    },
+    "matched": {
+      "starting_cases": 27,
+      "complete_cases": 27,
+      "selected_successes": 24,
+      "weather_matched_successes": 24,
+      "best_observed_successes": 26,
+      "max_shared_estimator_start_gap_spread_m": 1.3155369758605957,
+      "probability_metrics": {
+        "n": 27,
+        "log_loss": 0.3376034494591933,
+        "brier": 0.09760940262113109,
+        "accuracy_at_0_5": 0.8888888888888888
+      },
+      "advisory_threshold": {
+        "threshold": 0.9222694662037101,
+        "successes": 24,
+        "failures": 3,
+        "accepted": 15,
+        "coverage": 0.5555555555555556,
+        "accepted_failures": 2,
+        "failure_rate_when_accepted": 0.13333333333333333,
+        "balanced_accuracy": 0.4375
+      },
+      "cases": [
+        {
+          "case_id": "test_01_straight_day_cloudy",
+          "condition": "day_cloudy",
+          "context_controller": "day_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9825251113192945,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.023181915283203125
+        },
+        {
+          "case_id": "test_01_straight_day_rainy",
+          "condition": "day_rainy",
+          "context_controller": "day_rainy",
+          "controller": "sunset_rainy",
+          "probability": 0.9813567363765532,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.05640292167663574
+        },
+        {
+          "case_id": "test_01_straight_day_sunny",
+          "condition": "day_sunny",
+          "context_controller": "day_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.9699323824486191,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.020694494247436523
+        },
+        {
+          "case_id": "test_01_straight_night_cloudy",
+          "condition": "night_cloudy",
+          "context_controller": "night_cloudy",
+          "controller": "night_cloudy",
+          "probability": 0.8780408935907875,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.08397722244262695
+        },
+        {
+          "case_id": "test_01_straight_night_rainy",
+          "condition": "night_rainy",
+          "context_controller": "night_rainy",
+          "controller": "sunset_sunny",
+          "probability": 0.8937049099514875,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 1.3155369758605957
+        },
+        {
+          "case_id": "test_01_straight_night_sunny",
+          "condition": "night_sunny",
+          "context_controller": "night_sunny",
+          "controller": "night_cloudy",
+          "probability": 0.8286048268640047,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.010761737823486328
+        },
+        {
+          "case_id": "test_01_straight_sunset_cloudy",
+          "condition": "sunset_cloudy",
+          "context_controller": "sunset_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9256598314470504,
+          "selected_label": 0,
+          "weather_matched_label": 0,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.02607107162475586
+        },
+        {
+          "case_id": "test_01_straight_sunset_rainy",
+          "condition": "sunset_rainy",
+          "context_controller": "sunset_rainy",
+          "controller": "sunset_sunny",
+          "probability": 0.9225481231823801,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.06396770477294922
+        },
+        {
+          "case_id": "test_01_straight_sunset_sunny",
+          "condition": "sunset_sunny",
+          "context_controller": "sunset_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.8940440655446318,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.015848159790039062
+        },
+        {
+          "case_id": "test_02_bend_day_cloudy",
+          "condition": "day_cloudy",
+          "context_controller": "day_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9602993179561264,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.007739543914794922
+        },
+        {
+          "case_id": "test_02_bend_day_rainy",
+          "condition": "day_rainy",
+          "context_controller": "day_rainy",
+          "controller": "sunset_sunny",
+          "probability": 0.9492735390666568,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.10072565078735352
+        },
+        {
+          "case_id": "test_02_bend_day_sunny",
+          "condition": "day_sunny",
+          "context_controller": "day_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.9414570817316295,
+          "selected_label": 0,
+          "weather_matched_label": 0,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.013484477996826172
+        },
+        {
+          "case_id": "test_02_bend_night_cloudy",
+          "condition": "night_cloudy",
+          "context_controller": "night_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9770295795484902,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.004251718521118164
+        },
+        {
+          "case_id": "test_02_bend_night_rainy",
+          "condition": "night_rainy",
+          "context_controller": "night_rainy",
+          "controller": "night_rainy",
+          "probability": 0.9714464649137503,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.0807962417602539
+        },
+        {
+          "case_id": "test_02_bend_night_sunny",
+          "condition": "night_sunny",
+          "context_controller": "night_sunny",
+          "controller": "night_sunny",
+          "probability": 0.9800672860310833,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.0027997493743896484
+        },
+        {
+          "case_id": "test_02_bend_sunset_cloudy",
+          "condition": "sunset_cloudy",
+          "context_controller": "sunset_cloudy",
+          "controller": "sunset_cloudy",
+          "probability": 0.907051832871113,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.008191585540771484
+        },
+        {
+          "case_id": "test_02_bend_sunset_rainy",
+          "condition": "sunset_rainy",
+          "context_controller": "sunset_rainy",
+          "controller": "day_sunny",
+          "probability": 0.908845905415058,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.07859277725219727
+        },
+        {
+          "case_id": "test_02_bend_sunset_sunny",
+          "condition": "sunset_sunny",
+          "context_controller": "sunset_sunny",
+          "controller": "day_sunny",
+          "probability": 0.8492000014959713,
+          "selected_label": 0,
+          "weather_matched_label": 0,
+          "best_observed_label": 0,
+          "generalist_gap_range_m": 0.008087158203125
+        },
+        {
+          "case_id": "test_03_turn_day_cloudy",
+          "condition": "day_cloudy",
+          "context_controller": "day_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9252066868650733,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.012183189392089844
+        },
+        {
+          "case_id": "test_03_turn_day_rainy",
+          "condition": "day_rainy",
+          "context_controller": "day_rainy",
+          "controller": "day_rainy",
+          "probability": 0.9163807328985197,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.07282447814941406
+        },
+        {
+          "case_id": "test_03_turn_day_sunny",
+          "condition": "day_sunny",
+          "context_controller": "day_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.8650705345846135,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.028265953063964844
+        },
+        {
+          "case_id": "test_03_turn_night_cloudy",
+          "condition": "night_cloudy",
+          "context_controller": "night_cloudy",
+          "controller": "sunset_sunny",
+          "probability": 0.9011282778944883,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.006722927093505859
+        },
+        {
+          "case_id": "test_03_turn_night_rainy",
+          "condition": "night_rainy",
+          "context_controller": "night_rainy",
+          "controller": "sunset_sunny",
+          "probability": 0.9145113891518297,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.6658735275268555
+        },
+        {
+          "case_id": "test_03_turn_night_sunny",
+          "condition": "night_sunny",
+          "context_controller": "night_sunny",
+          "controller": "sunset_rainy",
+          "probability": 0.8426981151100079,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.007164955139160156
+        },
+        {
+          "case_id": "test_03_turn_sunset_cloudy",
+          "condition": "sunset_cloudy",
+          "context_controller": "sunset_cloudy",
+          "controller": "sunset_rainy",
+          "probability": 0.9819782603295268,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.012199878692626953
+        },
+        {
+          "case_id": "test_03_turn_sunset_rainy",
+          "condition": "sunset_rainy",
+          "context_controller": "sunset_rainy",
+          "controller": "sunset_rainy",
+          "probability": 0.9773646264384043,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.12439227104187012
+        },
+        {
+          "case_id": "test_03_turn_sunset_sunny",
+          "condition": "sunset_sunny",
+          "context_controller": "sunset_sunny",
+          "controller": "night_sunny",
+          "probability": 0.9776594527448157,
+          "selected_label": 1,
+          "weather_matched_label": 1,
+          "best_observed_label": 1,
+          "generalist_gap_range_m": 0.01882767677307129
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,44 @@
+Device: cuda
+Test episodes: 80
+Checkpoint epoch: 16
+{
+  "dataset_path": "/home/ahmad/drl_project/carla-dreamer-sim/dataset/combined_800/sunset_sunny",
+  "checkpoint_path": "/home/ahmad/drl_project/carla-dreamer-sim/specialists/sunset_sunny/cnn.pth",
+  "split_source": "external",
+  "split_path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/sunset_sunny/archive/split.json",
+  "test_episodes": 80,
+  "test_frames": 6106,
+  "checkpoint_epoch": 16,
+  "mae_m": 0.3621816039085388,
+  "rmse_m": 0.6000900864601135,
+  "signed_error_m": -0.03723663091659546,
+  "p95_absolute_error_m": 1.0787919759750366,
+  "max_absolute_error_m": 5.816163539886475,
+  "bins": {
+    "[0, 3) m": {
+      "frames": 743,
+      "mae_m": 0.2115871161222458,
+      "signed_error_m": -0.06667894870042801
+    },
+    "[3, 6) m": {
+      "frames": 2090,
+      "mae_m": 0.2677980661392212,
+      "signed_error_m": 0.029884085059165955
+    },
+    "[6, 8) m": {
+      "frames": 2207,
+      "mae_m": 0.36087167263031006,
+      "signed_error_m": -0.040167879313230515
+    },
+    "[8, 10] m": {
+      "frames": 780,
+      "mae_m": 0.5161558389663696,
+      "signed_error_m": 0.08678845316171646
+    },
+    ">10 m": {
+      "frames": 286,
+      "mae_m": 1.0333164930343628,
+      "signed_error_m": -0.7668763399124146
+    }
+  }
+}

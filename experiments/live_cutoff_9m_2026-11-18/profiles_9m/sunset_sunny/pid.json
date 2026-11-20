@@ -1,0 +1,18 @@
+{
+  "condition": "sunset_sunny",
+  "status": "pending_validation",
+  "target_gap": 6.0,
+  "kp": 0.9,
+  "ki": 0.05,
+  "kd": 0.15,
+  "seed": 42,
+  "episodes": 5,
+  "steps": 360,
+  "warmup_steps": 5,
+  "terminal_dist": 9,
+  "out_lane_thres": 5,
+  "shared_route": true,
+  "route_manifest": "../routes.json",
+  "cnn_sha256": "9826dd19e80bb53e8374f68b16b4a537ce67af541aeac121be788d3766d3efe3",
+  "cnn_source": "experiments/all_specialists_2026-11-17/sunset_sunny/sync_model/best.pth"
+}

@@ -1,0 +1,41 @@
+{
+  "dataset_path": "/home/ahmad/drl_project/carla-dreamer-sim/dataset/combined_800/night_cloudy",
+  "checkpoint_path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/generalist_all_conditions_2026-11-18/training/best.pth",
+  "split_source": "external",
+  "split_path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/generalist_all_conditions_2026-11-18/training/splits/night_cloudy.json",
+  "test_episodes": 80,
+  "test_frames": 6157,
+  "checkpoint_epoch": 9,
+  "mae_m": 0.7107577323913574,
+  "rmse_m": 1.2245973348617554,
+  "signed_error_m": -0.5332138538360596,
+  "p95_absolute_error_m": 3.068387746810913,
+  "max_absolute_error_m": 7.129997253417969,
+  "bins": {
+    "[0, 3) m": {
+      "frames": 782,
+      "mae_m": 0.4514826834201813,
+      "signed_error_m": 0.29058873653411865
+    },
+    "[3, 6) m": {
+      "frames": 2293,
+      "mae_m": 0.29774534702301025,
+      "signed_error_m": -0.08961228281259537
+    },
+    "[6, 8) m": {
+      "frames": 2160,
+      "mae_m": 0.624087393283844,
+      "signed_error_m": -0.6076109409332275
+    },
+    "[8, 10] m": {
+      "frames": 683,
+      "mae_m": 1.729712963104248,
+      "signed_error_m": -1.729712963104248
+    },
+    ">10 m": {
+      "frames": 239,
+      "mae_m": 3.3929851055145264,
+      "signed_error_m": -3.3929851055145264
+    }
+  }
+}

@@ -71,7 +71,145 @@ Run these collections sequentially on a single server: starting another collecto
 reloads its map and interferes with an active run. Editing the script does not
 change an already-running collection.
 
+## Additional full-range controller
+
+The original `compute_continuous_action()` is unchanged. Following collection
+defaults to `--controller original`; select `--controller full-range` to use only
+the new `FullRangeFollowingController` in `collection_controllers.py`.
+Its feedback uses center-to-center following distance (target 8 m) and relative
+speed, permitting braking when close or closing quickly. Every five recorded
+steps, it selects uniform full-range exploration with probability 0.35; otherwise
+it applies feedback with small held Gaussian noise. All commands are clipped to
+acceleration `[-3, 3]` and steering `[-1, 1]`. These are exploration commands,
+not measured physical acceleration. Coverage of particular state/action pairs
+must still be assessed from the collected data.
+
+To collect an additional **500 trajectories per configuration**, using only this
+controller, across all nine conditions:
+
+```bash
+./collect_full_range.sh ./dataset/full_range_run01
+```
+
+This starts its own Epic servers, runs one configuration at a time by default,
+and collects 4,500 new trajectories. The output root must be new or empty. It uses
+fresh ports from 2400 through 2480, saves each worker under `batch_1/` through
+`batch_9/`, and preserves the existing following dataset format. Existing datasets
+are not merged or modified. An optional second argument overrides the count:
+
+```bash
+./collect_full_range.sh ./dataset/full_range_smoke 3
+```
+
+For the 300-per-configuration run:
+
+```bash
+./collect_full_range.sh ./dataset/full_range_300_retry 300
+```
+
+Single-server mode became the default after a November 12 map-loading crash in
+Unreal's Vulkan texture eviction code while two Epic servers were running. The
+stack is consistent with GPU memory pressure but does not prove an out-of-memory
+error. To explicitly opt into two concurrent workers, prefix the command with
+`WORKERS=2`; that mode uses five batches and has less GPU memory headroom.
+
+For a single manually started server:
+
+```bash
+.venv/bin/python -B -u generate_dataset.py --headless --controller full-range \
+  --n-traj 500 --outdir ./dataset/new_day_sunny
+```
+
+The parallel launcher also forwards `--controller full-range` to its following
+workers. Lane-offset collection does not use this controller. Camera warm-up
+still uses the existing unsaved zero-control steps; every recorded action in a
+full-range run is produced by the new controller.
+
+Verified on November 11, 2026: three live day/sunny and three night/rainy
+episodes completed with only the full-range controller. The 842 saved actions
+included 143 negative acceleration commands; all acceleration/steering commands
+were within `[-3, 3]` / `[-1, 1]`. Numeric values, trajectory lengths/shapes,
+and nonblank images passed validation. Feedback and seeded exploration tests
+also passed. The original controller method was verified unchanged. Smoke
+results are in `.local/full-range-controller-smoke/validation.json`; the full
+500-per-configuration run has not been started.
+
 ## Collect two datasets in parallel
+
+### Both collectors across all nine conditions
+
+```bash
+./collect_both.sh ./dataset/both_collectors_run01
+```
+
+This collects **500 trajectories per condition per collector**: 4,500 following
+trajectories plus 4,500 lane-offset trajectories (9,000 total). One following
+collector and one lane-offset collector run concurrently for a condition; then
+the script advances to the next of the nine conditions. Both use Epic servers.
+Lane-offset episodes contain 100 frames at 20 simulated Hz; following episodes
+keep their existing termination-based lengths.
+
+For a small sweep, override the count with the second argument:
+
+```bash
+./collect_both.sh ./dataset/both_collectors_smoke 1
+```
+
+Outputs are separated by condition and collector:
+
+```text
+both_collectors_run01/
+  day_sunny/
+    worker_0_day_sunny/     # generate_dataset.py: existing following format
+    worker_1_day_sunny/     # collect_lane_offsets.py: episode dictionaries
+    worker_0_day_sunny.log
+    worker_1_day_sunny.log
+    server_2000.log
+    server_2010.log
+  day_cloudy/
+  day_rainy/
+  sunset_sunny/
+  sunset_cloudy/
+  sunset_rainy/
+  night_sunny/
+  night_cloudy/
+  night_rainy/
+```
+
+The root must be new or empty. Collection stops on a failed job; it does not
+resume partial runs. Servers are started and stopped automatically. Distinct
+port pairs are used per condition (2000/2010, 2020/2030, ... 2160/2170), avoiding
+TCP teardown delays between batches. Set `BASE_PORT` to select another starting
+port. The traffic-manager ports remain RPC port + 6000.
+
+The parallel launcher also accepts `--first-collector following|lane-offsets`,
+`--second-collector following|lane-offsets`, and `--lane-frames` (default 100).
+Existing commands continue to default to two following collectors.
+
+Following collection retries camera initialization up to ten resets, logging
+termination reasons, before failing. Lane-offset collection unregisters each
+vehicle from autopilot and advances the synchronous world before actor cleanup,
+preventing the destroyed-actor shutdown abort found during its first live test.
+Lane-offset collection also retries rejected episodes up to ten attempts by
+default (`--max-attempts` when running `collect_lane_offsets.py` directly).
+Black/missing camera frames, missing poses, invalid lane labels, and spawn
+failures discard the attempted episode and retry with fresh actors after cleanup.
+Only successfully collected episodes are saved and counted; completed files are
+preserved if attempts are exhausted. Cleanup/server failures and programming
+errors still stop the run rather than repeatedly retrying with uncertain state.
+This adds retries within a running collection, not resume support after exit.
+
+Verified on November 8, 2026: `collect_both.sh` completed one trajectory from each
+collector in all nine configurations (18 total). Each lane-offset episode had
+100 contiguous frame IDs, finite labels, no black frames, and zero consecutive
+duplicate images. Following episode lengths were 58, 77, 62, 67, 60, 61, 53,
+123, and 50 in condition order; saved tensor lengths/shapes, finite values, and
+nonblank/changing images passed checks. Day/night lane camera samples were
+visually inspected. An earlier isolated lane test also completed three 100-frame
+episodes after the autopilot cleanup fix. This is smoke coverage, not a completed
+500-trajectory run or a proof of following-camera frame synchronization.
+Results are in `.local/both-collectors-smoke-v2/`, including `validation.json`;
+the sweep log is `.local/logs/both-collectors-smoke-v2.log`.
 
 To collect all nine day/sunset/night and sunny/cloudy/rainy combinations with
 2,000 trajectories each (18,000 total), run:

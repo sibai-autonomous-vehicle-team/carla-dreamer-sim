@@ -1,0 +1,80 @@
+/home/ahmad/drl_project/carla-dreamer-sim/.venv/lib/python3.10/site-packages/gym/wrappers/monitoring/video_recorder.py:9: DeprecationWarning: The distutils package is deprecated and slated for removal in Python 3.12. Use setuptools or check PEP 632 for potential alternatives
+  import distutils.spawn
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+.....................Training device: CUDA (NVIDIA GeForce RTX 4070)
+    1  critic MSE 0.05496  actor loss -0.28676  validation braking 100.0%
+    4  critic MSE 0.03022  actor loss -0.21450  validation braking 100.0%
+Training device: CUDA (NVIDIA GeForce RTX 4070)
+    1  critic MSE 0.05496  actor loss -0.28676  validation braking 100.0%
+    2  critic MSE 0.04817  actor loss -0.19852  validation braking 100.0%
+Training device: CUDA (NVIDIA GeForce RTX 4070)
+    4  critic MSE 0.02124  actor loss -0.22250  validation braking 100.0%
+Training device: CUDA (NVIDIA GeForce RTX 4070)
+Training device: CUDA (NVIDIA GeForce RTX 4070)
+.EEE
+======================================================================
+ERROR: test_black_frame_cleans_actors_before_retry (test_lane_retries.LaneRetriesTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 73, in test_black_frame_cleans_actors_before_retry
+    collector.collect_episode(world, road_map, traffic, 10, random.Random(42))
+  File "/home/ahmad/drl_project/carla-dreamer-sim/collect_lane_offsets.py", line 75, in collect_episode
+    last_record_step = warmup_steps + args.frames + 30
+NameError: name 'args' is not defined
+
+======================================================================
+ERROR: test_persistent_failure_is_bounded_and_preserves_cause (test_lane_retries.LaneRetriesTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 32, in test_persistent_failure_is_bounded_and_preserves_cause
+    self.run_retry()
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 15, in run_retry
+    return collector.collect_episode_with_retries(
+AttributeError: module 'collect_lane_offsets' has no attribute 'collect_episode_with_retries'
+
+======================================================================
+ERROR: test_transient_failures_retry_same_episode (test_lane_retries.LaneRetriesTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 25, in test_transient_failures_retry_same_episode
+    self.assertIs(self.run_retry(), data)
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 15, in run_retry
+    return collector.collect_episode_with_retries(
+AttributeError: module 'collect_lane_offsets' has no attribute 'collect_episode_with_retries'
+
+======================================================================
+ERROR: test_unexpected_failure_and_interrupt_are_not_retried (test_lane_retries.LaneRetriesTest) (error=<class 'RuntimeError'>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 42, in test_unexpected_failure_and_interrupt_are_not_retried
+    self.run_retry()
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 15, in run_retry
+    return collector.collect_episode_with_retries(
+AttributeError: module 'collect_lane_offsets' has no attribute 'collect_episode_with_retries'
+
+======================================================================
+ERROR: test_unexpected_failure_and_interrupt_are_not_retried (test_lane_retries.LaneRetriesTest) (error=<class 'ValueError'>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 42, in test_unexpected_failure_and_interrupt_are_not_retried
+    self.run_retry()
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 15, in run_retry
+    return collector.collect_episode_with_retries(
+AttributeError: module 'collect_lane_offsets' has no attribute 'collect_episode_with_retries'
+
+======================================================================
+ERROR: test_unexpected_failure_and_interrupt_are_not_retried (test_lane_retries.LaneRetriesTest) (error=<class 'KeyboardInterrupt'>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 42, in test_unexpected_failure_and_interrupt_are_not_retried
+    self.run_retry()
+  File "/home/ahmad/drl_project/carla-dreamer-sim/tests/test_lane_retries.py", line 15, in run_retry
+    return collector.collect_episode_with_retries(
+AttributeError: module 'collect_lane_offsets' has no attribute 'collect_episode_with_retries'
+
+----------------------------------------------------------------------
+Ran 26 tests in 2.832s
+
+FAILED (errors=6)

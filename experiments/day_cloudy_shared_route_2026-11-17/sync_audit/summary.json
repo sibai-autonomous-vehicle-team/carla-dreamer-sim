@@ -1,0 +1,266 @@
+{
+  "checkpoint": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/day_cloudy_resnet18_pid_2026-11-17/best.pth",
+  "map": "Carla/Maps/Town03",
+  "weather": "day_cloudy",
+  "fixed_delta_seconds": 0.1,
+  "audit_cutoff_m": 14.0,
+  "shared_route": true,
+  "episodes": [
+    {
+      "seed": 42,
+      "scenario": {
+        "name": "straight_east",
+        "road": 19,
+        "lane": 1,
+        "start_s": 49,
+        "length": 46,
+        "finish_m": 30,
+        "branch_roads": []
+      },
+      "target_gap_m": 4,
+      "ending": "step_limit",
+      "steps": 105,
+      "start_pose": [
+        -62.42436981201172,
+        -136.10887145996094,
+        -0.024219397455453873,
+        0.08374494314193726,
+        1.227233648300171,
+        -0.0282287560403347,
+        -52.42716979980469,
+        -135.89468383789062,
+        -0.14794108271598816,
+        0.0,
+        1.227264642715454,
+        0.0
+      ],
+      "vehicle_types": [
+        "vehicle.audi.a2",
+        "vehicle.audi.etron"
+      ],
+      "snapshot_count": 106,
+      "matched_captures": 103,
+      "decisions_without_camera": 2,
+      "terminal_camera_captured": false
+    },
+    {
+      "seed": 43,
+      "scenario": {
+        "name": "straight_west",
+        "road": 19,
+        "lane": -1,
+        "start_s": 5,
+        "length": 44,
+        "finish_m": 30,
+        "branch_roads": []
+      },
+      "target_gap_m": 6,
+      "ending": "step_limit",
+      "steps": 105,
+      "start_pose": [
+        -18.360008239746094,
+        -138.66566467285156,
+        -0.1479409784078598,
+        0.0,
+        -178.772705078125,
+        0.0,
+        -28.35771369934082,
+        -138.87985229492188,
+        0.04615585133433342,
+        0.0,
+        -178.772705078125,
+        0.0
+      ],
+      "vehicle_types": [
+        "vehicle.audi.etron",
+        "vehicle.audi.tt"
+      ],
+      "snapshot_count": 106,
+      "matched_captures": 73,
+      "decisions_without_camera": 3,
+      "terminal_camera_captured": false
+    },
+    {
+      "seed": 44,
+      "scenario": {
+        "name": "bend",
+        "road": 67,
+        "lane": -2,
+        "start_s": 40,
+        "length": 44,
+        "finish_m": 27,
+        "branch_roads": []
+      },
+      "target_gap_m": 8,
+      "ending": "step_limit",
+      "steps": 105,
+      "start_pose": [
+        228.68557739257812,
+        120.56731414794922,
+        0.5715236067771912,
+        1.200637936592102,
+        91.39337921142578,
+        2.1882751752855256e-06,
+        228.4425506591797,
+        130.55848693847656,
+        0.9703272581100464,
+        1.1732897758483887,
+        91.39319610595703,
+        5.3372037456256294e-08
+      ],
+      "vehicle_types": [
+        "vehicle.audi.etron",
+        "vehicle.audi.tt"
+      ],
+      "snapshot_count": 106,
+      "matched_captures": 80,
+      "decisions_without_camera": 2,
+      "terminal_camera_captured": false
+    },
+    {
+      "seed": 45,
+      "scenario": {
+        "name": "left_turn",
+        "road": 19,
+        "lane": 1,
+        "start_s": 13,
+        "length": 61,
+        "finish_m": 44,
+        "branch_roads": [
+          1284,
+          29
+        ]
+      },
+      "target_gap_m": 10,
+      "ending": "step_limit",
+      "steps": 105,
+      "start_pose": [
+        -26.432531356811523,
+        -135.33778381347656,
+        -0.07536262273788452,
+        0.10179030150175095,
+        1.2271779775619507,
+        -0.0554504357278347,
+        -16.4354305267334,
+        -135.12362670898438,
+        0.05811729282140732,
+        0.0,
+        1.227264642715454,
+        0.0
+      ],
+      "vehicle_types": [
+        "vehicle.audi.a2",
+        "vehicle.audi.etron"
+      ],
+      "snapshot_count": 106,
+      "matched_captures": 69,
+      "decisions_without_camera": 3,
+      "terminal_camera_captured": false
+    },
+    {
+      "seed": 46,
+      "scenario": {
+        "name": "right_turn",
+        "road": 19,
+        "lane": 1,
+        "start_s": 13,
+        "length": 59,
+        "finish_m": 42,
+        "branch_roads": [
+          1301,
+          28
+        ]
+      },
+      "target_gap_m": 12,
+      "ending": "terminal_dist",
+      "steps": 58,
+      "start_pose": [
+        -26.433134078979492,
+        -135.3378143310547,
+        -0.06420574337244034,
+        0.0,
+        1.227264642715454,
+        0.0,
+        -16.4354305267334,
+        -135.12362670898438,
+        0.05811729282140732,
+        0.0,
+        1.227264642715454,
+        0.0
+      ],
+      "vehicle_types": [
+        "vehicle.audi.tt",
+        "vehicle.audi.etron"
+      ],
+      "snapshot_count": 59,
+      "matched_captures": 33,
+      "decisions_without_camera": 3,
+      "terminal_camera_captured": true
+    }
+  ],
+  "unique_capture_frames": {
+    "frames": 358,
+    "mae_m": 0.994364403222961,
+    "mean_signed_error_m": -0.9385526439758941,
+    "p95_abs_error_m": 4.467998623548997
+  },
+  "capture_bins": {
+    "0\u20133 m": {
+      "frames": 0,
+      "mae_m": null,
+      "mean_signed_error_m": null,
+      "p95_abs_error_m": null
+    },
+    "3\u20136 m": {
+      "frames": 25,
+      "mae_m": 0.31880512186408216,
+      "mean_signed_error_m": -0.24917302397619664,
+      "p95_abs_error_m": 0.6324590912986103
+    },
+    "6\u20138 m": {
+      "frames": 184,
+      "mae_m": 0.18918988535401768,
+      "mean_signed_error_m": -0.10088517051340784,
+      "p95_abs_error_m": 0.4101336779579878
+    },
+    "8\u201310 m": {
+      "frames": 79,
+      "mae_m": 0.695101048768661,
+      "mean_signed_error_m": -0.6698891521537177,
+      "p95_abs_error_m": 1.0839226108190032
+    },
+    ">10 m": {
+      "frames": 70,
+      "mae_m": 3.6898343792764927,
+      "mean_signed_error_m": -3.6898343792764927,
+      "p95_abs_error_m": 4.764258239249806
+    }
+  },
+  "decision_frames_using_capture_gap": {
+    "frames": 465,
+    "mae_m": 1.1109913198890211,
+    "mean_signed_error_m": -1.070465913999073,
+    "p95_abs_error_m": 4.475913104165761
+  },
+  "decision_frames_using_current_gap": {
+    "frames": 465,
+    "mae_m": 1.1403454113611493,
+    "mean_signed_error_m": -1.107551740078164,
+    "p95_abs_error_m": 4.480394998809868
+  },
+  "capture_gap_minus_current_gap": {
+    "frames": 465,
+    "mae_m": 0.05621074118043131,
+    "mean_signed_error_m": -0.037085826079091,
+    "p95_abs_error_m": 0.23413670553356006
+  },
+  "camera_age_ticks_histogram": {
+    "0": 133,
+    "1": 259,
+    "2": 72,
+    "3": 1
+  },
+  "repeated_images_at_decision": 194,
+  "capture_true_above_10_m": 70,
+  "capture_true_and_predicted_above_10_m": 0
+}

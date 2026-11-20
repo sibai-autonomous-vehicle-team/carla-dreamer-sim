@@ -5,3 +5,11 @@ dataset/
 dataset.zip
 .venv/
 .local/
+
+# Imported training outputs and local source archives
+/training/_local/
+/contextual-safety-filters-main.zip
+/full_range_300.tar.gz
+
+# Local model checkpoints
+*.pth

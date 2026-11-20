@@ -1,0 +1,32 @@
+train: 48 episodes, 8 route groups, 2492 frames
+validation: 18 episodes, 3 route groups, 922 frames
+test: 30 episodes, 5 route groups, 1594 frames
+Device: cuda. Legacy replay: 0 frames.
+Starting checkpoint validation score: 1.852 m
+Validation gate close_0_to_3_m: baseline 1.035, max MAE 0.600 m
+Validation gate standard_3_to_8_m: baseline 1.013, max MAE 1.113 m
+Validation gate standard_8_to_12_m: baseline 3.508, max MAE 3.608 m
+Epoch 01/20: loss 0.475, validation MAE 1.503 m, score 1.469 m, failed gates standard_3_to_8_m
+Epoch 02/20: loss 0.274, validation MAE 1.533 m, score 1.500 m, failed gates standard_3_to_8_m
+Epoch 03/20: loss 0.255, validation MAE 1.593 m, score 1.563 m, failed gates standard_3_to_8_m
+Epoch 04/20: loss 0.197, validation MAE 1.606 m, score 1.566 m, failed gates standard_3_to_8_m
+Epoch 05/20: loss 0.183, validation MAE 1.561 m, score 1.524 m, failed gates standard_3_to_8_m
+Epoch 06/20: loss 0.178, validation MAE 1.644 m, score 1.600 m, failed gates standard_3_to_8_m
+Epoch 07/20: loss 0.140, validation MAE 1.591 m, score 1.557 m, failed gates standard_3_to_8_m
+Epoch 08/20: loss 0.141, validation MAE 1.645 m, score 1.600 m, failed gates standard_3_to_8_m
+Epoch 09/20: loss 0.123, validation MAE 1.567 m, score 1.530 m, failed gates standard_3_to_8_m
+Epoch 10/20: loss 0.114, validation MAE 1.611 m, score 1.579 m, failed gates standard_3_to_8_m
+Epoch 11/20: loss 0.112, validation MAE 1.587 m, score 1.546 m, failed gates standard_3_to_8_m
+Epoch 12/20: loss 0.100, validation MAE 1.692 m, score 1.642 m, failed gates standard_3_to_8_m
+Epoch 13/20: loss 0.090, validation MAE 1.558 m, score 1.520 m, failed gates standard_3_to_8_m
+Epoch 14/20: loss 0.076, validation MAE 1.601 m, score 1.552 m, failed gates standard_3_to_8_m
+Epoch 15/20: loss 0.097, validation MAE 1.547 m, score 1.506 m, failed gates standard_3_to_8_m
+Epoch 16/20: loss 0.075, validation MAE 1.555 m, score 1.517 m, failed gates standard_3_to_8_m
+Epoch 17/20: loss 0.055, validation MAE 1.586 m, score 1.541 m, failed gates standard_3_to_8_m
+Epoch 18/20: loss 0.062, validation MAE 1.545 m, score 1.505 m, failed gates standard_3_to_8_m
+Epoch 19/20: loss 0.050, validation MAE 1.561 m, score 1.524 m, failed gates standard_3_to_8_m
+Epoch 20/20: loss 0.054, validation MAE 1.519 m, score 1.481 m, failed gates standard_3_to_8_m
+No epoch met the validation gates. Retaining experiments/all_specialists_2026-11-17/night_rainy/archive/best.pth as the selected model.
+original: test MAE 1.285 m | above-10 recall 0/288
+finetuned: test MAE 0.845 m | above-10 recall 201/288
+Evaluated diagnostic epoch: 1. Saved checkpoint: experiments/all_specialists_2026-11-17/night_rainy/sync_model/best_diagnostic.pth

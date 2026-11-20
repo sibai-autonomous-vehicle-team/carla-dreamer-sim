@@ -1,0 +1,31 @@
+train: 48 episodes, 8 route groups, 2494 frames
+validation: 18 episodes, 3 route groups, 924 frames
+test: 30 episodes, 5 route groups, 1595 frames
+Device: cuda. Legacy replay: 0 frames.
+Starting checkpoint validation score: 1.409 m
+Validation gate close_0_to_3_m: baseline 0.752, max MAE 0.600 m
+Validation gate standard_3_to_8_m: baseline 0.684, max MAE 0.784 m
+Validation gate standard_8_to_12_m: baseline 2.790, max MAE 2.890 m
+Epoch 01/20: loss 0.182, validation MAE 0.805 m, score 0.789 m, eligible
+Epoch 02/20: loss 0.078, validation MAE 0.763 m, score 0.750 m, failed gates close_0_to_3_m
+Epoch 03/20: loss 0.060, validation MAE 0.751 m, score 0.736 m, eligible
+Epoch 04/20: loss 0.050, validation MAE 0.731 m, score 0.719 m, eligible
+Epoch 05/20: loss 0.044, validation MAE 0.739 m, score 0.721 m, eligible
+Epoch 06/20: loss 0.037, validation MAE 0.726 m, score 0.711 m, eligible
+Epoch 07/20: loss 0.028, validation MAE 0.721 m, score 0.710 m, eligible
+Epoch 08/20: loss 0.026, validation MAE 0.745 m, score 0.733 m, eligible
+Epoch 09/20: loss 0.025, validation MAE 0.729 m, score 0.720 m, eligible
+Epoch 10/20: loss 0.023, validation MAE 0.727 m, score 0.714 m, eligible
+Epoch 11/20: loss 0.020, validation MAE 0.737 m, score 0.728 m, failed gates close_0_to_3_m
+Epoch 12/20: loss 0.019, validation MAE 0.710 m, score 0.696 m, eligible
+Epoch 13/20: loss 0.018, validation MAE 0.732 m, score 0.717 m, eligible
+Epoch 14/20: loss 0.017, validation MAE 0.728 m, score 0.714 m, eligible
+Epoch 15/20: loss 0.017, validation MAE 0.741 m, score 0.732 m, failed gates close_0_to_3_m
+Epoch 16/20: loss 0.013, validation MAE 0.721 m, score 0.709 m, eligible
+Epoch 17/20: loss 0.014, validation MAE 0.725 m, score 0.713 m, eligible
+Epoch 18/20: loss 0.013, validation MAE 0.743 m, score 0.730 m, eligible
+Epoch 19/20: loss 0.012, validation MAE 0.738 m, score 0.725 m, eligible
+Epoch 20/20: loss 0.011, validation MAE 0.732 m, score 0.721 m, eligible
+original: test MAE 1.078 m | above-10 recall 0/288
+finetuned: test MAE 0.618 m | above-10 recall 251/288
+Selected epoch: 12. Saved checkpoint: experiments/all_specialists_2026-11-17/night_cloudy/sync_model/best.pth

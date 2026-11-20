@@ -1,0 +1,19 @@
+{
+  "condition": "night_rainy",
+  "status": "tested",
+  "target_gap": 6.0,
+  "kp": 0.9,
+  "ki": 0.05,
+  "kd": 0.15,
+  "seed": 42,
+  "episodes": 5,
+  "steps": 360,
+  "warmup_steps": 5,
+  "terminal_dist": 10,
+  "out_lane_thres": 5,
+  "shared_route": true,
+  "route_manifest": "../routes.json",
+  "cnn_sha256": "e44aac168451260d0d2ee826fc28c0685b20e512c6b373c0647fd2c948b021e6",
+  "cnn_source": "experiments/all_specialists_2026-11-17/night_rainy/archive/best.pth",
+  "live_report": "experiments/all_specialists_2026-11-17/night_rainy/live/summary.json"
+}

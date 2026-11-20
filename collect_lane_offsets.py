@@ -9,8 +9,13 @@ from queue import Empty, Queue
 import carla
 import numpy as np
 import torch
+from tqdm import trange
 
 from generate_dataset import TIME_OF_DAY, WEATHER_PRESETS, make_weather, save_atomic
+
+
+class EpisodeCollectionError(RuntimeError):
+    """A rejected episode that can be retried after successful actor cleanup."""
 
 
 def signed_lane_offset(location, road_map):
@@ -19,14 +24,14 @@ def signed_lane_offset(location, road_map):
         location, project_to_road=True, lane_type=carla.LaneType.Driving
     )
     if waypoint is None:
-        raise RuntimeError("No driving lane found for the ego vehicle.")
+        raise EpisodeCollectionError("No driving lane found for the ego vehicle.")
     center = waypoint.transform.location
     right = waypoint.transform.get_right_vector()
     return ((location.x - center.x) * right.x
             + (location.y - center.y) * right.y) / math.hypot(right.x, right.y)
 
 
-def collect_episode(world, road_map, traffic, args, rng):
+def collect_episode(world, road_map, traffic, n_frames, rng):
     blueprints = world.get_blueprint_library()
     vehicle = blueprints.find("vehicle.tesla.model3")
     spawn_points = road_map.get_spawn_points()
@@ -42,7 +47,7 @@ def collect_episode(world, road_map, traffic, args, rng):
         if ego is not None:
             break
     if ego is None:
-        raise RuntimeError("Could not spawn an ego vehicle on the requested map.")
+        raise EpisodeCollectionError("Could not spawn an ego vehicle on the requested map.")
 
     camera = None
     try:
@@ -50,10 +55,13 @@ def collect_episode(world, road_map, traffic, args, rng):
         camera_bp.set_attribute("image_size_x", "224")
         camera_bp.set_attribute("image_size_y", "224")
         camera_bp.set_attribute("sensor_tick", "0.0")
-        camera = world.spawn_actor(
-            camera_bp, carla.Transform(carla.Location(x=1.5, z=1.6)),
-            attach_to=ego, attachment_type=carla.AttachmentType.Rigid,
-        )
+        try:
+            camera = world.spawn_actor(
+                camera_bp, carla.Transform(carla.Location(x=1.5, z=1.6)),
+                attach_to=ego, attachment_type=carla.AttachmentType.Rigid,
+            )
+        except RuntimeError as exc:
+            raise EpisodeCollectionError(f'Could not spawn camera: {exc}') from exc
         images = Queue()
         camera.listen(images.put)
         ego.set_autopilot(True, traffic.get_port())
@@ -72,11 +80,11 @@ def collect_episode(world, road_map, traffic, args, rng):
                 snapshot = world.get_snapshot()
                 vehicle_snapshot = snapshot.find(ego.id)
                 if snapshot.frame != frame or vehicle_snapshot is None:
-                    raise RuntimeError(f"Missing ego pose for simulation frame {frame}.")
+                    raise EpisodeCollectionError(f"Missing ego pose for simulation frame {frame}.")
                 location = vehicle_snapshot.get_transform().location
                 offset = signed_lane_offset(location, road_map)
                 if not math.isfinite(offset):
-                    raise RuntimeError(f"Invalid lane offset for frame {frame}.")
+                    raise EpisodeCollectionError(f"Invalid lane offset for frame {frame}.")
                 pending_offsets[frame] = offset
 
             while True:
@@ -89,17 +97,17 @@ def collect_episode(world, road_map, traffic, args, rng):
                 pixels = np.frombuffer(image.raw_data, dtype=np.uint8)
                 rgb = pixels.reshape(image.height, image.width, 4)[:, :, 2::-1]
                 if not rgb.any():
-                    raise RuntimeError(f"Camera frame {image.frame} is black. Check rendering.")
+                    raise EpisodeCollectionError(f"Camera frame {image.frame} is black. Check rendering.")
                 visuals.append(rgb.copy())
                 offsets.append(pending_offsets.pop(image.frame))
                 frame_ids.append(image.frame)
-                if len(frame_ids) == args.frames:
+                if len(frame_ids) == n_frames:
                     break
-            if len(frame_ids) == args.frames:
+            if len(frame_ids) == n_frames:
                 break
-        if len(frame_ids) != args.frames or frame_ids != sorted(frame_ids):
-            raise RuntimeError(
-                f"Expected {args.frames} ordered camera frames, received {len(frame_ids)}."
+        if len(frame_ids) != n_frames or frame_ids != sorted(frame_ids):
+            raise EpisodeCollectionError(
+                f"Expected {n_frames} ordered camera frames, received {len(frame_ids)}."
             )
 
         return {
@@ -135,13 +143,13 @@ def main():
     if args.outdir.exists():
         parser.error("--outdir already exists; choose a new directory")
 
-    client = carla.Client("127.0.0.1", args.port)
+    client = carla.Client("127.0.0.1", port)
     client.set_timeout(30.0)
     world = client.get_world()
     if world.get_settings().synchronous_mode:
         raise RuntimeError("Start a fresh CARLA server dedicated to this collector.")
-    if world.get_map().name.split("/")[-1] != args.map:
-        world = client.load_world(args.map)
+    if world.get_map().name.split("/")[-1] != map_name:
+        world = client.load_world(map_name)
     road_map = world.get_map()
     original_settings = world.get_settings()
     original_weather = world.get_weather()
@@ -149,17 +157,21 @@ def main():
     settings.synchronous_mode = True
     settings.fixed_delta_seconds = 0.05
     settings.no_rendering_mode = False
-    traffic = client.get_trafficmanager(args.tm_port)
-    rng = random.Random(args.seed)
-    args.outdir.mkdir(parents=True, exist_ok=False)
+    traffic = client.get_trafficmanager(tm_port)
+    outdir.mkdir(parents=True, exist_ok=False)
     try:
         world.apply_settings(settings)
         traffic.set_synchronous_mode(True)
-        traffic.set_random_device_seed(args.seed)
-        world.set_weather(make_weather(args.time_of_day, args.weather))
-        for episode in range(args.n_traj):
-            data = collect_episode(world, road_map, traffic, args, rng)
-            path = args.outdir / f"episode_{episode:03d}.pth"
+        traffic.set_random_device_seed(seed)
+        world.set_weather(weather_params)
+        print(f"Collecting with time_of_day={time_of_day}, weather={weather}", flush=True)
+
+        for idx in trange(n_traj, desc="Collecting Lane Offset Trajectories"):
+            # The episode helper owns spawning, synchronized ticks, and cleanup.
+            data = collect_episode_with_retries(
+                world, road_map, traffic, frames, rng, idx, max_attempts,
+            )
+            path = outdir / f"episode_{idx:03d}.pth"
             save_atomic(data, path)
             offsets = data["lane_offsets_m"]
             print(f"Saved {path} | {len(offsets)} frames | offsets "
@@ -170,6 +182,31 @@ def main():
         finally:
             world.apply_settings(original_settings)
             world.set_weather(original_weather)
+    print(f"Saved {n_traj} trajectories to {outdir}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--outdir', type=Path, required=True, help='New output directory')
+    parser.add_argument('--n-traj', type=int, default=3)
+    parser.add_argument('--frames', type=int, default=100, help='Frames per episode')
+    parser.add_argument('--max-attempts', type=int, default=10, help='Attempts per saved episode (default: 10)')
+    parser.add_argument('--seed', type=int, default=42)
+    parser.add_argument('--port', type=int, default=2000)
+    parser.add_argument('--tm-port', type=int, default=None, help='Defaults to RPC port + 6000')
+    parser.add_argument('--map', default='Town03')
+    parser.add_argument('--time-of-day', choices=TIME_OF_DAY, default='day')
+    parser.add_argument('--weather', choices=WEATHER_PRESETS, default='sunny')
+    args = parser.parse_args()
+    if args.n_traj < 1 or args.frames < 1 or args.max_attempts < 1:
+        parser.error('--n-traj, --frames, and --max-attempts must be positive')
+    if args.outdir.exists():
+        parser.error('--outdir already exists; choose a new directory')
+    collect_lane_offset_dataset(
+        outdir=args.outdir, n_traj=args.n_traj, frames=args.frames, seed=args.seed,
+        time_of_day=args.time_of_day, weather=args.weather, port=args.port,
+        tm_port=args.tm_port, map_name=args.map, max_attempts=args.max_attempts,
+    )
 
 
 if __name__ == "__main__":

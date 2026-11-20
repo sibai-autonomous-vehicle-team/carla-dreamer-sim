@@ -1,0 +1,3 @@
+# Optional plotting dependencies; preserve the collection NumPy version.
+matplotlib>=3.8,<3.11
+numpy==1.26.4

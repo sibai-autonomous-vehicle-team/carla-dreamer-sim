@@ -1,0 +1,680 @@
+{
+  "train": [
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/straight_east/seed_4200.pth",
+      "route": "straight_east",
+      "route_group": "straight_east",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/straight_east/seed_4201.pth",
+      "route": "straight_east",
+      "route_group": "straight_east",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/straight_east/seed_4202.pth",
+      "route": "straight_east",
+      "route_group": "straight_east",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/straight_west/seed_4203.pth",
+      "route": "straight_west",
+      "route_group": "straight_west",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/straight_west/seed_4204.pth",
+      "route": "straight_west",
+      "route_group": "straight_west",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/straight_west/seed_4205.pth",
+      "route": "straight_west",
+      "route_group": "straight_west",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/bend/seed_4206.pth",
+      "route": "bend",
+      "route_group": "bend",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/bend/seed_4207.pth",
+      "route": "bend",
+      "route_group": "bend",
+      "source": "standard",
+      "frames": 68
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/bend/seed_4208.pth",
+      "route": "bend",
+      "route_group": "bend",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/left_turn/seed_4209.pth",
+      "route": "left_turn",
+      "route_group": "left_turn",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/left_turn/seed_4210.pth",
+      "route": "left_turn",
+      "route_group": "left_turn",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/left_turn/seed_4211.pth",
+      "route": "left_turn",
+      "route_group": "left_turn",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/right_turn/seed_4212.pth",
+      "route": "right_turn",
+      "route_group": "right_turn",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/right_turn/seed_4213.pth",
+      "route": "right_turn",
+      "route_group": "right_turn",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/right_turn/seed_4214.pth",
+      "route": "right_turn",
+      "route_group": "right_turn",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/left_turn_road35_-4_0/seed_4215.pth",
+      "route": "left_turn_road35_-4_0",
+      "route_group": "left_turn_road35_-4_0",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/left_turn_road35_-4_0/seed_4216.pth",
+      "route": "left_turn_road35_-4_0",
+      "route_group": "left_turn_road35_-4_0",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/left_turn_road35_-4_0/seed_4217.pth",
+      "route": "left_turn_road35_-4_0",
+      "route_group": "left_turn_road35_-4_0",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/right_turn_road0_3_15/seed_4218.pth",
+      "route": "right_turn_road0_3_15",
+      "route_group": "right_turn_road0_3_15",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/right_turn_road0_3_15/seed_4219.pth",
+      "route": "right_turn_road0_3_15",
+      "route_group": "right_turn_road0_3_15",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/right_turn_road0_3_15/seed_4220.pth",
+      "route": "right_turn_road0_3_15",
+      "route_group": "right_turn_road0_3_15",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/bend_road61_-1_5/seed_4221.pth",
+      "route": "bend_road61_-1_5",
+      "route_group": "bend_road61_-1_5",
+      "source": "standard",
+      "frames": 71
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/bend_road61_-1_5/seed_4222.pth",
+      "route": "bend_road61_-1_5",
+      "route_group": "bend_road61_-1_5",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/train/bend_road61_-1_5/seed_4223.pth",
+      "route": "bend_road61_-1_5",
+      "route_group": "bend_road61_-1_5",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/straight_east/seed_6200.pth",
+      "route": "straight_east",
+      "route_group": "straight_east",
+      "source": "close",
+      "frames": 34
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/straight_east/seed_6201.pth",
+      "route": "straight_east",
+      "route_group": "straight_east",
+      "source": "close",
+      "frames": 32
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/straight_east/seed_6202.pth",
+      "route": "straight_east",
+      "route_group": "straight_east",
+      "source": "close",
+      "frames": 20
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/straight_west/seed_6203.pth",
+      "route": "straight_west",
+      "route_group": "straight_west",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/straight_west/seed_6204.pth",
+      "route": "straight_west",
+      "route_group": "straight_west",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/straight_west/seed_6205.pth",
+      "route": "straight_west",
+      "route_group": "straight_west",
+      "source": "close",
+      "frames": 20
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/bend/seed_6206.pth",
+      "route": "bend",
+      "route_group": "bend",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/bend/seed_6207.pth",
+      "route": "bend",
+      "route_group": "bend",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/bend/seed_6208.pth",
+      "route": "bend",
+      "route_group": "bend",
+      "source": "close",
+      "frames": 36
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/left_turn/seed_6209.pth",
+      "route": "left_turn",
+      "route_group": "left_turn",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/left_turn/seed_6210.pth",
+      "route": "left_turn",
+      "route_group": "left_turn",
+      "source": "close",
+      "frames": 29
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/left_turn/seed_6211.pth",
+      "route": "left_turn",
+      "route_group": "left_turn",
+      "source": "close",
+      "frames": 11
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/right_turn/seed_6212.pth",
+      "route": "right_turn",
+      "route_group": "right_turn",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/right_turn/seed_6213.pth",
+      "route": "right_turn",
+      "route_group": "right_turn",
+      "source": "close",
+      "frames": 31
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/right_turn/seed_6214.pth",
+      "route": "right_turn",
+      "route_group": "right_turn",
+      "source": "close",
+      "frames": 35
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/left_turn_road35_-4_0/seed_6215.pth",
+      "route": "left_turn_road35_-4_0",
+      "route_group": "left_turn_road35_-4_0",
+      "source": "close",
+      "frames": 39
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/left_turn_road35_-4_0/seed_6216.pth",
+      "route": "left_turn_road35_-4_0",
+      "route_group": "left_turn_road35_-4_0",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/left_turn_road35_-4_0/seed_6217.pth",
+      "route": "left_turn_road35_-4_0",
+      "route_group": "left_turn_road35_-4_0",
+      "source": "close",
+      "frames": 35
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/right_turn_road0_3_15/seed_6218.pth",
+      "route": "right_turn_road0_3_15",
+      "route_group": "right_turn_road0_3_15",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/right_turn_road0_3_15/seed_6219.pth",
+      "route": "right_turn_road0_3_15",
+      "route_group": "right_turn_road0_3_15",
+      "source": "close",
+      "frames": 32
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/right_turn_road0_3_15/seed_6220.pth",
+      "route": "right_turn_road0_3_15",
+      "route_group": "right_turn_road0_3_15",
+      "source": "close",
+      "frames": 7
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/bend_road61_-1_5/seed_6221.pth",
+      "route": "bend_road61_-1_5",
+      "route_group": "bend_road61_-1_5",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/bend_road61_-1_5/seed_6222.pth",
+      "route": "bend_road61_-1_5",
+      "route_group": "bend_road61_-1_5",
+      "source": "close",
+      "frames": 33
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/train/bend_road61_-1_5/seed_6223.pth",
+      "route": "bend_road61_-1_5",
+      "route_group": "bend_road61_-1_5",
+      "source": "close",
+      "frames": 9
+    }
+  ],
+  "validation": [
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/left_turn_road24_1_10/seed_4224.pth",
+      "route": "left_turn_road24_1_10",
+      "route_group": "left_turn_road24_1_10",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/left_turn_road24_1_10/seed_4225.pth",
+      "route": "left_turn_road24_1_10",
+      "route_group": "left_turn_road24_1_10",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/left_turn_road24_1_10/seed_4226.pth",
+      "route": "left_turn_road24_1_10",
+      "route_group": "left_turn_road24_1_10",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/bend_road76_-1_155/seed_4227.pth",
+      "route": "bend_road76_-1_155",
+      "route_group": "bend_road76_-1_155",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/bend_road76_-1_155/seed_4228.pth",
+      "route": "bend_road76_-1_155",
+      "route_group": "bend_road76_-1_155",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/bend_road76_-1_155/seed_4229.pth",
+      "route": "bend_road76_-1_155",
+      "route_group": "bend_road76_-1_155",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/straight_road3_3_90/seed_4230.pth",
+      "route": "straight_road3_3_90",
+      "route_group": "straight_road3_3_90",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/straight_road3_3_90/seed_4231.pth",
+      "route": "straight_road3_3_90",
+      "route_group": "straight_road3_3_90",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/validation/straight_road3_3_90/seed_4232.pth",
+      "route": "straight_road3_3_90",
+      "route_group": "straight_road3_3_90",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/left_turn_road24_1_10/seed_6224.pth",
+      "route": "left_turn_road24_1_10",
+      "route_group": "left_turn_road24_1_10",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/left_turn_road24_1_10/seed_6225.pth",
+      "route": "left_turn_road24_1_10",
+      "route_group": "left_turn_road24_1_10",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/left_turn_road24_1_10/seed_6226.pth",
+      "route": "left_turn_road24_1_10",
+      "route_group": "left_turn_road24_1_10",
+      "source": "close",
+      "frames": 1
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/bend_road76_-1_155/seed_6227.pth",
+      "route": "bend_road76_-1_155",
+      "route_group": "bend_road76_-1_155",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/bend_road76_-1_155/seed_6228.pth",
+      "route": "bend_road76_-1_155",
+      "route_group": "bend_road76_-1_155",
+      "source": "close",
+      "frames": 31
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/bend_road76_-1_155/seed_6229.pth",
+      "route": "bend_road76_-1_155",
+      "route_group": "bend_road76_-1_155",
+      "source": "close",
+      "frames": 35
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/straight_road3_3_90/seed_6230.pth",
+      "route": "straight_road3_3_90",
+      "route_group": "straight_road3_3_90",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/straight_road3_3_90/seed_6231.pth",
+      "route": "straight_road3_3_90",
+      "route_group": "straight_road3_3_90",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/validation/straight_road3_3_90/seed_6232.pth",
+      "route": "straight_road3_3_90",
+      "route_group": "straight_road3_3_90",
+      "source": "close",
+      "frames": 6
+    }
+  ],
+  "test": [
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/left_turn_road17_-1_30/seed_4233.pth",
+      "route": "left_turn_road17_-1_30",
+      "route_group": "left_turn_road17_-1_30",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/left_turn_road17_-1_30/seed_4234.pth",
+      "route": "left_turn_road17_-1_30",
+      "route_group": "left_turn_road17_-1_30",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/left_turn_road17_-1_30/seed_4235.pth",
+      "route": "left_turn_road17_-1_30",
+      "route_group": "left_turn_road17_-1_30",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/right_turn_road2_-2_85/seed_4236.pth",
+      "route": "right_turn_road2_-2_85",
+      "route_group": "right_turn_road2_-2_85",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/right_turn_road2_-2_85/seed_4237.pth",
+      "route": "right_turn_road2_-2_85",
+      "route_group": "right_turn_road2_-2_85",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/right_turn_road2_-2_85/seed_4238.pth",
+      "route": "right_turn_road2_-2_85",
+      "route_group": "right_turn_road2_-2_85",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/bend_road65_-1_65/seed_4239.pth",
+      "route": "bend_road65_-1_65",
+      "route_group": "bend_road65_-1_65",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/bend_road65_-1_65/seed_4240.pth",
+      "route": "bend_road65_-1_65",
+      "route_group": "bend_road65_-1_65",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/bend_road65_-1_65/seed_4241.pth",
+      "route": "bend_road65_-1_65",
+      "route_group": "bend_road65_-1_65",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/straight_road4_3_65/seed_4242.pth",
+      "route": "straight_road4_3_65",
+      "route_group": "straight_road4_3_65",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/straight_road4_3_65/seed_4243.pth",
+      "route": "straight_road4_3_65",
+      "route_group": "straight_road4_3_65",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/straight_road4_3_65/seed_4244.pth",
+      "route": "straight_road4_3_65",
+      "route_group": "straight_road4_3_65",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/bend_road23_1_55/seed_4245.pth",
+      "route": "bend_road23_1_55",
+      "route_group": "bend_road23_1_55",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/bend_road23_1_55/seed_4246.pth",
+      "route": "bend_road23_1_55",
+      "route_group": "bend_road23_1_55",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/standard_captures/episodes/test/bend_road23_1_55/seed_4247.pth",
+      "route": "bend_road23_1_55",
+      "route_group": "bend_road23_1_55",
+      "source": "standard",
+      "frames": 72
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/left_turn_road17_-1_30/seed_6233.pth",
+      "route": "left_turn_road17_-1_30",
+      "route_group": "left_turn_road17_-1_30",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/left_turn_road17_-1_30/seed_6234.pth",
+      "route": "left_turn_road17_-1_30",
+      "route_group": "left_turn_road17_-1_30",
+      "source": "close",
+      "frames": 32
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/left_turn_road17_-1_30/seed_6235.pth",
+      "route": "left_turn_road17_-1_30",
+      "route_group": "left_turn_road17_-1_30",
+      "source": "close",
+      "frames": 38
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/right_turn_road2_-2_85/seed_6236.pth",
+      "route": "right_turn_road2_-2_85",
+      "route_group": "right_turn_road2_-2_85",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/right_turn_road2_-2_85/seed_6237.pth",
+      "route": "right_turn_road2_-2_85",
+      "route_group": "right_turn_road2_-2_85",
+      "source": "close",
+      "frames": 32
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/right_turn_road2_-2_85/seed_6238.pth",
+      "route": "right_turn_road2_-2_85",
+      "route_group": "right_turn_road2_-2_85",
+      "source": "close",
+      "frames": 32
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/bend_road65_-1_65/seed_6239.pth",
+      "route": "bend_road65_-1_65",
+      "route_group": "bend_road65_-1_65",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/bend_road65_-1_65/seed_6240.pth",
+      "route": "bend_road65_-1_65",
+      "route_group": "bend_road65_-1_65",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/bend_road65_-1_65/seed_6241.pth",
+      "route": "bend_road65_-1_65",
+      "route_group": "bend_road65_-1_65",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/straight_road4_3_65/seed_6242.pth",
+      "route": "straight_road4_3_65",
+      "route_group": "straight_road4_3_65",
+      "source": "close",
+      "frames": 40
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/straight_road4_3_65/seed_6243.pth",
+      "route": "straight_road4_3_65",
+      "route_group": "straight_road4_3_65",
+      "source": "close",
+      "frames": 31
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/straight_road4_3_65/seed_6244.pth",
+      "route": "straight_road4_3_65",
+      "route_group": "straight_road4_3_65",
+      "source": "close",
+      "frames": 15
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/bend_road23_1_55/seed_6245.pth",
+      "route": "bend_road23_1_55",
+      "route_group": "bend_road23_1_55",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/bend_road23_1_55/seed_6246.pth",
+      "route": "bend_road23_1_55",
+      "route_group": "bend_road23_1_55",
+      "source": "close",
+      "frames": 41
+    },
+    {
+      "path": "/home/ahmad/drl_project/carla-dreamer-sim/experiments/all_specialists_2026-11-17/night_sunny/close_captures/episodes/test/bend_road23_1_55/seed_6247.pth",
+      "route": "bend_road23_1_55",
+      "route_group": "bend_road23_1_55",
+      "source": "close",
+      "frames": 11
+    }
+  ]
+}

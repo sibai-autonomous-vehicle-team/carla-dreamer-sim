@@ -1,0 +1,827 @@
+{
+  "case": {
+    "case_id": "test_02_bend_day_sunny",
+    "split": "test",
+    "condition": "day_sunny",
+    "seed": 30020,
+    "route": {
+      "name": "test_02_bend",
+      "road": 2,
+      "lane": 2,
+      "start_s": 45.0,
+      "length": 60,
+      "finish_m": 35.0,
+      "branch_roads": []
+    },
+    "lead_start_index": 10,
+    "lead_profile": "pull_away"
+  },
+  "mode": "day_cloudy",
+  "initialization": {
+    "frame": 37860,
+    "simulation_time_s": 3786.8912438536063,
+    "state": [
+      -56.682899475097656,
+      -198.2151641845703,
+      -0.06420574337244034,
+      0.0,
+      -12.146258354187012,
+      0.0,
+      -47.13941192626953,
+      -198.6887969970703,
+      0.05811756104230881,
+      0.0,
+      1.4395596981048584,
+      0.0
+    ],
+    "initial_gap_m": 4.834338791287735,
+    "actor_types": [
+      "vehicle.audi.tt",
+      "vehicle.audi.etron"
+    ],
+    "velocities": [
+      [
+        -3.838992412852349e-08,
+        -1.498905390917571e-07,
+        0.17681214213371277
+      ],
+      [
+        -2.0297143965564146e-09,
+        -5.100742397901037e-11,
+        -2.267962694168091
+      ]
+    ],
+    "control_start": {
+      "frame": 37865,
+      "simulation_time_s": 3787.391243861057,
+      "state": [
+        -56.682899475097656,
+        -198.2151641845703,
+        -0.013266105204820633,
+        0.0,
+        -12.146258354187012,
+        0.0,
+        -47.06835174560547,
+        -198.68704223632812,
+        -0.029840964823961258,
+        0.22019162774085999,
+        1.4473484754562378,
+        -0.0001525877305539325
+      ],
+      "initial_gap_m": 4.899808473785509,
+      "actor_types": [
+        "vehicle.audi.tt",
+        "vehicle.audi.etron"
+      ],
+      "velocities": [
+        [
+          -4.3696160578754473e-10,
+          2.578614122228373e-08,
+          0.015917053446173668
+        ],
+        [
+          0.8863043785095215,
+          0.023374678567051888,
+          0.39932599663734436
+        ]
+      ]
+    },
+    "first_pid_gap_m": 4.899808473785509
+  },
+  "dt_s": 0.1,
+  "horizon_s": 2.0,
+  "horizon_steps": 20,
+  "effective_horizon_s": 2.0,
+  "decision_interval_s": 2.0,
+  "decision_steps": 20,
+  "target_gap_m": 6.0,
+  "distance_limit_m": 10.0,
+  "lane_limit_m": 5.0,
+  "gains": [
+    0.9,
+    0.05,
+    0.15
+  ],
+  "warmup_steps": 5,
+  "max_camera_age_steps": 5,
+  "route_centerline_xy": [
+    [
+      -56.682899475097656,
+      -198.21517944335938
+    ],
+    [
+      -55.764678955078125,
+      -198.39523315429688
+    ],
+    [
+      -54.84048080444336,
+      -198.54147338867188
+    ],
+    [
+      -53.91152572631836,
+      -198.6536865234375
+    ],
+    [
+      -52.97908020019531,
+      -198.73171997070312
+    ],
+    [
+      -52.04440689086914,
+      -198.77549743652344
+    ],
+    [
+      -51.1087532043457,
+      -198.78492736816406
+    ],
+    [
+      -50.13846969604492,
+      -198.76419067382812
+    ],
+    [
+      -49.13878631591797,
+      -198.7390594482422
+    ],
+    [
+      -48.139102935791016,
+      -198.7139434814453
+    ],
+    [
+      -47.1394157409668,
+      -198.68881225585938
+    ],
+    [
+      -46.139732360839844,
+      -198.6636962890625
+    ],
+    [
+      -45.14004898071289,
+      -198.63856506347656
+    ],
+    [
+      -44.14036178588867,
+      -198.6134490966797
+    ],
+    [
+      -43.14067840576172,
+      -198.5883331298828
+    ],
+    [
+      -42.140995025634766,
+      -198.56320190429688
+    ],
+    [
+      -41.14130783081055,
+      -198.5380859375
+    ],
+    [
+      -40.14162826538086,
+      -198.51295471191406
+    ],
+    [
+      -39.14194107055664,
+      -198.4878387451172
+    ],
+    [
+      -38.14225769042969,
+      -198.4627227783203
+    ],
+    [
+      -37.142574310302734,
+      -198.43759155273438
+    ],
+    [
+      -36.142887115478516,
+      -198.4124755859375
+    ],
+    [
+      -35.14320373535156,
+      -198.38734436035156
+    ],
+    [
+      -34.14352035522461,
+      -198.3622283935547
+    ],
+    [
+      -33.14383316040039,
+      -198.3371124267578
+    ],
+    [
+      -32.1441535949707,
+      -198.31198120117188
+    ],
+    [
+      -31.14446449279785,
+      -198.286865234375
+    ],
+    [
+      -30.1447811126709,
+      -198.26173400878906
+    ],
+    [
+      -29.145095825195312,
+      -198.2366180419922
+    ],
+    [
+      -28.145410537719727,
+      -198.2115020751953
+    ],
+    [
+      -27.145727157592773,
+      -198.18637084960938
+    ],
+    [
+      -26.14604377746582,
+      -198.1612548828125
+    ],
+    [
+      -25.146358489990234,
+      -198.13612365722656
+    ],
+    [
+      -24.14667320251465,
+      -198.1110076904297
+    ],
+    [
+      -23.146989822387695,
+      -198.08587646484375
+    ],
+    [
+      -22.147306442260742,
+      -198.06076049804688
+    ],
+    [
+      -21.147621154785156,
+      -198.03564453125
+    ],
+    [
+      -20.14793586730957,
+      -198.01051330566406
+    ],
+    [
+      -19.148252487182617,
+      -197.9853973388672
+    ],
+    [
+      -18.14856719970703,
+      -197.96026611328125
+    ],
+    [
+      -17.148883819580078,
+      -197.93515014648438
+    ],
+    [
+      -16.149198532104492,
+      -197.9100341796875
+    ],
+    [
+      -15.149516105651855,
+      -197.88490295410156
+    ],
+    [
+      -14.149831771850586,
+      -197.8597869873047
+    ],
+    [
+      -13.150147438049316,
+      -197.83465576171875
+    ],
+    [
+      -12.150463104248047,
+      -197.80953979492188
+    ],
+    [
+      -11.150777816772461,
+      -197.78440856933594
+    ],
+    [
+      -10.151094436645508,
+      -197.75927734375
+    ],
+    [
+      -9.151409149169922,
+      -197.73416137695312
+    ],
+    [
+      -8.151725769042969,
+      -197.70904541015625
+    ],
+    [
+      -7.152040481567383,
+      -197.6839141845703
+    ],
+    [
+      -6.15235710144043,
+      -197.65879821777344
+    ],
+    [
+      -5.152671813964844,
+      -197.6336669921875
+    ],
+    [
+      -4.152988433837891,
+      -197.60855102539062
+    ],
+    [
+      -3.1533026695251465,
+      -197.58343505859375
+    ],
+    [
+      -2.1536192893981934,
+      -197.5583038330078
+    ],
+    [
+      -1.153934121131897,
+      -197.53318786621094
+    ],
+    [
+      -0.15425074100494385,
+      -197.508056640625
+    ],
+    [
+      0.8454345464706421,
+      -197.48294067382812
+    ],
+    [
+      1.8451179265975952,
+      -197.4578094482422
+    ],
+    [
+      2.8448033332824707,
+      -197.4326934814453
+    ]
+  ],
+  "rows": [
+    {
+      "step": 1,
+      "time_s": 0.0,
+      "decision_frame": 37865,
+      "next_frame": 37866,
+      "capture_frame": 37865,
+      "capture_age_steps": 0,
+      "true_gap_m": 4.899808473785509,
+      "post_step_true_gap_m": 5.015403650432615,
+      "capture_true_gap_m": 4.899808473785509,
+      "generalist_gap_m": 4.5873260498046875,
+      "specialist_gap_m": 5.439824104309082,
+      "predicted_gap_m": 5.439824104309082,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": -0.5069591856002809,
+      "throttle": 0.0,
+      "brake": 0.16898639500141144,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 9.774659399224143,
+      "lead_route_error_m": 0.00017344506154851706
+    },
+    {
+      "step": 2,
+      "time_s": 0.10000000149011612,
+      "decision_frame": 37866,
+      "next_frame": 37867,
+      "capture_frame": 37865,
+      "capture_age_steps": 1,
+      "true_gap_m": 5.015403650432615,
+      "post_step_true_gap_m": 5.189402882263034,
+      "capture_true_gap_m": 4.899808473785509,
+      "generalist_gap_m": 4.5873260498046875,
+      "specialist_gap_m": 5.439824104309082,
+      "predicted_gap_m": 5.439824104309082,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": -0.5097600650787354,
+      "throttle": 0.0,
+      "brake": 0.16992002725601196,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 9.951300218147805,
+      "lead_route_error_m": 0.00013145295835490146
+    },
+    {
+      "step": 3,
+      "time_s": 0.20000000298023224,
+      "decision_frame": 37867,
+      "next_frame": 37868,
+      "capture_frame": 37867,
+      "capture_age_steps": 0,
+      "true_gap_m": 5.189402882263034,
+      "post_step_true_gap_m": 5.422937072502447,
+      "capture_true_gap_m": 5.189402882263034,
+      "generalist_gap_m": 4.893814563751221,
+      "specialist_gap_m": 5.592981815338135,
+      "predicted_gap_m": 5.592981815338135,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": -0.1442166495323181,
+      "throttle": 0.0,
+      "brake": 0.048072218894958496,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 10.18626060499788,
+      "lead_route_error_m": 0.00013534140925249998
+    },
+    {
+      "step": 4,
+      "time_s": 0.30000000447034836,
+      "decision_frame": 37868,
+      "next_frame": 37869,
+      "capture_frame": 37867,
+      "capture_age_steps": 1,
+      "true_gap_m": 5.422937072502447,
+      "post_step_true_gap_m": 5.718243544848158,
+      "capture_true_gap_m": 5.189402882263034,
+      "generalist_gap_m": 4.893814563751221,
+      "specialist_gap_m": 5.592981815338135,
+      "predicted_gap_m": 5.592981815338135,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": -0.37598830699920655,
+      "throttle": 0.0,
+      "brake": 0.12532943487167358,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 10.482202378513087,
+      "lead_route_error_m": 0.00011823508912332064
+    },
+    {
+      "step": 5,
+      "time_s": 0.4000000059604645,
+      "decision_frame": 37869,
+      "next_frame": 37870,
+      "capture_frame": 37869,
+      "capture_age_steps": 0,
+      "true_gap_m": 5.718243544848158,
+      "post_step_true_gap_m": 6.076109446508065,
+      "capture_true_gap_m": 5.718243544848158,
+      "generalist_gap_m": 5.332993507385254,
+      "specialist_gap_m": 5.874091148376465,
+      "predicted_gap_m": 5.874091148376465,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 0.29804454803466796,
+      "throttle": 0.09934818744659424,
+      "brake": 0.0,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 10.840286758947698,
+      "lead_route_error_m": 0.0001233792662607622
+    },
+    {
+      "step": 6,
+      "time_s": 0.5000000074505806,
+      "decision_frame": 37870,
+      "next_frame": 37871,
+      "capture_frame": 37869,
+      "capture_age_steps": 1,
+      "true_gap_m": 6.076109446508065,
+      "post_step_true_gap_m": 6.4832436683868915,
+      "capture_true_gap_m": 5.718243544848158,
+      "generalist_gap_m": 5.332993507385254,
+      "specialist_gap_m": 5.874091148376465,
+      "predicted_gap_m": 5.874091148376465,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": -0.12424899578094482,
+      "throttle": 0.0,
+      "brake": 0.04141633212566376,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 11.246230253979826,
+      "lead_route_error_m": 0.000129645616887287
+    },
+    {
+      "step": 7,
+      "time_s": 0.6000000089406967,
+      "decision_frame": 37871,
+      "next_frame": 37872,
+      "capture_frame": 37871,
+      "capture_age_steps": 0,
+      "true_gap_m": 6.4832436683868915,
+      "post_step_true_gap_m": 6.915768896816884,
+      "capture_true_gap_m": 6.4832436683868915,
+      "generalist_gap_m": 5.789251327514648,
+      "specialist_gap_m": 6.195197105407715,
+      "predicted_gap_m": 6.195197105407715,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 0.6473812866210937,
+      "throttle": 0.21579377353191376,
+      "brake": 0.0,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 11.675477317243228,
+      "lead_route_error_m": 0.00013148947703542585
+    },
+    {
+      "step": 8,
+      "time_s": 0.7000000104308128,
+      "decision_frame": 37872,
+      "next_frame": 37873,
+      "capture_frame": 37871,
+      "capture_age_steps": 1,
+      "true_gap_m": 6.915768896816884,
+      "post_step_true_gap_m": 7.350107535789987,
+      "capture_true_gap_m": 6.4832436683868915,
+      "generalist_gap_m": 5.789251327514648,
+      "specialist_gap_m": 6.195197105407715,
+      "predicted_gap_m": 6.195197105407715,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 0.16669833660125732,
+      "throttle": 0.05556611344218254,
+      "brake": 0.0,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 12.105265898591183,
+      "lead_route_error_m": 0.0001249241359414532
+    },
+    {
+      "step": 9,
+      "time_s": 0.800000011920929,
+      "decision_frame": 37873,
+      "next_frame": 37874,
+      "capture_frame": 37873,
+      "capture_age_steps": 0,
+      "true_gap_m": 7.350107535789987,
+      "post_step_true_gap_m": 7.7739195985737775,
+      "capture_true_gap_m": 7.350107535789987,
+      "generalist_gap_m": 6.505010604858398,
+      "specialist_gap_m": 7.21345329284668,
+      "predicted_gap_m": 7.21345329284668,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 2.616580452919006,
+      "throttle": 0.8721935153007507,
+      "brake": 0.0,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 12.525396778294256,
+      "lead_route_error_m": 0.000132043146839011
+    },
+    {
+      "step": 10,
+      "time_s": 0.9000000134110451,
+      "decision_frame": 37874,
+      "next_frame": 37875,
+      "capture_frame": 37873,
+      "capture_age_steps": 1,
+      "true_gap_m": 7.7739195985737775,
+      "post_step_true_gap_m": 8.18313328790719,
+      "capture_true_gap_m": 7.350107535789987,
+      "generalist_gap_m": 6.505010604858398,
+      "specialist_gap_m": 7.21345329284668,
+      "predicted_gap_m": 7.21345329284668,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 1.0952634382247923,
+      "throttle": 0.3650878369808197,
+      "brake": 0.0,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 12.934732385467317,
+      "lead_route_error_m": 0.00013560229629234704
+    },
+    {
+      "step": 11,
+      "time_s": 1.0000000149011612,
+      "decision_frame": 37875,
+      "next_frame": 37876,
+      "capture_frame": 37875,
+      "capture_age_steps": 0,
+      "true_gap_m": 8.18313328790719,
+      "post_step_true_gap_m": 8.584593090653222,
+      "capture_true_gap_m": 8.18313328790719,
+      "generalist_gap_m": 7.054337501525879,
+      "specialist_gap_m": 7.791875839233398,
+      "predicted_gap_m": 7.791875839233398,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 2.4924369287490844,
+      "throttle": 0.8308122754096985,
+      "brake": 0.0,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 13.336294156968295,
+      "lead_route_error_m": 0.00010551093784622148
+    },
+    {
+      "step": 12,
+      "time_s": 1.1000000163912773,
+      "decision_frame": 37876,
+      "next_frame": 37877,
+      "capture_frame": 37875,
+      "capture_age_steps": 1,
+      "true_gap_m": 8.584593090653222,
+      "post_step_true_gap_m": 8.982531517198835,
+      "capture_true_gap_m": 8.18313328790719,
+      "generalist_gap_m": 7.054337501525879,
+      "specialist_gap_m": 7.791875839233398,
+      "predicted_gap_m": 7.791875839233398,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 1.6337624883651733,
+      "throttle": 0.5445874929428101,
+      "brake": 0.0,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0,
+      "ego_route_error_m": 1.52587890625e-05,
+      "lead_progress_m": 13.73432233477465,
+      "lead_route_error_m": 7.033371035337351e-05
+    },
+    {
+      "step": 13,
+      "time_s": 1.2000000178813934,
+      "decision_frame": 37877,
+      "next_frame": 37878,
+      "capture_frame": 37877,
+      "capture_age_steps": 0,
+      "true_gap_m": 8.982531517198835,
+      "post_step_true_gap_m": 9.369795962118664,
+      "capture_true_gap_m": 8.982531517198835,
+      "generalist_gap_m": 7.516642093658447,
+      "specialist_gap_m": 8.594006538391113,
+      "predicted_gap_m": 8.594006538391113,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 3.0,
+      "throttle": 1.0,
+      "brake": 0.0,
+      "steering_command": -0.10275569642492553,
+      "flags": [],
+      "ego_progress_m": 0.0108360801743079,
+      "ego_route_error_m": 0.0004455119731920633,
+      "lead_progress_m": 14.132137338838755,
+      "lead_route_error_m": 5.198955169888532e-05
+    },
+    {
+      "step": 14,
+      "time_s": 1.3000000193715096,
+      "decision_frame": 37878,
+      "next_frame": 37879,
+      "capture_frame": 37877,
+      "capture_age_steps": 1,
+      "true_gap_m": 9.369795962118664,
+      "post_step_true_gap_m": 9.697962035808317,
+      "capture_true_gap_m": 8.982531517198835,
+      "generalist_gap_m": 7.516642093658447,
+      "specialist_gap_m": 8.594006538391113,
+      "predicted_gap_m": 8.594006538391113,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 2.3686501502990724,
+      "throttle": 0.7895500659942627,
+      "brake": 0.0,
+      "steering_command": -0.10240012228378717,
+      "flags": [],
+      "ego_progress_m": 0.08435054687714419,
+      "ego_route_error_m": 0.003712045096438334,
+      "lead_progress_m": 14.531416340524796,
+      "lead_route_error_m": 1.8421924150163417e-05
+    },
+    {
+      "step": 15,
+      "time_s": 1.4000000208616257,
+      "decision_frame": 37879,
+      "next_frame": 37880,
+      "capture_frame": 37879,
+      "capture_age_steps": 0,
+      "true_gap_m": 9.697962035808317,
+      "post_step_true_gap_m": 9.999288419826204,
+      "capture_true_gap_m": 9.697962035808317,
+      "generalist_gap_m": 7.91489839553833,
+      "specialist_gap_m": 9.290780067443848,
+      "predicted_gap_m": 9.290780067443848,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 3.0,
+      "throttle": 1.0,
+      "brake": 0.0,
+      "steering_command": -0.09976133579417179,
+      "flags": [],
+      "ego_progress_m": 0.18788021617255218,
+      "ego_route_error_m": 0.0080439460828225,
+      "lead_progress_m": 14.932408004423198,
+      "lead_route_error_m": 4.134828444849217e-05
+    },
+    {
+      "step": 16,
+      "time_s": 1.5000000223517418,
+      "decision_frame": 37880,
+      "next_frame": 37881,
+      "capture_frame": 37879,
+      "capture_age_steps": 1,
+      "true_gap_m": 9.999288419826204,
+      "post_step_true_gap_m": 10.298987604496224,
+      "capture_true_gap_m": 9.697962035808317,
+      "generalist_gap_m": 7.91489839553833,
+      "specialist_gap_m": 9.290780067443848,
+      "predicted_gap_m": 9.290780067443848,
+      "controller": "day_cloudy",
+      "probabilities": null,
+      "selected_probability": null,
+      "low_confidence": false,
+      "controller_switched": false,
+      "fallback_used": false,
+      "pid_command": 3.0,
+      "throttle": 1.0,
+      "brake": 0.0,
+      "steering_command": -0.09505827447571259,
+      "flags": [
+        "terminal_dist"
+      ],
+      "ego_progress_m": 0.2939446066482908,
+      "ego_route_error_m": 0.013386009720475506,
+      "lead_progress_m": 15.334624566052243,
+      "lead_route_error_m": 0.00010168979474318922
+    }
+  ],
+  "warmup_terminal": false,
+  "terminal_reason": "terminal_dist",
+  "terminal_flags": [
+    "terminal_dist"
+  ],
+  "recoverable_errors": []
+}

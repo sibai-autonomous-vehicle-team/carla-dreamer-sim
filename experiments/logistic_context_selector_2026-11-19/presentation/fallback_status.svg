@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="777.6pt" height="399.6pt" viewBox="0 0 777.6 399.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-11-19T19:45:03.140075</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 399.6 
+L 777.6 399.6 
+L 777.6 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="patch_2">
+   <path d="M 66.096 114.6852 
+L 711.504 114.6852 
+L 711.504 84.3156 
+L 66.096 84.3156 
+z
+" style="fill: #f0f5f7"/>
+  </g>
+  <g id="patch_3">
+   <path d="M 66.096 150.6492 
+L 711.504 150.6492 
+L 711.504 120.2796 
+L 66.096 120.2796 
+z
+" style="fill: #f0f5f7"/>
+  </g>
+  <g id="patch_4">
+   <path d="M 66.096 186.6132 
+L 711.504 186.6132 
+L 711.504 156.2436 
+L 66.096 156.2436 
+z
+" style="fill: #f0f5f7"/>
+  </g>
+  <g id="text_1">
+   <text style="font-weight: 700; font-size: 22px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1b365d" x="66.096" y="31.102163" transform="rotate(-0 66.096 31.102163)">Fallback integration status</text>
+  </g>
+  <g id="text_2">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a5b6d" x="66.096" y="48.298603" transform="rotate(-0 66.096 48.298603)">Intended rule · use a default controller if no specialist reaches the acceptance threshold</text>
+  </g>
+  <g id="text_3">
+   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a5b6d" x="66.096" y="385.236697" transform="rotate(-0 66.096 385.236697)">Advisory threshold crossings indicate low model confidence. Specification violations are measured separately.</text>
+  </g>
+  <g id="text_4">
+   <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1b365d" x="80.8704" y="102.01245" transform="rotate(-0 80.8704 102.01245)">Fallback activations</text>
+  </g>
+  <g id="text_5">
+   <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #4a5b6d" x="695.952" y="102.01245" transform="rotate(-0 695.952 102.01245)">Not implemented</text>
+  </g>
+  <g id="text_6">
+   <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1b365d" x="80.8704" y="137.97645" transform="rotate(-0 80.8704 137.97645)">Runs needing fallback (%)</text>
+  </g>
+  <g id="text_7">
+   <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #4a5b6d" x="695.952" y="137.97645" transform="rotate(-0 695.952 137.97645)">Not implemented</text>
+  </g>
+  <g id="text_8">
+   <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1b365d" x="80.8704" y="173.94045" transform="rotate(-0 80.8704 173.94045)">Driving time in fallback (%)</text>
+  </g>
+  <g id="text_9">
+   <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #4a5b6d" x="695.952" y="173.94045" transform="rotate(-0 695.952 173.94045)">Not implemented</text>
+  </g>
+  <g id="text_10">
+   <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1b365d" x="66.096" y="225.774" transform="rotate(-0 66.096 225.774)">Advisory only · validation threshold 0.922</text>
+  </g>
+  <g id="text_11">
+   <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1b365d" x="66.096" y="263.05125" transform="rotate(-0 66.096 263.05125)">Decision scores below threshold</text>
+  </g>
+  <g id="text_12">
+   <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #b94f35" x="695.952" y="263.327187" transform="rotate(-0 695.952 263.327187)">142/208  (68.3%)</text>
+  </g>
+  <g id="text_13">
+   <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1b365d" x="66.096" y="307.00725" transform="rotate(-0 66.096 307.00725)">Runs with at least one advisory request</text>
+  </g>
+  <g id="text_14">
+   <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #b94f35" x="695.952" y="307.283187" transform="rotate(-0 695.952 307.283187)">23/27  (85.2%)</text>
+  </g>
+ </g>
+</svg>

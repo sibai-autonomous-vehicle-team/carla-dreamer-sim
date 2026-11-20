@@ -1,0 +1,24 @@
+train: 24 episodes, 8 route groups, 1690 frames
+validation: 9 episodes, 3 route groups, 639 frames
+test: 15 episodes, 5 route groups, 1072 frames
+Device: cuda. Legacy replay: 0 frames.
+Starting checkpoint validation score: 1.462 m
+Epoch 01/16: loss 0.321, validation MAE 0.405 m, score 0.479 m
+Epoch 02/16: loss 0.115, validation MAE 0.389 m, score 0.441 m
+Epoch 03/16: loss 0.093, validation MAE 0.388 m, score 0.438 m
+Epoch 04/16: loss 0.072, validation MAE 0.373 m, score 0.425 m
+Epoch 05/16: loss 0.059, validation MAE 0.368 m, score 0.413 m
+Epoch 06/16: loss 0.051, validation MAE 0.366 m, score 0.409 m
+Epoch 07/16: loss 0.042, validation MAE 0.379 m, score 0.424 m
+Epoch 08/16: loss 0.038, validation MAE 0.367 m, score 0.421 m
+Epoch 09/16: loss 0.034, validation MAE 0.374 m, score 0.427 m
+Epoch 10/16: loss 0.035, validation MAE 0.377 m, score 0.433 m
+Epoch 11/16: loss 0.030, validation MAE 0.371 m, score 0.430 m
+Epoch 12/16: loss 0.026, validation MAE 0.375 m, score 0.430 m
+Epoch 13/16: loss 0.024, validation MAE 0.376 m, score 0.433 m
+Epoch 14/16: loss 0.024, validation MAE 0.380 m, score 0.436 m
+Epoch 15/16: loss 0.023, validation MAE 0.374 m, score 0.434 m
+Epoch 16/16: loss 0.021, validation MAE 0.383 m, score 0.440 m
+original: test MAE 1.525 m | above-10 recall 0/283
+finetuned: test MAE 0.537 m | above-10 recall 203/283
+Selected epoch: 6. Saved checkpoint: experiments/day_cloudy_cnn_v2_2026-11-17/finetune/best.pth

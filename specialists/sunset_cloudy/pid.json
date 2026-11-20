@@ -1,0 +1,19 @@
+{
+  "condition": "sunset_cloudy",
+  "status": "tested",
+  "target_gap": 6.0,
+  "kp": 0.9,
+  "ki": 0.05,
+  "kd": 0.15,
+  "seed": 42,
+  "episodes": 5,
+  "steps": 360,
+  "warmup_steps": 5,
+  "terminal_dist": 9,
+  "out_lane_thres": 5,
+  "shared_route": true,
+  "route_manifest": "../routes.json",
+  "cnn_sha256": "e960b82e093ea2ac274ca0c5b099f0b44177ef1b97af2d782aa312bcafdcda1b",
+  "cnn_source": "experiments/sunset_cloudy_specialist_2026-11-17/sync_model/best.pth",
+  "live_report": "experiments/live_cutoff_9m_2026-11-18/summary.json"
+}

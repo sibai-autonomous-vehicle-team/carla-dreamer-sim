@@ -1,0 +1,6 @@
+scope,metric,status,count,total,percent
+Actual fallback,Fallback activations,Not implemented,,,
+Actual fallback,Runs needing fallback (%),Not implemented,,,
+Actual fallback,Driving time in fallback (%),Not implemented,,,
+Advisory only,Decision scores below threshold,Observed,142,208,68.26923076923077
+Advisory only,Runs with at least one advisory request,Observed,23,27,85.18518518518519

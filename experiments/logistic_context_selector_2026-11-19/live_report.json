@@ -1,0 +1,2125 @@
+{
+  "attempted_cases": 27,
+  "matched_cases": 27,
+  "unmatched_case_ids": [],
+  "method": "Adapted logistic context selector",
+  "fallback_status": "Pending integration; scores below the advisory threshold still use argmax",
+  "completion_rule": "Destination reached with no simultaneous failure flag",
+  "tracking_mae_rule": "Within-run mean absolute post-step true-gap error from the PID target",
+  "overall": {
+    "selector": {
+      "runs": 27,
+      "terminal_reasons": {
+        "destination_reached": 16,
+        "is_collision": 3,
+        "terminal_dist": 8
+      },
+      "completions": 16,
+      "collisions": 3,
+      "gap_limit_stops": 8,
+      "lane_or_route_stops": 0,
+      "step_or_time_limits": 0,
+      "input_terminations": 0,
+      "switches": 110,
+      "decisions": 208,
+      "below_advisory_threshold_decisions": 142,
+      "fallback_use_steps": 0,
+      "fallback_runs": 0,
+      "mean_run_tracking_mae_m": 1.6469842540895074,
+      "tracking_mae_runs": 27,
+      "min_true_gap_m": 0.011530624751761318,
+      "max_true_gap_m": 10.315073055589663
+    },
+    "generalist": {
+      "runs": 27,
+      "terminal_reasons": {
+        "destination_reached": 13,
+        "terminal_dist": 14
+      },
+      "completions": 13,
+      "collisions": 0,
+      "gap_limit_stops": 14,
+      "lane_or_route_stops": 0,
+      "step_or_time_limits": 0,
+      "input_terminations": 0,
+      "switches": 0,
+      "decisions": 0,
+      "below_advisory_threshold_decisions": 0,
+      "fallback_use_steps": 0,
+      "fallback_runs": 0,
+      "mean_run_tracking_mae_m": 1.748293631271639,
+      "tracking_mae_runs": 27,
+      "min_true_gap_m": 1.8539164023413304,
+      "max_true_gap_m": 10.261027629224223
+    },
+    "weather_matched": {
+      "runs": 27,
+      "terminal_reasons": {
+        "destination_reached": 19,
+        "terminal_dist": 7,
+        "is_collision": 1
+      },
+      "completions": 19,
+      "collisions": 1,
+      "gap_limit_stops": 7,
+      "lane_or_route_stops": 0,
+      "step_or_time_limits": 0,
+      "input_terminations": 0,
+      "switches": 0,
+      "decisions": 0,
+      "below_advisory_threshold_decisions": 0,
+      "fallback_use_steps": 0,
+      "fallback_runs": 0,
+      "mean_run_tracking_mae_m": 1.4758965502961932,
+      "tracking_mae_runs": 27,
+      "min_true_gap_m": 0.005397224022041983,
+      "max_true_gap_m": 10.249645100788891
+    }
+  },
+  "all_attempts": {
+    "selector": {
+      "runs": 27,
+      "terminal_reasons": {
+        "destination_reached": 16,
+        "is_collision": 3,
+        "terminal_dist": 8
+      },
+      "completions": 16,
+      "collisions": 3,
+      "gap_limit_stops": 8,
+      "lane_or_route_stops": 0,
+      "step_or_time_limits": 0,
+      "input_terminations": 0,
+      "switches": 110,
+      "decisions": 208,
+      "below_advisory_threshold_decisions": 142,
+      "fallback_use_steps": 0,
+      "fallback_runs": 0,
+      "mean_run_tracking_mae_m": 1.6469842540895074,
+      "tracking_mae_runs": 27,
+      "min_true_gap_m": 0.011530624751761318,
+      "max_true_gap_m": 10.315073055589663
+    },
+    "generalist": {
+      "runs": 27,
+      "terminal_reasons": {
+        "destination_reached": 13,
+        "terminal_dist": 14
+      },
+      "completions": 13,
+      "collisions": 0,
+      "gap_limit_stops": 14,
+      "lane_or_route_stops": 0,
+      "step_or_time_limits": 0,
+      "input_terminations": 0,
+      "switches": 0,
+      "decisions": 0,
+      "below_advisory_threshold_decisions": 0,
+      "fallback_use_steps": 0,
+      "fallback_runs": 0,
+      "mean_run_tracking_mae_m": 1.748293631271639,
+      "tracking_mae_runs": 27,
+      "min_true_gap_m": 1.8539164023413304,
+      "max_true_gap_m": 10.261027629224223
+    },
+    "weather_matched": {
+      "runs": 27,
+      "terminal_reasons": {
+        "destination_reached": 19,
+        "terminal_dist": 7,
+        "is_collision": 1
+      },
+      "completions": 19,
+      "collisions": 1,
+      "gap_limit_stops": 7,
+      "lane_or_route_stops": 0,
+      "step_or_time_limits": 0,
+      "input_terminations": 0,
+      "switches": 0,
+      "decisions": 0,
+      "below_advisory_threshold_decisions": 0,
+      "fallback_use_steps": 0,
+      "fallback_runs": 0,
+      "mean_run_tracking_mae_m": 1.4758965502961932,
+      "tracking_mae_runs": 27,
+      "min_true_gap_m": 0.005397224022041983,
+      "max_true_gap_m": 10.249645100788891
+    }
+  },
+  "by_condition": {
+    "day_sunny": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 1,
+          "terminal_dist": 2
+        },
+        "completions": 1,
+        "collisions": 0,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 5,
+        "decisions": 15,
+        "below_advisory_threshold_decisions": 13,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.5822760740497808,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 3.2946019460688274,
+        "max_true_gap_m": 10.182023499365858
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.6339442280917968,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.9585155480785192,
+        "max_true_gap_m": 10.154989911967313
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.26806441122442,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 3.2946019460688274,
+        "max_true_gap_m": 10.230076656968496
+      }
+    },
+    "day_cloudy": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "is_collision": 1,
+          "destination_reached": 2
+        },
+        "completions": 2,
+        "collisions": 1,
+        "gap_limit_stops": 0,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 14,
+        "decisions": 22,
+        "below_advisory_threshold_decisions": 1,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.5860510290030394,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 0.04174824541514331,
+        "max_true_gap_m": 9.488757661149709
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 2,
+          "destination_reached": 1
+        },
+        "completions": 1,
+        "collisions": 0,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 2.097171238044387,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 3.0557770945402964,
+        "max_true_gap_m": 10.137270215010915
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 1,
+          "destination_reached": 2
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.2822576063121218,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 3.0557770945402964,
+        "max_true_gap_m": 10.009154813487841
+      }
+    },
+    "day_rainy": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 15,
+        "decisions": 28,
+        "below_advisory_threshold_decisions": 13,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.7526063444732418,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 0.35989574786315764,
+        "max_true_gap_m": 10.065329066823145
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 2,
+          "destination_reached": 1
+        },
+        "completions": 1,
+        "collisions": 0,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.7511687006365115,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 3.063009156791066,
+        "max_true_gap_m": 10.0401364553916
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 3
+        },
+        "completions": 3,
+        "collisions": 0,
+        "gap_limit_stops": 0,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.4728440757426726,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.086513252622188,
+        "max_true_gap_m": 9.679243555156381
+      }
+    },
+    "sunset_sunny": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 16,
+        "decisions": 25,
+        "below_advisory_threshold_decisions": 19,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.7939941548729712,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.5706476202776143,
+        "max_true_gap_m": 10.026461159594872
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 1,
+          "terminal_dist": 2
+        },
+        "completions": 1,
+        "collisions": 0,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.9566323199284505,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.5706476202776143,
+        "max_true_gap_m": 10.026461159594872
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.5884299534108173,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.5706476202776143,
+        "max_true_gap_m": 10.026461159594872
+      }
+    },
+    "sunset_cloudy": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 1,
+          "destination_reached": 2
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 13,
+        "decisions": 23,
+        "below_advisory_threshold_decisions": 16,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.4047977267074188,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 3.049264278097992,
+        "max_true_gap_m": 10.315073055589663
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 1,
+          "destination_reached": 2
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.6969819696143151,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 3.049264278097992,
+        "max_true_gap_m": 10.261027629224223
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 1,
+          "destination_reached": 2
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.3596415157522574,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 3.049264278097992,
+        "max_true_gap_m": 10.193907942090089
+      }
+    },
+    "sunset_rainy": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 3
+        },
+        "completions": 3,
+        "collisions": 0,
+        "gap_limit_stops": 0,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 14,
+        "decisions": 32,
+        "below_advisory_threshold_decisions": 28,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.4767956096220978,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 0.22199864750554102,
+        "max_true_gap_m": 9.71792461047483
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.5209746561689539,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.5706476202776143,
+        "max_true_gap_m": 10.013196828668205
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 3
+        },
+        "completions": 3,
+        "collisions": 0,
+        "gap_limit_stops": 0,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.4662190074913581,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.5706476202776143,
+        "max_true_gap_m": 9.807882018386701
+      }
+    },
+    "night_sunny": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 12,
+        "decisions": 22,
+        "below_advisory_threshold_decisions": 20,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.4889931060942032,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.1563895759772733,
+        "max_true_gap_m": 10.249645100788891
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.5022267683314727,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.1563895759772733,
+        "max_true_gap_m": 10.249645100788891
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 1,
+          "terminal_dist": 2
+        },
+        "completions": 1,
+        "collisions": 0,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.627090891265998,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.1563895759772733,
+        "max_true_gap_m": 10.249645100788891
+      }
+    },
+    "night_cloudy": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "is_collision": 1,
+          "destination_reached": 2
+        },
+        "completions": 2,
+        "collisions": 1,
+        "gap_limit_stops": 0,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 15,
+        "decisions": 26,
+        "below_advisory_threshold_decisions": 21,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.6226041843948487,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 0.1067913255730622,
+        "max_true_gap_m": 9.628326353597956
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 2,
+          "destination_reached": 1
+        },
+        "completions": 1,
+        "collisions": 0,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 2.012271356415542,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 2.6767647914417743,
+        "max_true_gap_m": 10.067976531390519
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "is_collision": 1,
+          "destination_reached": 2
+        },
+        "completions": 2,
+        "collisions": 1,
+        "gap_limit_stops": 0,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.70968703369636,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 0.005397224022041983,
+        "max_true_gap_m": 9.570003693246818
+      }
+    },
+    "night_rainy": {
+      "selector": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 2,
+          "is_collision": 1
+        },
+        "completions": 0,
+        "collisions": 1,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 6,
+        "decisions": 15,
+        "below_advisory_threshold_decisions": 11,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 2.1147400575879662,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 0.011530624751761318,
+        "max_true_gap_m": 10.045422653930926
+      },
+      "generalist": {
+        "runs": 3,
+        "terminal_reasons": {
+          "terminal_dist": 2,
+          "destination_reached": 1
+        },
+        "completions": 1,
+        "collisions": 0,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.563271444213323,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 1.8539164023413304,
+        "max_true_gap_m": 10.054636502064813
+      },
+      "weather_matched": {
+        "runs": 3,
+        "terminal_reasons": {
+          "destination_reached": 2,
+          "terminal_dist": 1
+        },
+        "completions": 2,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.5088344577697335,
+        "tracking_mae_runs": 3,
+        "min_true_gap_m": 1.8539164023413304,
+        "max_true_gap_m": 10.112663233041237
+      }
+    }
+  },
+  "by_lead_profile": {
+    "brake_restart": {
+      "selector": {
+        "runs": 9,
+        "terminal_reasons": {
+          "destination_reached": 7,
+          "terminal_dist": 2
+        },
+        "completions": 7,
+        "collisions": 0,
+        "gap_limit_stops": 2,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 56,
+        "decisions": 101,
+        "below_advisory_threshold_decisions": 69,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.376751511006977,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 0.052513920784178415,
+        "max_true_gap_m": 10.088818596689475
+      },
+      "generalist": {
+        "runs": 9,
+        "terminal_reasons": {
+          "terminal_dist": 4,
+          "destination_reached": 5
+        },
+        "completions": 5,
+        "collisions": 0,
+        "gap_limit_stops": 4,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.5137838695835981,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 2.5706476202776143,
+        "max_true_gap_m": 10.054486682084256
+      },
+      "weather_matched": {
+        "runs": 9,
+        "terminal_reasons": {
+          "destination_reached": 8,
+          "terminal_dist": 1
+        },
+        "completions": 8,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.1708801184240376,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 2.5706476202776143,
+        "max_true_gap_m": 10.094526572176038
+      }
+    },
+    "pull_away": {
+      "selector": {
+        "runs": 9,
+        "terminal_reasons": {
+          "is_collision": 3,
+          "terminal_dist": 5,
+          "destination_reached": 1
+        },
+        "completions": 1,
+        "collisions": 3,
+        "gap_limit_stops": 5,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 11,
+        "decisions": 26,
+        "below_advisory_threshold_decisions": 13,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 2.2579567268488328,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 0.011530624751761318,
+        "max_true_gap_m": 10.315073055589663
+      },
+      "generalist": {
+        "runs": 9,
+        "terminal_reasons": {
+          "terminal_dist": 9
+        },
+        "completions": 0,
+        "collisions": 0,
+        "gap_limit_stops": 9,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 2.16345761754793,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 2.1563895759772733,
+        "max_true_gap_m": 10.261027629224223
+      },
+      "weather_matched": {
+        "runs": 9,
+        "terminal_reasons": {
+          "terminal_dist": 6,
+          "is_collision": 1,
+          "destination_reached": 2
+        },
+        "completions": 2,
+        "collisions": 1,
+        "gap_limit_stops": 6,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 2.052935941073903,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 0.005397224022041983,
+        "max_true_gap_m": 10.249645100788891
+      }
+    },
+    "steady": {
+      "selector": {
+        "runs": 9,
+        "terminal_reasons": {
+          "destination_reached": 8,
+          "terminal_dist": 1
+        },
+        "completions": 8,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 43,
+        "decisions": 81,
+        "below_advisory_threshold_decisions": 60,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.3062445244127128,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 1.8539164023413304,
+        "max_true_gap_m": 10.030374783493778
+      },
+      "generalist": {
+        "runs": 9,
+        "terminal_reasons": {
+          "destination_reached": 8,
+          "terminal_dist": 1
+        },
+        "completions": 8,
+        "collisions": 0,
+        "gap_limit_stops": 1,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.5676394066833899,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 1.8539164023413304,
+        "max_true_gap_m": 10.018411439945044
+      },
+      "weather_matched": {
+        "runs": 9,
+        "terminal_reasons": {
+          "destination_reached": 9
+        },
+        "completions": 9,
+        "collisions": 0,
+        "gap_limit_stops": 0,
+        "lane_or_route_stops": 0,
+        "step_or_time_limits": 0,
+        "input_terminations": 0,
+        "switches": 0,
+        "decisions": 0,
+        "below_advisory_threshold_decisions": 0,
+        "fallback_use_steps": 0,
+        "fallback_runs": 0,
+        "mean_run_tracking_mae_m": 1.2038735913906389,
+        "tracking_mae_runs": 9,
+        "min_true_gap_m": 1.8539164023413304,
+        "max_true_gap_m": 9.278258773872029
+      }
+    }
+  },
+  "paired_comparisons": {
+    "generalist": {
+      "pairs": 27,
+      "only_selector_finished": 5,
+      "only_baseline_finished": 2,
+      "both_finished": 11,
+      "mean_selector_minus_baseline_tracking_mae_m": -0.10130937718213175,
+      "pairs_with_tracking_mae": 27
+    },
+    "weather_matched": {
+      "pairs": 27,
+      "only_selector_finished": 1,
+      "only_baseline_finished": 4,
+      "both_finished": 15,
+      "mean_selector_minus_baseline_tracking_mae_m": 0.17108770379331428,
+      "pairs_with_tracking_mae": 27
+    }
+  },
+  "start_checks": [
+    {
+      "case_id": "test_01_straight_day_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_01_straight_day_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_01_straight_day_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 3.771856427192688e-08,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 4.203632156644747e-07,
+        "gap_m": 2.8745628100068643e-10
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_01_straight_sunset_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_01_straight_sunset_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_01_straight_sunset_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_01_straight_night_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_01_straight_night_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_01_straight_night_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_day_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_day_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_day_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_sunset_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_sunset_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_sunset_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_night_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_night_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_02_bend_night_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_day_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_day_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_day_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_sunset_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_sunset_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_sunset_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_night_sunny",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_night_cloudy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.0,
+        "gap_m": 0.0
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    },
+    {
+      "case_id": "test_03_turn_night_rainy",
+      "matched": true,
+      "matched_reset_layout": true,
+      "criteria": "Same reset actor types, horizontal locations and yaw; same warmup; full pose, velocity and gap tolerances at PID and label handoff",
+      "reset": {
+        "same_actor_types": true,
+        "position_m": 0.019880294799804688,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.012017429002114607,
+        "gap_m": 4.54497959001543e-06
+      },
+      "control_start": {
+        "same_actor_types": true,
+        "position_m": 0.0010690689086914062,
+        "horizontal_position_m": 0.0,
+        "yaw_deg": 0.0,
+        "rotation_deg": 0.0,
+        "velocity_mps": 0.008537435052499147,
+        "gap_m": 1.194513445490486e-06
+      },
+      "missing_control_start": [],
+      "same_warmup": true,
+      "warmup_ticks": {
+        "selector": 5,
+        "generalist": 5,
+        "weather_matched": 5
+      },
+      "warmup_seconds": {
+        "selector": 0.5000000074505806,
+        "generalist": 0.5000000074505806,
+        "weather_matched": 0.5000000074505806
+      },
+      "tolerances": {
+        "position_m": 0.03,
+        "rotation_deg": 1.0,
+        "velocity_mps": 0.1,
+        "gap_m": 0.03
+      }
+    }
+  ],
+  "example_run": {
+    "case_id": "test_03_turn_sunset_sunny",
+    "plot": "selector_run.png",
+    "trajectory": "live/test_03_turn_sunset_sunny/selector.json"
+  }
+}

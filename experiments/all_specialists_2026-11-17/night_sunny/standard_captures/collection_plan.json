@@ -1,0 +1,190 @@
+{
+  "routes": {
+    "train": [
+      {
+        "name": "straight_east",
+        "road": 19,
+        "lane": 1,
+        "start_s": 49,
+        "length": 46,
+        "finish_m": 30,
+        "branch_roads": []
+      },
+      {
+        "name": "straight_west",
+        "road": 19,
+        "lane": -1,
+        "start_s": 5,
+        "length": 44,
+        "finish_m": 30,
+        "branch_roads": []
+      },
+      {
+        "name": "bend",
+        "road": 67,
+        "lane": -2,
+        "start_s": 40,
+        "length": 44,
+        "finish_m": 27,
+        "branch_roads": []
+      },
+      {
+        "name": "left_turn",
+        "road": 19,
+        "lane": 1,
+        "start_s": 13,
+        "length": 61,
+        "finish_m": 44,
+        "branch_roads": [
+          1284,
+          29
+        ]
+      },
+      {
+        "name": "right_turn",
+        "road": 19,
+        "lane": 1,
+        "start_s": 13,
+        "length": 59,
+        "finish_m": 42,
+        "branch_roads": [
+          1301,
+          28
+        ]
+      },
+      {
+        "name": "left_turn_road35_-4_0",
+        "road": 35,
+        "lane": -4,
+        "start_s": 2.220446049250313e-15,
+        "length": 62,
+        "finish_m": 39.0,
+        "branch_roads": [
+          1100
+        ]
+      },
+      {
+        "name": "right_turn_road0_3_15",
+        "road": 0,
+        "lane": 3,
+        "start_s": 15.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": [
+          533
+        ]
+      },
+      {
+        "name": "bend_road61_-1_5",
+        "road": 61,
+        "lane": -1,
+        "start_s": 5.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": [
+          990
+        ]
+      }
+    ],
+    "validation": [
+      {
+        "name": "left_turn_road24_1_10",
+        "road": 24,
+        "lane": 1,
+        "start_s": 10.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": [
+          350
+        ]
+      },
+      {
+        "name": "bend_road76_-1_155",
+        "road": 76,
+        "lane": -1,
+        "start_s": 155.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": [
+          1070
+        ]
+      },
+      {
+        "name": "straight_road3_3_90",
+        "road": 3,
+        "lane": 3,
+        "start_s": 90.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": []
+      }
+    ],
+    "test": [
+      {
+        "name": "left_turn_road17_-1_30",
+        "road": 17,
+        "lane": -1,
+        "start_s": 30.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": [
+          394
+        ]
+      },
+      {
+        "name": "right_turn_road2_-2_85",
+        "road": 2,
+        "lane": -2,
+        "start_s": 85.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": [
+          791
+        ]
+      },
+      {
+        "name": "bend_road65_-1_65",
+        "road": 65,
+        "lane": -1,
+        "start_s": 65.0,
+        "length": 62,
+        "finish_m": 40.0,
+        "branch_roads": []
+      },
+      {
+        "name": "straight_road4_3_65",
+        "road": 4,
+        "lane": 3,
+        "start_s": 65.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": []
+      },
+      {
+        "name": "bend_road23_1_55",
+        "road": 23,
+        "lane": 1,
+        "start_s": 55.0,
+        "length": 62,
+        "finish_m": 41.0,
+        "branch_roads": []
+      }
+    ]
+  },
+  "seed": 4200,
+  "target_gaps_m": [
+    4.5,
+    7.5,
+    10.5
+  ],
+  "max_steps": 145,
+  "capture_every": 2,
+  "collection_cutoff_m": 15.0,
+  "pid_gains": [
+    0.9,
+    0.05,
+    0.15
+  ],
+  "weather": "night_sunny",
+  "map": "Town03"
+}
