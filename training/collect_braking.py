@@ -282,6 +282,22 @@ def collect_episode(env, plan, args, monitor):
     return payload, summary
 
 
+def server_environment(source=None):
+    """Respect explicit Vulkan selection; otherwise choose an existing NVIDIA ICD.
+
+    RIS uses nvidia_icd.x86_64.json, while local Ubuntu commonly uses
+    nvidia_icd.json. Never force the loader to read a nonexistent manifest.
+    """
+    environment=dict(os.environ if source is None else source)
+    if not environment.get('VK_ICD_FILENAMES') and not environment.get('VK_DRIVER_FILES'):
+        for directory in ('/usr/share/vulkan/icd.d','/etc/vulkan/icd.d'):
+            candidates=sorted(Path(directory).glob('nvidia_icd*.json'))
+            if candidates:
+                environment['VK_ICD_FILENAMES']=str(candidates[0])
+                break
+    return environment
+
+
 def start_server(args):
     import carla
 
@@ -290,8 +306,7 @@ def start_server(args):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             sock.bind(('0.0.0.0', port))
     log = (args.outdir / 'server.log').open('w')
-    environment = dict(os.environ)
-    environment.setdefault('VK_ICD_FILENAMES', '/usr/share/vulkan/icd.d/nvidia_icd.json')
+    environment = server_environment()
     process = subprocess.Popen(
         [str(args.server.resolve()), '-RenderOffScreen', '-ResX=256', '-ResY=256',
          '-quality-level=Epic', '-nosound', f'-carla-rpc-port={args.port}'],
@@ -302,7 +317,8 @@ def start_server(args):
         deadline = time.monotonic() + 120
         while time.monotonic() < deadline:
             if process.poll() is not None:
-                raise RuntimeError('CARLA exited. Inspect server.log')
+                raise RuntimeError(f'CARLA exited with code {process.returncode}. Inspect {args.outdir / "server.log"}. '
+                                   f'Vulkan driver selection: {environment.get("VK_DRIVER_FILES", environment.get("VK_ICD_FILENAMES", "automatic"))}')
             client = carla.Client('127.0.0.1', args.port)
             client.set_timeout(2.)
             try:

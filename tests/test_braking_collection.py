@@ -13,13 +13,32 @@ from urllib.request import urlopen
 import numpy as np
 import torch
 
-from training.collect_braking import BrowserMonitor, DatasetWriter, collect_episode, main, sample_plan
+from training.collect_braking import BrowserMonitor, DatasetWriter, collect_episode, main, sample_plan, server_environment
 from training.braking_scenario import BrakingScenario, InvalidBrakingScenario, RouteTracker
 from training.prepare_data import pack_episodes, read_conditions
 from generate_dataset import save_atomic
 
 
 class CollectionTests(unittest.TestCase):
+    def test_server_selects_existing_ris_vulkan_manifest(self):
+        source={'CUDA_VISIBLE_DEVICES':'0'}
+        manifest=Path('/usr/share/vulkan/icd.d/nvidia_icd.x86_64.json')
+        with patch('training.collect_braking.Path.glob',return_value=[manifest]):
+            environment=server_environment(source)
+        self.assertEqual(environment['VK_ICD_FILENAMES'],str(manifest))
+        self.assertEqual(environment['CUDA_VISIBLE_DEVICES'],'0')
+        self.assertNotIn('VK_ICD_FILENAMES',source)
+
+    def test_server_preserves_explicit_vulkan_overrides(self):
+        for key in ('VK_ICD_FILENAMES','VK_DRIVER_FILES'):
+            with patch('training.collect_braking.Path.glob') as scan:
+                self.assertEqual(server_environment({key:'/custom/nvidia.json'}),{key:'/custom/nvidia.json'})
+                scan.assert_not_called()
+
+    def test_server_uses_loader_discovery_when_no_nvidia_manifest_exists(self):
+        with patch('training.collect_braking.Path.glob',return_value=[]):
+            self.assertEqual(server_environment({}),{})
+
     def run_mocked_collector(self, failures):
         payload, summary = self.episode()
         env = NS(close=Mock())
