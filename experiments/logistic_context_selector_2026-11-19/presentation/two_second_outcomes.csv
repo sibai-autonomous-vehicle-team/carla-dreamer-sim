@@ -1,7 +1,0 @@
-scope,method,successes,total,status
-Fixed-specialist matched-start test,Generalist CNN + PID,,,Pending
-Fixed-specialist matched-start test,Direct weather/time match,24,27,Observed
-Fixed-specialist matched-start test,Learned logistic selector,24,27,Observed
-First 2 seconds of paired live runs,Generalist CNN + PID,22,27,Observed
-First 2 seconds of paired live runs,Direct weather/time match,24,27,Observed
-First 2 seconds of paired live runs,Learned logistic selector,24,27,Observed

@@ -1,7 +1,0 @@
-group,method_id,method,metric,count,total,percent,status
-All nine conditions,generalist,Generalist CNN + PID,completion,13,27,48.148148148148145,Observed
-All nine conditions,generalist,Generalist CNN + PID,any_specification_violation,14,27,51.851851851851855,Observed
-All nine conditions,weather_matched,Direct weather/time match,completion,19,27,70.37037037037037,Observed
-All nine conditions,weather_matched,Direct weather/time match,any_specification_violation,8,27,29.62962962962963,Observed
-All nine conditions,selector,Learned logistic selector,completion,16,27,59.25925925925926,Observed
-All nine conditions,selector,Learned logistic selector,any_specification_violation,11,27,40.74074074074074,Observed

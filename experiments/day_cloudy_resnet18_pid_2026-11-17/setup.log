@@ -1,6 +1,0 @@
-Resolved 1 package in 306ms
-Downloading torchvision (6.9MiB)
- Downloaded torchvision
-Prepared 1 package in 343ms
-Installed 1 package in 3ms
- + torchvision==0.21.0+cu124
