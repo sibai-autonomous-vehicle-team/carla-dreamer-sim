@@ -57,7 +57,7 @@ def make_suite(world,args):
     return [make_case(world,args,index) for index in range(args.eval_cases)]
 
 
-def prepare_suite(learner,nominal,client,world,scenario_class,args,viewer=None):
+def prepare_suite(learner,nominal,client,world,scenario_class,args,viewer=None,baseline_runner=None):
     """Validate setups before freezing the suite; never select on learned success."""
     from .braking_scenario import InvalidBrakingScenario
     from .train_online_hj import append_json
@@ -66,7 +66,8 @@ def prepare_suite(learner,nominal,client,world,scenario_class,args,viewer=None):
         for attempt in range(30):
             case=original if attempt==0 else make_case(world,args,original['case'],attempt)
             try:
-                baseline=rollout(learner,nominal,client,scenario_class,args,case,'brake',viewer)
+                baseline=(baseline_runner(case) if baseline_runner is not None else
+                          rollout(learner,nominal,client,scenario_class,args,case,'brake',viewer))
                 if not baseline['valid']: raise InvalidBrakingScenario('Invalid leader during full-braking baseline')
                 case['braking_baseline']=baseline
                 suite.append(case)

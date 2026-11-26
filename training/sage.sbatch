@@ -25,6 +25,6 @@ timeout --signal=INT --kill-after=120s 42300s \
     --port 2810 --start-server \
     --server "$workspace/carla-0.9.15/CarlaUE4.sh" \
     --require-cuda --steps 100000 \
-    --eval-interval 5000 --eval-cases 6 \
+    --eval-interval 5000 --eval-cases 50 \
     --wandb --wandb-project carla-sage --wandb-name "$run_name" \
     || { status=$?; [[ "$status" -eq 124 ]] || exit "$status"; }

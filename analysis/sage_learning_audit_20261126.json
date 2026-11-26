@@ -1,0 +1,610 @@
+{
+  "run": "training/_local/sage_cloudy_joint_s42",
+  "architecture": "not recorded",
+  "steps": 28158,
+  "episodes": 561,
+  "endings": {
+    "lane_truncation": 3,
+    "collision": 290,
+    "time_limit": 192,
+    "separation_truncation": 40,
+    "invalid_leader_rollout": 36
+  },
+  "admitted_episodes": 525,
+  "safety_bounds": [
+    -1.0,
+    9.0
+  ],
+  "logged_safety_bound_violations": [
+    {
+      "step": 25200,
+      "q_mean": -3.9835004806518555,
+      "target_mean": -3.957601547241211
+    },
+    {
+      "step": 25300,
+      "q_mean": -1.531930685043335,
+      "target_mean": -1.7724900245666504
+    },
+    {
+      "step": 25500,
+      "q_mean": -0.9650858640670776,
+      "target_mean": -1.221737265586853
+    },
+    {
+      "step": 25600,
+      "q_mean": -1.8265800476074219,
+      "target_mean": -1.856274127960205
+    },
+    {
+      "step": 25700,
+      "q_mean": -4.557013511657715,
+      "target_mean": -4.892281532287598
+    },
+    {
+      "step": 25800,
+      "q_mean": -2.958932638168335,
+      "target_mean": -2.8777453899383545
+    },
+    {
+      "step": 25900,
+      "q_mean": -6.5264997482299805,
+      "target_mean": -5.278256416320801
+    },
+    {
+      "step": 26000,
+      "q_mean": -3.3149619102478027,
+      "target_mean": -4.39278507232666
+    },
+    {
+      "step": 26100,
+      "q_mean": -9.932302474975586,
+      "target_mean": -10.837153434753418
+    },
+    {
+      "step": 26200,
+      "q_mean": -39.52115249633789,
+      "target_mean": -42.22104263305664
+    },
+    {
+      "step": 26300,
+      "q_mean": -5.842950820922852,
+      "target_mean": -5.9969353675842285
+    },
+    {
+      "step": 26400,
+      "q_mean": -10.374723434448242,
+      "target_mean": -11.785472869873047
+    },
+    {
+      "step": 26500,
+      "q_mean": -20.115707397460938,
+      "target_mean": -19.15146827697754
+    },
+    {
+      "step": 26600,
+      "q_mean": -16.884668350219727,
+      "target_mean": -18.447782516479492
+    },
+    {
+      "step": 26700,
+      "q_mean": -17.24451446533203,
+      "target_mean": -19.885452270507812
+    },
+    {
+      "step": 26800,
+      "q_mean": -9.605303764343262,
+      "target_mean": -8.575928688049316
+    },
+    {
+      "step": 26900,
+      "q_mean": -181.6063995361328,
+      "target_mean": -190.34249877929688
+    },
+    {
+      "step": 27000,
+      "q_mean": -27.56304359436035,
+      "target_mean": -25.702274322509766
+    },
+    {
+      "step": 27100,
+      "q_mean": -14.786642074584961,
+      "target_mean": -14.683976173400879
+    },
+    {
+      "step": 27200,
+      "q_mean": -40.774391174316406,
+      "target_mean": -38.57311248779297
+    },
+    {
+      "step": 27300,
+      "q_mean": -47.051918029785156,
+      "target_mean": -50.237850189208984
+    },
+    {
+      "step": 27400,
+      "q_mean": -89.70417022705078,
+      "target_mean": -80.475341796875
+    },
+    {
+      "step": 27500,
+      "q_mean": -47.43640899658203,
+      "target_mean": -51.773094177246094
+    },
+    {
+      "step": 27600,
+      "q_mean": -44.91350555419922,
+      "target_mean": -42.134735107421875
+    },
+    {
+      "step": 27700,
+      "q_mean": -61.87733459472656,
+      "target_mean": -76.199951171875
+    },
+    {
+      "step": 27800,
+      "q_mean": -1155.56103515625,
+      "target_mean": -1116.74169921875
+    },
+    {
+      "step": 27900,
+      "q_mean": -609.7610473632812,
+      "target_mean": -638.023193359375
+    },
+    {
+      "step": 28000,
+      "q_mean": -232.90606689453125,
+      "target_mean": -256.0269470214844
+    },
+    {
+      "step": 28100,
+      "q_mean": -65.30384063720703,
+      "target_mean": -79.20939636230469
+    }
+  ],
+  "windows": [
+    {
+      "start": 0,
+      "stop": 5000,
+      "action_sources": {
+        "warmup_random": 2000,
+        "safety_actor": 553,
+        "goal_actor": 2447
+      },
+      "mean_action": -0.021257862950376648,
+      "critic_mse": 0.06188188852476222,
+      "q_mean": 6.115801581314632,
+      "goal_q_mean": -7.417092407787485,
+      "entropy": 0.6674058139324188,
+      "goal_entropy": 0.6925691515207291,
+      "mean_failure_row_fraction": 0.01805396327070749,
+      "mean_probability_batch_has_no_failure_row": 0.8681763086893216
+    },
+    {
+      "start": 5000,
+      "stop": 10000,
+      "action_sources": {
+        "goal_actor": 4294,
+        "safety_actor": 706
+      },
+      "mean_action": 0.021121138858026824,
+      "critic_mse": 0.03895808467641473,
+      "q_mean": 6.617020111083985,
+      "goal_q_mean": -38.896994743347165,
+      "entropy": 0.6894399511814118,
+      "goal_entropy": 0.6783244180679321,
+      "mean_failure_row_fraction": 0.014140280982805948,
+      "mean_probability_batch_has_no_failure_row": 0.8923283639344161
+    },
+    {
+      "start": 10000,
+      "stop": 15000,
+      "action_sources": {
+        "goal_actor": 4427,
+        "safety_actor": 573
+      },
+      "mean_action": 0.08843463775997516,
+      "critic_mse": 0.09463563127443195,
+      "q_mean": 6.348355388641357,
+      "goal_q_mean": -105.21481536865234,
+      "entropy": 0.6731259441375732,
+      "goal_entropy": 0.6750257229804992,
+      "mean_failure_row_fraction": 0.012236333593863037,
+      "mean_probability_batch_has_no_failure_row": 0.9062263735401048
+    },
+    {
+      "start": 15000,
+      "stop": 20000,
+      "action_sources": {
+        "safety_actor": 674,
+        "goal_actor": 4326
+      },
+      "mean_action": 0.10314013354170602,
+      "critic_mse": 0.06840178469195962,
+      "q_mean": 6.143119020462036,
+      "goal_q_mean": -193.78455703735352,
+      "entropy": 0.679443666934967,
+      "goal_entropy": 0.6889919698238373,
+      "mean_failure_row_fraction": 0.010834,
+      "mean_probability_batch_has_no_failure_row": 0.9165535136182313
+    },
+    {
+      "start": 20000,
+      "stop": 25000,
+      "action_sources": {
+        "goal_actor": 3640,
+        "safety_actor": 1360
+      },
+      "mean_action": 0.15129132712082938,
+      "critic_mse": 0.12258445497602224,
+      "q_mean": 3.690183042883873,
+      "goal_q_mean": -286.4784225463867,
+      "entropy": 0.6790362322330474,
+      "goal_entropy": 0.6742375683784485,
+      "mean_failure_row_fraction": 0.009546,
+      "mean_probability_batch_has_no_failure_row": 0.926140703831419
+    },
+    {
+      "start": 25000,
+      "stop": 28158,
+      "action_sources": {
+        "goal_actor": 236,
+        "safety_actor": 2922
+      },
+      "mean_action": -0.08641115658750795,
+      "critic_mse": 980.5599820488884,
+      "q_mean": -89.50521313375042,
+      "goal_q_mean": -343.4589617329259,
+      "entropy": 0.6858822607224987,
+      "goal_entropy": 0.6583702198920711,
+      "mean_failure_row_fraction": 0.009641935483870968,
+      "mean_probability_batch_has_no_failure_row": 0.9254297959336951
+    }
+  ],
+  "evaluation": [
+    {
+      "step": 0,
+      "paired_cases": 2,
+      "excluded_cases": 4,
+      "modes": {
+        "pid": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.582482593745237,
+          "mean_absolute_gap_error": 3.215498829118908
+        },
+        "safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.71670942233053,
+          "mean_absolute_gap_error": 3.3490742850797566
+        },
+        "filter": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 1.0,
+          "mean_speed": 17.716247816557882,
+          "mean_absolute_gap_error": 3.348267827414113
+        },
+        "pid_then_safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.708883648550838,
+          "mean_absolute_gap_error": 3.3381497850882536,
+          "probed_cases": 2,
+          "predicted_safe_cases": 0,
+          "collision_cases": 2,
+          "false_safe_collisions": 0,
+          "pre_probe_collision_cases": 0,
+          "collision_rate_when_predicted_safe": null,
+          "missed_collision_fraction": 0.0
+        }
+      }
+    },
+    {
+      "step": 5042,
+      "paired_cases": 2,
+      "excluded_cases": 4,
+      "modes": {
+        "pid": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.691438512135242,
+          "mean_absolute_gap_error": 3.313771361199669
+        },
+        "safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.477446992243344,
+          "mean_absolute_gap_error": 3.170116368030315
+        },
+        "filter": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.4895833333333333,
+          "mean_speed": 17.67241746960017,
+          "mean_absolute_gap_error": 3.3097691173422787
+        },
+        "pid_then_safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.498368814030083,
+          "mean_absolute_gap_error": 3.1436637686376723,
+          "probed_cases": 2,
+          "predicted_safe_cases": 1,
+          "collision_cases": 2,
+          "false_safe_collisions": 1,
+          "pre_probe_collision_cases": 0,
+          "collision_rate_when_predicted_safe": 1.0,
+          "missed_collision_fraction": 0.5
+        }
+      }
+    },
+    {
+      "step": 10091,
+      "paired_cases": 2,
+      "excluded_cases": 4,
+      "modes": {
+        "pid": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.717996400625523,
+          "mean_absolute_gap_error": 3.3514404773387554
+        },
+        "safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.717996400625523,
+          "mean_absolute_gap_error": 3.3514404773387554
+        },
+        "filter": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.5729166666666666,
+          "mean_speed": 17.717996400625523,
+          "mean_absolute_gap_error": 3.3514404773387554
+        },
+        "pid_then_safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.717996400625523,
+          "mean_absolute_gap_error": 3.3514404773387554,
+          "probed_cases": 2,
+          "predicted_safe_cases": 1,
+          "collision_cases": 2,
+          "false_safe_collisions": 1,
+          "pre_probe_collision_cases": 0,
+          "collision_rate_when_predicted_safe": 1.0,
+          "missed_collision_fraction": 0.5
+        }
+      }
+    },
+    {
+      "step": 15082,
+      "paired_cases": 2,
+      "excluded_cases": 4,
+      "modes": {
+        "pid": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.717996400625523,
+          "mean_absolute_gap_error": 3.3514404773387554
+        },
+        "safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.433542986733567,
+          "mean_absolute_gap_error": 3.1047748770192833
+        },
+        "filter": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.6145833333333334,
+          "mean_speed": 17.674766269631355,
+          "mean_absolute_gap_error": 3.339568478947991
+        },
+        "pid_then_safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.44648371264558,
+          "mean_absolute_gap_error": 3.1255203744368605,
+          "probed_cases": 2,
+          "predicted_safe_cases": 1,
+          "collision_cases": 2,
+          "false_safe_collisions": 1,
+          "pre_probe_collision_cases": 0,
+          "collision_rate_when_predicted_safe": 1.0,
+          "missed_collision_fraction": 0.5
+        }
+      }
+    },
+    {
+      "step": 20082,
+      "paired_cases": 2,
+      "excluded_cases": 4,
+      "modes": {
+        "pid": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.717996400625523,
+          "mean_absolute_gap_error": 3.3514404773387554
+        },
+        "safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.339634299771944,
+          "mean_absolute_gap_error": 3.0231338723645953
+        },
+        "filter": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.5833333333333334,
+          "mean_speed": 17.668343292234937,
+          "mean_absolute_gap_error": 3.339050504542242
+        },
+        "pid_then_safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.35656596038363,
+          "mean_absolute_gap_error": 3.050845028401371,
+          "probed_cases": 2,
+          "predicted_safe_cases": 1,
+          "collision_cases": 2,
+          "false_safe_collisions": 1,
+          "pre_probe_collision_cases": 0,
+          "collision_rate_when_predicted_safe": 1.0,
+          "missed_collision_fraction": 0.5
+        }
+      }
+    },
+    {
+      "step": 25054,
+      "paired_cases": 2,
+      "excluded_cases": 4,
+      "modes": {
+        "pid": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.717996400625523,
+          "mean_absolute_gap_error": 3.3514404773387554
+        },
+        "safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.405488745362838,
+          "mean_absolute_gap_error": 3.0621245120633453
+        },
+        "filter": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 1.0,
+          "mean_speed": 17.405488112293472,
+          "mean_absolute_gap_error": 3.062123027700327
+        },
+        "pid_then_safety": {
+          "episodes": 2,
+          "collision": 1.0,
+          "failure": 1.0,
+          "lane_departure": 0.0,
+          "horizon_complete": 0.0,
+          "intervention_fraction": 0.0,
+          "mean_speed": 17.419820306733918,
+          "mean_absolute_gap_error": 3.0851003609111216,
+          "probed_cases": 2,
+          "predicted_safe_cases": 0,
+          "collision_cases": 2,
+          "false_safe_collisions": 0,
+          "pre_probe_collision_cases": 0,
+          "collision_rate_when_predicted_safe": null,
+          "missed_collision_fraction": 0.0
+        }
+      }
+    }
+  ],
+  "challenge_outcomes": {
+    "False": {
+      "episodes": 237,
+      "collisions": 38,
+      "ended_before_unpadded_history": 3,
+      "mean_rows": 86.61181434599156
+    },
+    "True": {
+      "episodes": 288,
+      "collisions": 252,
+      "ended_before_unpadded_history": 58,
+      "mean_rows": 20.13888888888889
+    }
+  },
+  "discount_horizons_seconds": {
+    "0.85": 0.6153129380622034,
+    "0.99": 9.949916247342209,
+    "0.9999": 999.9499991667351
+  },
+  "maximum_normalized_action_entropy": 0.6931471805599453
+}

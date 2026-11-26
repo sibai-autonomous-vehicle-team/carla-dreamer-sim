@@ -454,7 +454,11 @@ class Actor(VisualNetwork):
         nn.init.zeros_(self.head[-1].bias)
 
     def forward(self, images, speed, deterministic=False):
-        mean, log_std = self.head(self.features(images, speed)).chunk(2, -1)
+        return self.sample_features(self.features(images, speed), deterministic)
+
+    def sample_features(self, features, deterministic=False):
+        """Also support cached features when the visual encoder is frozen."""
+        mean, log_std = self.head(features).chunk(2, -1)
         distribution = torch.distributions.Normal(mean, log_std.clamp(-5, 2).exp())
         raw = mean if deterministic else distribution.rsample()
         log_jacobian = 2*(math.log(2)-raw-F.softplus(-2*raw))
@@ -644,7 +648,7 @@ def finalize_episode(rows, collision_events, departures, failure_margin, *, incl
     return rows
 
 
-def parse_args(defaults=None, description=None):
+def parse_args(defaults=None, description=None, argv=None):
     p = argparse.ArgumentParser(description=description or __doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--outdir', type=Path, required=True)
     p.add_argument('--performance-policy', choices=('pid','sac'), default='pid')
@@ -728,7 +732,7 @@ def parse_args(defaults=None, description=None):
     p.add_argument('--wandb-group')
     p.add_argument('--wandb-mode',choices=('online','offline'),default='online')
     if defaults: p.set_defaults(**defaults)
-    args = p.parse_args()
+    args = p.parse_args(argv)
     if not 0 <= args.performance_gamma < 1 or not 0 < args.performance_tau <= 1:
         p.error('Require performance-gamma in [0,1), performance-tau in (0,1]')
     for key in ('target_gap','performance_alpha','collision_penalty','lane_penalty'):
