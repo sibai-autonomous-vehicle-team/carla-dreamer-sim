@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=sage-cloudy
-#SBATCH --partition=general
+#SBATCH --partition=general-gpu
 #SBATCH --gpus=1
 #SBATCH --constraint=H100
 #SBATCH --cpus-per-task=8
@@ -18,7 +18,7 @@ export OMP_NUM_THREADS=8
 run_name="sage-cloudy-overnight-${SLURM_JOB_ID}"
 # Reserve time for an interrupted checkpoint and CARLA cleanup before Slurm ends.
 # Checkpoints do not currently support resuming training.
-timeout --signal=INT --kill-after=120s 11h45m \
+timeout --signal=INT --kill-after=120s 42300s \
     "$workspace/sage-env/bin/python" -u -m training.train_online_sage \
     --outdir "training/_local/$run_name" \
     --condition day_cloudy \
