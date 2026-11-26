@@ -313,7 +313,10 @@ def main():
     parser.add_argument('--history-frames', type=int, default=5, help='Ordered consecutive RGB frames; 1 restores single-frame architecture')
     parser.add_argument('--no-pretrained', action='store_true', help='Initialize RGB ResNet-18 randomly instead of ImageNet DEFAULT')
     parser.add_argument('--validation-probes', type=int, default=256)
-    parser.add_argument('--algorithm', choices=('bc','hj-td3-bc','ddpg'), default='hj-td3-bc')
+    parser.add_argument('--algorithm', choices=('bc','hj-td3-bc','ddpg','hj-sac'), default='hj-td3-bc')
+    parser.add_argument('--sac-alpha', type=float, default=.1, help='HJ-SAC actor entropy weight')
+    parser.add_argument('--critic-margin-warmup', type=int, default=0,
+                        help='HJ-SAC initialization updates fitting measured current margins before HJ training')
     parser.add_argument('--bc-target', choices=('teacher','recorded'), default='teacher')
     parser.add_argument('--bc-alpha', type=float, default=.1, help='Q influence relative to normalized imitation loss')
     parser.add_argument('--actor-warmup', type=int, default=1000, help='Initial updates use only imitation in the actor loss')
@@ -328,6 +331,8 @@ def main():
     parser.add_argument('--actor-init', type=Path, help='Initialize from a supervised BC actor checkpoint')
     parser.add_argument('--critic-lr', type=float, help='Default 1e-4 for new RGB algorithms, 1e-3 for legacy DDPG')
     args = parser.parse_args()
+    if args.algorithm == 'hj-sac' and args.actor_init:
+        parser.error('HJ-SAC uses a stochastic actor and cannot initialize from a BC checkpoint')
     if args.architecture == 'state-mlp' and (args.algorithm != 'ddpg' or args.actor_init):
         parser.error('state-mlp supports --algorithm ddpg only')
     if args.checkpoint_interval is not None and args.checkpoint_interval < 1:
@@ -349,7 +354,8 @@ def main():
                                  actor_warmup=args.actor_warmup,policy_delay=args.policy_delay,
                                  policy_noise=args.policy_noise,noise_clip=args.noise_clip,
                                  teacher_gap=args.teacher_gap,teacher_kp=args.teacher_kp,teacher_kd=args.teacher_kd,
-                                 teacher_steer_gain=args.teacher_steer_gain,recorded_tolerance=args.recorded_tolerance)
+                                 teacher_steer_gain=args.teacher_steer_gain,recorded_tolerance=args.recorded_tolerance,
+                                 sac_alpha=args.sac_alpha,critic_margin_warmup=args.critic_margin_warmup)
         checkpoint = train_visual(args.data, cfg, args.run_dir, args.dataset, args.resume,
                                   args.require_cuda, args.checkpoint_interval, args.image_root,
                                   not args.no_pretrained, args.validation_probes, options, args.actor_init)

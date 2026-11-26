@@ -65,6 +65,9 @@ class SafetyFilter:
         if checkpoint.get("architecture") == "resnet18_rgb":
             from .visual_models import RGBSafetyFilter
             return RGBSafetyFilter(checkpoint, device)
+        if checkpoint.get("architecture") == "state_sac_diagnostic":
+            from .state_sac_diagnostic import StateSACPolicy
+            return StateSACPolicy(checkpoint, device)
         return cls(checkpoint, device)
 
     def __init__(self, checkpoint, device="cpu"):

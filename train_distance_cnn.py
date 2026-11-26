@@ -46,6 +46,27 @@ def split_episodes(count, seed):
                 val_ids=episode_ids[train_end:val_end], test_ids=episode_ids[val_end:])
 
 
+def load_episode_split(path, episode_count):
+    split = json.loads(path.read_text())
+    keys = ("train_ids", "val_ids", "test_ids")
+    if not isinstance(split, dict) or type(split.get("seed")) is not int:
+        raise ValueError("The episode split must contain an integer seed.")
+    seen = set()
+    for key in keys:
+        ids = split.get(key)
+        if not isinstance(ids, list) or not ids or any(type(i) is not int for i in ids):
+            raise ValueError(f"{key} must be a nonempty list of integer episode IDs.")
+        if any(not 0 <= i < episode_count for i in ids):
+            raise ValueError(f"{key} contains IDs outside the dataset's {episode_count} episodes.")
+        unique = set(ids)
+        if len(unique) != len(ids) or seen & unique:
+            raise ValueError("Episode IDs must be unique within each split and disjoint across splits.")
+        seen.update(unique)
+    if len(seen) != episode_count:
+        raise ValueError(f"The split covers {len(seen)} of the dataset's {episode_count} episodes.")
+    return {key: split[key] for key in ("seed", *keys)}
+
+
 def pooled_batches(datasets, episode_refs, batch_size, shuffle):
     for condition, episode_id in episode_refs:
         root, distances = datasets[condition]
@@ -60,7 +81,13 @@ def main():
                         help="Archive directory containing the nine condition subdirectories.")
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--epochs", type=int, default=10)
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--seed", type=int,
+                        help="Training seed. Defaults to the supplied split's seed or 42.")
+    splits = parser.add_mutually_exclusive_group()
+    splits.add_argument("--split", type=Path,
+                        help="Use a saved seed and train_ids, val_ids, and test_ids for --data.")
+    splits.add_argument("--split-dir", type=Path,
+                        help="Use one saved <condition>.json split per condition for --mixed-data.")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--amp", action="store_true",
                         help="Train with CUDA automatic mixed precision and channels-last layout.")
@@ -69,10 +96,13 @@ def main():
         parser.error("--batch-size and --epochs must be positive")
     if args.mixed_data and not args.output:
         parser.error("--mixed-data requires --output to save the per-condition splits")
+    if args.mixed_data and args.split:
+        parser.error("--split is supported for single-condition training with --data")
+    if args.split_dir and not args.mixed_data:
+        parser.error("--split-dir requires --mixed-data")
     if not torch.cuda.is_available():
         parser.error("CUDA is unavailable. Run with .venv-cnn/bin/python on the GPU desktop.")
 
-    torch.manual_seed(args.seed)
     device = torch.device("cuda")
     amp_dtype = None
     if args.amp:
@@ -82,6 +112,7 @@ def main():
     print(f"Training precision: {precision}; validation precision: float32")
     roots = ([args.mixed_data / condition for condition in CONDITIONS]
              if args.mixed_data else [args.data])
+    seed = args.seed if args.seed is not None else 42
     datasets = {}
     condition_splits = {}
     train_refs, val_refs, test_refs = [], [], []
@@ -93,18 +124,31 @@ def main():
         if len(distances) < 10:
             parser.error(f"At least 10 episodes are required in {root} for the split")
         # Keep the specialist's complete-episode split independently for each condition.
-        condition_split = split_episodes(len(distances), args.seed)
+        split_path = args.split_dir / f"{root.name}.json" if args.split_dir else args.split
+        if split_path:
+            try:
+                condition_split = load_episode_split(split_path, len(distances))
+            except (OSError, ValueError) as error:
+                parser.error(f"{split_path}: {error}")
+        else:
+            condition_split = split_episodes(len(distances), seed)
         datasets[root.name] = (root, distances)
         condition_splits[root.name] = condition_split
         train_refs.extend((root.name, i) for i in condition_split["train_ids"])
         val_refs.extend((root.name, i) for i in condition_split["val_ids"])
         test_refs.extend((root.name, i) for i in condition_split["test_ids"])
     if args.mixed_data:
-        split = dict(seed=args.seed, mode="pooled", conditions={
+        split_seed = condition_splits[roots[0].name]["seed"]
+        if any(s["seed"] != split_seed for s in condition_splits.values()):
+            parser.error("Saved per-condition splits must use the same seed")
+        split = dict(seed=split_seed, mode="pooled", conditions={
             root.name: dict(data=str(root), **condition_splits[root.name]) for root in roots
         })
     else:
         split = condition_splits[args.data.name]
+    if args.seed is None:
+        seed = split["seed"]
+    torch.manual_seed(seed)
     if args.output:
         args.output.mkdir(parents=True, exist_ok=True)
         (args.output / "split.json").write_text(json.dumps(split, indent=2) + "\n")
@@ -150,7 +194,7 @@ def main():
         model.train()
         # A new generator is needed for each pass through the training data.
         epoch_refs = train_refs.copy()
-        random.Random(args.seed + epoch).shuffle(epoch_refs)
+        random.Random(seed + epoch).shuffle(epoch_refs)
         train_batches = pooled_batches(datasets, epoch_refs, args.batch_size, shuffle=True)
         train_loss = torch.zeros((), device=device, dtype=torch.float64) if args.amp else 0.0
         train_count = 0
@@ -200,6 +244,7 @@ def main():
                 "epoch": epoch,
                 "validation_mae": mae,
                 **split,
+                **({"training_seed": seed} if seed != split["seed"] else {}),
                 "batch_size": args.batch_size,
                 "training_precision": precision,
                 "validation_precision": "float32",

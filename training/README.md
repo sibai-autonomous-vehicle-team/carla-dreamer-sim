@@ -1,6 +1,135 @@
 # Image-based controller learning
 
-The actor remains the requested ResNet-18: 224x224 RGB -> ResNet-18 -> Linear(512,2)
+## True-gap braking collection
+
+```bash
+.venv/bin/python -u -m training.collect_braking --start-server \
+  --trajectories-per-condition 500 --speed-range 12 20 --gap-range 2 5 --target-gap 3 \
+  --brake-delay-range 1.5 2.5 --brake-duration 2 \
+  --outdir dataset/braking_lane_tracked_500_per_condition
+```
+
+The existing CarDreamer browser viewer runs at `http://localhost:9700` with
+the default CARLA port 2700. Add `--real-time` to pace collection to simulation
+time, or `--headless` to disable the viewer. `--conditions day_sunny` restricts
+weather. The default collects 500 accepted episodes per condition, totaling 4,500
+across all nine conditions. For a short visual check, use
+`--trajectories-per-condition 2 --conditions day_sunny` and a fresh output directory.
+
+Each episode uses a random Town03 road spawn, equal sampled starting speeds,
+and a true bumper-gap PID with gains 0.9, 0.05, and 1.0. The leader applies full
+braking after a uniformly sampled 1.5–2.5 seconds for two seconds. Collection
+ends at collision or the end of braking. PID actions have zero exploration noise.
+Both cars use speed-dependent pure-pursuit steering along the saved lane route,
+including during speed initialization. Gap placement follows the lane centerline.
+Lane departures by either car and contacts with other objects cause a logged retry.
+These checks apply before collision termination and can reduce coverage of tight
+turns that the controller cannot negotiate at the sampled speed.
+Actual handoff gaps and both measured speeds must lie in the requested ranges.
+Their recorded values can differ from the sampled requests during setup.
+The collector reuses the map and creates fresh vehicles, sensors, and PID state
+for each episode. Failed attempts are logged. Invalid lane, route, or starting-state
+scenarios immediately receive another recorded random spawn, preserving the sampled
+speed, gap, brake delay, and condition. Scenario rejections can continue beyond 30
+attempts. Other errors receive up to 30 consecutive retries, with spawn replacement
+every three failures. Measured starting speeds must satisfy the requested range.
+Resume with the same command and `--resume` to retain completed episodes.
+Use a fresh directory for this lane-tracking recipe. Earlier collections used
+heading steering and a shorter brake delay. The revised controller has unit
+coverage but still needs a visual CARLA check on turns.
+
+`plan.json` records all sampled settings and routes. Each condition directory
+uses the original dataset layout with `obses/episode_000.pth`, `actions.pth`,
+`states.pth`, `costs.pth`, `distances.pth`, and `seq_lengths.pth`. Episode indices
+start at zero within each condition. RGB observations are uint8 tensors shaped
+[T, H, W, C]. Actions, states, costs, and distances are lists of float32 tensors,
+and sequence lengths are an int64 tensor. Each row uses the original timing
+convention from `generate_dataset.py`, with pre-action RGB/state and post-action
+distance/collision readings. The existing preparation pipeline reads these files.
+
+Additional frame IDs, timestamps, velocities, applied controls, terminal RGB/state,
+initial gap, episode plan, and summary are saved in
+`condition/metadata/episode_000.pth`. Collision episodes end at the first collision
+snapshot. Sequence lengths commit last, and resume recovers interrupted writes.
+`summary.json` and `complete.json` describe the final dataset. Collections made
+with the earlier bundled `.pt` layout require a fresh output directory for this
+writer.
+
+## Recorded-policy critic pilot
+
+```bash
+.venv/bin/python -u -m training.train_braking_critic \
+  --output training/_local/day_sunny_critic_pilot_s42
+```
+
+This snapshots the first 256 committed day-sunny trajectories, groups matching
+starting positions into the same split, and uses approximately 200 trajectories
+for training and 56 for held-out testing. Numerical arrays are copied and immutable
+RGB/metadata files are hard-linked, allowing the collector to keep appending.
+`--prepare-only` writes the snapshot and audit. The same command then trains on
+that snapshot. Each new training run requires its own output folder.
+
+The ResNet-18 critic receives five past/current RGB frames and the recorded
+requested action. Five fixed training epochs use the existing HJ backup with
+gamma 0.99 and 1–9 m buffer bounds, applied backwards along the recorded PID
+continuation. Targets absorb the first buffer hit and use the last measured
+margin at recording cutoff. These labels describe the recorded policy over the
+observed horizon. Action coverage follows that behavior policy.
+
+`audit.json` records outcome counts and the frozen split. `report.json` contains
+held-out error, false-safe and false-alarm rates, and collision-warning timing,
+including a constant training-mean baseline. `diagnostics.png`,
+`test_episodes.json`, `test_predictions.pt`, and `checkpoint.pt` provide the
+plot, episode diagnostics, numerical predictions, and critic weights.
+
+Train the remaining eight condition-specific critics sequentially with the
+500-trajectory recipe using 400 training trajectories, five epochs, and seed 42.
+
+```bash
+bash training/train_remaining_braking_critics.sh
+```
+
+Each output is `training/_local/<condition>_critic_500_s42`. Completed checkpoints
+are skipped when rerunning the script. An interrupted model restarts training
+using its saved data snapshot and split. A training failure stops the batch.
+
+Test full-brake interventions on the held-out routes with an isolated CARLA port.
+
+```bash
+.venv/bin/python -u -m training.evaluate_braking_critic \
+  --pilot training/_local/day_sunny_critic_pilot_s42 \
+  --outdir training/_local/day_sunny_critic_pilot_s42/closed_loop_full_brake \
+  --port 2800 --start-server
+```
+
+Both arms use the recorded true-gap PID and route tracking. When the filtered
+arm's nominal-action score is at or below zero, longitudinal control requests
+full braking and retains the route-following steering. Positive scores release
+the override. Each tick scores five current/past frames. Paired starting poses
+and velocities must match within 0.001. Initialization failures retry the same
+held-out route up to three times and appear explicitly in the summary. Runtime
+lane departures are recorded as outcomes. Episode traces and summaries are JSON.
+`--resume` preserves completed pairs and retries failed pairs.
+
+View 20 filtered trajectories in a real-time chase-camera window with the
+decision-time HJ score in the top-right corner.
+
+```bash
+.venv/bin/python -u -m training.evaluate_braking_critic \
+  --pilot training/_local/day_sunny_critic_pilot_s42 \
+  --outdir training/_local/day_sunny_critic_pilot_s42/visible_20_realtime \
+  --port 2800 --start-server --n-scenarios 20 --modes filtered \
+  --graphics windowed --real-time
+```
+
+The display shows PID or full-brake status, and the window title shows trajectory
+progress. Each terminal frame stays visible for one second. The controller
+releases the brake override when the nominal-action value becomes positive.
+Esc or closing the window ends the evaluation.
+
+## Actor-based training recipes
+
+The actor uses ResNet-18: 224x224 RGB -> ResNet-18 -> Linear(512,2)
 -> tanh -> longitudinal [-3,3] and requested steering [-1,1]. ImageNet
 initialization and RGB mean/std normalization match `train_distance_cnn.py`.
 The backbone and BatchNorm affine weights train; running statistics stay frozen
@@ -135,6 +264,33 @@ and twin-critic disagreement. Metrics also monitor sampled steering sensitivity.
 Frozen BatchNorm removes the train/eval statistic switch; it does not establish
 that the critic ranks actions correctly. Check actual closed-loop behavior.
 
+For a frozen CNN–PID nominal controller, pass its distance checkpoint to the
+closed-loop evaluator. This development comparison uses the day-sunny
+specialist's target and PID gains, with the HJ checkpoint's failure bounds.
+Both modes receive synchronized RGB frames. Traces record the predicted gap,
+camera frame, proposed PID action, HJ score, and executed action.
+
+```bash
+python -m training.evaluate_closed_loop --start-server --graphics vulkan \
+  --checkpoints training/_local/day_sunny_hj_sac_margin_warmup/checkpoint_10000.pt \
+  --nominal-cnn specialists/day_sunny/cnn.pth \
+  --target-gap 6 --kp 0.9 --ki 0.05 --kd 0.15 \
+  --modes pid safety_filter --episodes 3 --steps 150 \
+  --output training/_local/day_sunny_hj_sac_cnn_pid_pilot
+```
+
+The filter uses the checkpoint's raw HJ switching threshold. Conformal
+calibration requires a separately fitted and evaluated correction.
+
+For a high-speed close-following brake test, add `--initial-gap 3
+--initial-speed 15 --leader-brake-test --leader-brake-after 0.5
+--leader-brake-duration 2` and use `--target-gap 3`. Both vehicles receive
+velocity along their headings while wheel dynamics settle before the first
+camera tick. Measured handoff speed must be within 0.2 m/s of the request.
+The leader tracks 15 m/s, applies full braking from 0.5 to 2.5 seconds after
+handoff, then resumes speed tracking. Saved traces include both measured
+starting velocities. `--graphics windowed` shows the HJ score overlay.
+
 ## Data, dependencies and checkpoints
 
 Use the same frozen numerical cache/splits and combined image dataset. Source
@@ -210,3 +366,48 @@ architecture explicitly, including when resuming an old run. Single-frame
 actor initialization is rejected for temporal runs because the action head
 has changed. This change does not alter the existing BC eligibility mask,
 teacher labels, or first-failure transition selection.
+
+### Conformal braking critic bounds
+
+Generate condition-specific offsets from each checkpoint's saved held-out predictions:
+
+```bash
+.venv/bin/python -m training.conformal_critics calibrate --alpha 0.1
+```
+
+This writes `training/_local/conformal_braking.json`. At each simulation step,
+provide the latest five RGB frames, oldest first, and the nine controller actions
+in `CONDITIONS` order. Repeat the first frame to fill the history at episode start.
+Actions are the same requested longitudinal and steering values used in the
+braking dataset. The day-sunny checkpoint uses the most recent four frames;
+the other eight use all five.
+
+```python
+from training.conformal_critics import ConformalCritics, CONDITIONS
+
+predictor = ConformalCritics('training/_local',
+    'training/_local/conformal_braking.json', device='cuda')  # construct once
+# rgb_history: uint8 [5, 224, 224, 3]; actions: float [9, 2]
+raw, lower_bounds = predictor.predict(rgb_history, actions)
+# Both tensors have shape [9] on the GPU, aligned with CONDITIONS.
+```
+
+The eight matching networks are vectorized together on the GPU; the four-frame
+network is evaluated separately. This is an inference interface, not a controller
+selector or simulator integration. Keep tensors on the GPU until results are
+needed on the CPU. GPU memory and latency depend on hardware; benchmark in the
+actual simulator.
+
+For each condition, calibration takes the maximum prediction-minus-observed-return
+residual across all decision rows in each held-out starting-position group, then
+uses the finite-sample one-sided conformal quantile. Under exchangeability of new
+and calibration groups, and with the model fixed independently of calibration,
+the nominal coverage is per condition for all observed rows of a new group; it is
+not a simultaneous 90% guarantee across all nine critics. These held-out splits
+were already used for model reports, so they are no longer independent test sets;
+if those reports influenced model or method selection, use fresh untouched groups
+for formal calibration and separately evaluate on additional data. The recorded
+labels follow the collected PID action distribution and observed continuation.
+Different controller actions, weather distributions, deployment policies, longer
+horizons, and repeated online selection can invalidate the exchangeability
+assumption. The bounds do not certify safety or counterfactual controller returns.

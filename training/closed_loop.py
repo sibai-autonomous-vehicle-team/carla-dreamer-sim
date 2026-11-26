@@ -78,6 +78,12 @@ def run_episode(env, policy, nominal_pid, *, mode, scenario_id, seed, condition,
                 action, score, intervened = decision.action, decision.nominal_q, decision.intervened
             elif mode == "actor_only":
                 action = policy.predict_safe_action(observation)
+            if (score is None and getattr(env, "wants_hj_score", False)
+                    and getattr(policy, "has_safety_critic", True)):
+                score = policy.score_action(observation, nominal)
+        render = getattr(env, "render_decision", None)
+        if render is not None:
+            render(score, mode, intervened)
         if world.get_snapshot().frame != frame:
             raise RuntimeError("World advanced before action application; use one synchronous ticking client")
         # CarlaBaseEnv.get_vehicle_control applies the steering sign once, inside step.
@@ -89,6 +95,8 @@ def run_episode(env, policy, nominal_pid, *, mode, scenario_id, seed, condition,
             "frame": frame, "next_frame": next_frame, "gap_m": gap, "next_gap_m": next_gap,
             "closing_speed_mps": closing, "has_history": previous is not None,
             "nominal_action": nominal, "executed_request": action, "nominal_q_m": score,
+            "nominal_gap_m": getattr(nominal_pid, "gap_m", None),
+            "nominal_image_frame": getattr(nominal_pid, "image_frame", None),
             "intervened": intervened, "ego_travel_m": float((next_pose[:2] - pose[:2]).norm()),
             "leader_travel_m": float((next_pose[6:8] - pose[6:8]).norm()),
         })
@@ -179,7 +187,10 @@ def run_matched_scenario(policy, reset_scenario, *, scenario_id, seed, condition
         if initial is None:
             initial = (blueprints, physical_start)
         elif blueprints != initial[0] or not torch.allclose(initial[1], physical_start, atol=1e-3, rtol=0.):
-            raise ValueError("Scenario reset did not reproduce both initial vehicle poses, velocities, gap and blueprints")
+            delta = (initial[1] - physical_start).abs()
+            raise ValueError("Scenario reset did not reproduce both initial vehicle poses, velocities, gap and blueprints"
+                             f" (max pose delta={float(delta[:12].max()):.6f}, gap delta={float(delta[12]):.6f} m,"
+                             f" max velocity delta={float(delta[13:].max()):.6f} m/s)")
         trace = run_episode(env, policy, nominal, mode=mode, scenario_id=scenario_id, seed=seed,
                             condition=condition, max_steps=max_steps)
         if trace["initial_frame"] != frame:

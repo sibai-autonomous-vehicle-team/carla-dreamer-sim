@@ -13,3 +13,4 @@ dataset.zip
 
 # Local model checkpoints
 *.pth
+experiments/

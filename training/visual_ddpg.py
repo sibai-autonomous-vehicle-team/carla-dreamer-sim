@@ -14,7 +14,7 @@ from .config import load_data, setup_device
 from .train_ddpg import ACTION_CONVENTION, OBJECTIVE, MILESTONES, describe, hj_target, save_checkpoint
 from .visual_dataset import ImageReplay
 from .visual_models import ARCHITECTURE, PREPROCESS, ResNetActor, ResNetCritic
-from .visual_algorithms import LearnerOptions, ControllerBC, HJTD3BC
+from .visual_algorithms import LearnerOptions, ControllerBC, HJTD3BC, HJSAC
 
 
 @torch.no_grad()
@@ -103,6 +103,11 @@ def diagnostics(trainer,replay,indices,batch_size,device):
     if qa:
         result.update(q_actor_m=describe(torch.cat(qa)),q_logged_m=describe(torch.cat(qu)),
                       validation_steering_q_span_median_m=steering_span)
+        logged_q = torch.cat(qu)
+        margin = replay.margin[indices]
+        result['current_margin_rmse_m'] = float((logged_q - margin).square().mean().sqrt())
+        correlation = torch.corrcoef(torch.stack((logged_q, margin)))[0, 1]
+        result['current_margin_correlation'] = float(correlation) if torch.isfinite(correlation) else None
     return result
 
 
@@ -133,14 +138,14 @@ def train_visual(data_path,cfg,output,selection='combined',resume=None,require_c
     train_ids = [i for i in data['splits']['train'] if selection=='combined' or data['sources'][i]=='new']
     replay = ImageReplay(data,train_ids,cfg,image_root,teacher_options=options)
     validation = ImageReplay(data,data['splits']['val'],cfg,image_root,teacher_options=options)
-    if options.algorithm != "ddpg" and (not replay.bc_mask.any() or not validation.bc_mask.any()):
+    if options.algorithm in ('bc', 'hj-td3-bc') and (not replay.bc_mask.any() or not validation.bc_mask.any()):
         raise ValueError("Training and validation need eligible imitation labels")
     probes = torch.randperm(len(validation),generator=torch.Generator().manual_seed(42))[:validation_probes]
     if options.algorithm == 'ddpg':
         trainer = VisualHJDDPG(cfg,device,pretrained=pretrained and resume is None)
         state_keys = ('actor','critic','target_actor','target_critic','actor_optimizer','critic_optimizer')
     else:
-        learner_class = ControllerBC if options.algorithm == 'bc' else HJTD3BC
+        learner_class = {'bc': ControllerBC, 'hj-td3-bc': HJTD3BC, 'hj-sac': HJSAC}[options.algorithm]
         trainer = learner_class(cfg,device,pretrained and resume is None,options)
         state_keys = trainer.state_keys
     if actor_init:
@@ -168,7 +173,8 @@ def train_visual(data_path,cfg,output,selection='combined',resume=None,require_c
             raise ValueError('Resume requires a format-4 checkpoint; old runs need a fresh experiment')
         if saved['settings'].get('visual_history_frames',1) != cfg.visual_history_frames:
             raise ValueError('Resume history length differs')
-        if saved.get('learner_options') != asdict(options):
+        saved_options = asdict(LearnerOptions(**saved.get('learner_options', {})))
+        if saved_options != asdict(options):
             raise ValueError('Resume learner options differ')
         if (saved['dataset_id'],saved['split_id'],saved['dataset_selection']) != (data['dataset_id'],data['split_id'],selection):
             raise ValueError('Dataset or split differs from checkpoint')
@@ -200,6 +206,7 @@ def train_visual(data_path,cfg,output,selection='combined',resume=None,require_c
         latest_actor_loss = saved.get('latest_actor_loss',0.)
         actor_initialization = saved.get('actor_initialization')
     started = time.perf_counter()
+    warmup_history = saved.get('critic_warmup_history', []) if resume else []
     image_paths = sorted({str(p) for p in replay.paths+validation.paths})
     def save(step):
         elapsed = elapsed_before+time.perf_counter()-started
@@ -216,11 +223,13 @@ def train_visual(data_path,cfg,output,selection='combined',resume=None,require_c
                        sampler_state=sampler.get_state(),torch_rng_state=torch.get_rng_state(),
                        cuda_rng_state=torch.cuda.get_rng_state(device) if device.type=='cuda' else None,
                        history=history,elapsed_seconds=elapsed)
+        payload['critic_warmup_history'] = warmup_history
         for key in state_keys:
             payload[key] = getattr(trainer,key).state_dict()
         save_checkpoint(output/f'checkpoint_{step:05d}.pt',payload)
         metrics = {k:v for k,v in payload.items() if k in ('architecture','objective','algorithm','learner_options','settings','step','dataset_id','split_id','history','elapsed_seconds')}
         metrics.update(device=str(device),device_name=torch.cuda.get_device_name(device) if device.type=='cuda' else 'CPU',
+                       critic_warmup_history=warmup_history,
                        train_episodes=len(replay.paths),train_transitions=len(replay),validation_transitions=len(validation),
                        imitation_train_rows=int(replay.bc_mask.sum()),imitation_val_rows=int(validation.bc_mask.sum()),
                        validation_probe_count=len(probes),sampling='uniform eligible image transitions with replacement',
@@ -229,12 +238,29 @@ def train_visual(data_path,cfg,output,selection='combined',resume=None,require_c
         temporary.write_text(json.dumps(metrics,indent=2,allow_nan=False)+'\n')
         temporary.replace(output/'metrics.json')
     if not resume:
+        for warmup_step in range(1, options.critic_margin_warmup + 1):
+            indices = torch.randint(len(replay), (cfg.batch_size,), generator=sampler)
+            batch = tuple(x.to(device) for x in replay.batch(indices))
+            loss = trainer.warmup_critic(batch)
+            if not torch.isfinite(loss):
+                raise FloatingPointError('Nonfinite critic warmup loss')
+            if warmup_step % 100 == 0 or warmup_step == options.critic_margin_warmup:
+                record = diagnostics(trainer, validation, probes, cfg.batch_size, device)
+                record.update(warmup_step=warmup_step, training_batch_margin_mse=float(loss))
+                warmup_history.append(record)
+                print(f"Critic warmup {warmup_step}: validation margin RMSE "
+                      f"{record['current_margin_rmse_m']:.3f} m, correlation "
+                      f"{record['current_margin_correlation']}", flush=True)
+        if options.critic_margin_warmup:
+            trainer.target_critic.load_state_dict(trainer.critic.state_dict())
+            trainer.target_critic2.load_state_dict(trainer.critic2.state_dict())
+            trainer.critic_optimizer.state.clear()
         save(0)
     print(f'RGB replay: {len(replay):,} train / {len(validation):,} validation transitions; batch {cfg.batch_size}',flush=True)
     for step in range(start_step+1,cfg.updates+1):
         indices = torch.randint(len(replay),(cfg.batch_size,),generator=sampler)
         batch = tuple(x.to(device) for x in replay.batch(indices))
-        if options.algorithm == 'ddpg':
+        if options.algorithm in ('ddpg', 'hj-sac'):
             critic_loss,actor_loss = trainer.update(batch)
         else:
             critic_loss,actor_loss = trainer.update(batch,replay.bc_target[indices].to(device),replay.bc_mask[indices].to(device))

@@ -45,27 +45,43 @@ def temporal_features(encoder, frames):
 
 
 class ResNetActor(RGBEncoder):
-    def __init__(self, action_low=(-3.,-1.), action_high=(3.,1.), pretrained=False, freeze_batch_norm=False, history_frames=1):
+    def __init__(self, action_low=(-3.,-1.), action_high=(3.,1.), pretrained=False, freeze_batch_norm=False, history_frames=1, stochastic=False):
         super().__init__(pretrained, freeze_batch_norm)
         self.history_frames = history_frames
         if history_frames < 1:
             raise ValueError('history_frames must be positive')
         width = self.network.fc.in_features
-        self.network.fc = nn.Linear(width, 2) if history_frames == 1 else nn.Identity()
+        self.stochastic = stochastic
+        outputs = 4 if stochastic else 2
+        self.network.fc = nn.Linear(width, outputs) if history_frames == 1 else nn.Identity()
         if history_frames > 1:
-            self.temporal_head = nn.Sequential(nn.Linear(width*history_frames,256), nn.ReLU(), nn.Linear(256,2))
+            self.temporal_head = nn.Sequential(nn.Linear(width*history_frames,256), nn.ReLU(), nn.Linear(256,outputs))
+        if stochastic:
+            head = self.network.fc if history_frames == 1 else self.temporal_head[-1]
+            nn.init.uniform_(head.weight, -0.003, 0.003)
+            nn.init.zeros_(head.bias)
         low, high = torch.tensor(action_low), torch.tensor(action_high)
         if low.shape != (2,) or high.shape != (2,) or not torch.isfinite(low).all() or not torch.isfinite(high).all() or not (high>low).all():
             raise ValueError('Expected two ordered finite action bounds')
         self.register_buffer('midpoint', (low+high)/2)
         self.register_buffer('half_range', (high-low)/2)
 
-    def forward(self, frames):
+    def logits(self, frames):
         if self.history_frames == 1:
-            logits = self.network(self.preprocess(frames))
-        else:
-            logits = self.temporal_head(temporal_features(self, frames))
-        return self.midpoint+self.half_range*torch.tanh(logits)
+            return self.network(self.preprocess(frames))
+        return self.temporal_head(temporal_features(self, frames))
+
+    def forward(self, frames):
+        return self.midpoint + self.half_range * self.logits(frames)[..., :2].tanh()
+
+    def sample(self, frames):
+        mean, log_std = self.logits(frames).chunk(2, dim=-1)
+        distribution = torch.distributions.Normal(mean, log_std.clamp(-5., 2.).exp())
+        raw = distribution.rsample()
+        # Entropy is measured in normalized action coordinates.
+        log_jacobian = 2 * (math.log(2) - raw - nn.functional.softplus(-2 * raw))
+        log_prob = (distribution.log_prob(raw) - log_jacobian).sum(dim=-1)
+        return self.midpoint + self.half_range * raw.tanh(), log_prob
 
 
 class ResNetCritic(RGBEncoder):
@@ -89,7 +105,7 @@ class RGBSafetyFilter:
 
     def __init__(self, checkpoint, device='cpu'):
         self.algorithm = checkpoint.get('algorithm', 'ddpg')
-        if self.algorithm not in ('bc','hj-td3-bc','ddpg'):
+        if self.algorithm not in ('bc','hj-td3-bc','ddpg','hj-sac'):
             raise ValueError('Unsupported checkpoint algorithm')
         expected_objective = 'controller_imitation' if self.algorithm == 'bc' else 'discounted_two_sided_first_hit'
         if (checkpoint.get('format_version') not in (3,4) or checkpoint.get('architecture') != ARCHITECTURE or
@@ -104,7 +120,8 @@ class RGBSafetyFilter:
         if not math.isfinite(self.threshold) or self.saturation != 3.:
             raise ValueError('Invalid switching settings')
         self.history_frames = self.settings.get('visual_history_frames',1)
-        self.actor = ResNetActor(self.settings['action_low'],self.settings['action_high'],history_frames=self.history_frames)
+        self.actor = ResNetActor(self.settings['action_low'],self.settings['action_high'],
+                                 history_frames=self.history_frames, stochastic=self.algorithm == 'hj-sac')
         self.critic = ResNetCritic(self.settings['hidden_sizes'],history_frames=self.history_frames) if 'critic' in checkpoint else None
         self.critic2 = ResNetCritic(self.settings['hidden_sizes'],history_frames=self.history_frames) if 'critic2' in checkpoint else None
         self.has_safety_critic = self.critic is not None

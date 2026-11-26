@@ -18,6 +18,7 @@ from specialists.run_batch import Simulator, log
 FAILURE_FLAGS = {"is_collision", "terminal_dist", "out_of_lane"}
 MODES = ("selector", "generalist", "weather_matched")
 ROOT = Path("experiments/logistic_context_selector_2026-11-19")
+SPECIALISTS = Path("specialists")
 
 
 def atomic_text(path, content):
@@ -39,8 +40,8 @@ def digest(path):
     return result.hexdigest()
 
 
-def checkpoints():
-    paths = {name: Path("specialists") / name / "cnn.pth" for name in CONTROLLERS}
+def checkpoints(specialists=SPECIALISTS):
+    paths = {name: specialists / name / "cnn.pth" for name in CONTROLLERS}
     paths["generalist"] = Path("generalist/cnn.pth")
     manifest = {}
     for name, path in paths.items():
@@ -136,13 +137,13 @@ def pick_smoke_cases(plan):
 
 
 class Experiment:
-    def __init__(self, root, plan, options):
+    def __init__(self, root, plan, options, *, specialists=SPECIALISTS):
         self.root = root
         self.plan = plan
         self.options = options
         self.engine = None
         self.simulator = Simulator(root)
-        self.paths, fingerprints = checkpoints()
+        self.paths, fingerprints = checkpoints(specialists)
         settings = {
             "experiment": "adapted logistic context selector",
             "plan_sha256": digest(root / "plan.json"),
@@ -303,6 +304,8 @@ class Experiment:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--experiment", type=Path, default=ROOT)
+    parser.add_argument("--specialists", "--specialist-bank", type=Path, default=SPECIALISTS,
+                        help="Directory containing each specialist's cnn.pth and pid.json")
     parser.add_argument("--stage", choices=("all", "smoke", "fit", "evaluate"), default="all")
     parser.add_argument("--horizon", type=float, default=2.0)
     parser.add_argument("--decision-interval", type=float, default=2.0)
@@ -314,7 +317,7 @@ def main():
     plan = json.loads((args.experiment / "plan.json").read_text())
     with (args.experiment / ".lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        experiment = Experiment(args.experiment, plan, args)
+        experiment = Experiment(args.experiment, plan, args, specialists=args.specialists)
         try:
             if args.stage in ("all", "smoke"):
                 experiment.smoke()

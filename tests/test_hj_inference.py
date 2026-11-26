@@ -111,11 +111,13 @@ class InferenceTests(unittest.TestCase):
         policy = SafetyFilter(checkpoint())
         for mode in ("pid", "actor_only", "safety_filter"):
             nominal = (2., .2)
-            seen, sent = [], []
+            seen, sent, displayed = [], [], []
             world = SimpleNamespace(get_snapshot=lambda: SimpleNamespace(frame=len(sent)),
                                     get_settings=lambda: SimpleNamespace(synchronous_mode=True, fixed_delta_seconds=.1))
             env = SimpleNamespace(ego=SimpleNamespace(get_world=lambda: world), nonego=SimpleNamespace(id=9),
-                                  _config=SimpleNamespace(action=SimpleNamespace(discrete=False)))
+                                  _config=SimpleNamespace(action=SimpleNamespace(discrete=False)),
+                                  wants_hj_score=True,
+                                  render_decision=lambda *values: displayed.append(values))
             def step(action):
                 sent.append(action)
                 return None, 0., False, {}
@@ -133,6 +135,9 @@ class InferenceTests(unittest.TestCase):
                                     condition="day", max_steps=2)
             self.assertEqual(sent[0], nominal)
             self.assertEqual(sent[1], nominal if mode=="pid" else (-1., -.2))
+            self.assertEqual(displayed[0], (None, mode, False))
+            self.assertEqual(displayed[1], (-1., mode, mode == 'safety_filter'))
+            self.assertEqual(trace['rows'][1]['nominal_q_m'], -1.)
             if seen:
                 self.assertEqual(seen[0][0], .5)
                 self.assertEqual(seen[0][5], 10.)
