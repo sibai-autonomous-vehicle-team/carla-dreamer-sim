@@ -110,7 +110,8 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
             frame, _, _, gap = read_snapshot(env,args.dt)
             if frame != observation.frame_ids[-1]: raise RuntimeError('Evaluation observation/snapshot mismatch')
             if mode=='brake': nominal_action=-3.
-            elif getattr(nominal,'is_goal',False): nominal_action,_=nominal.propose(observation,args.dt,deterministic=True)
+            elif getattr(nominal,'is_goal',False) or getattr(nominal,'is_safety',False):
+                nominal_action,_=nominal.propose(observation,args.dt,deterministic=True)
             else: nominal_action,_=nominal.propose(observation,args.dt)
             if tick == 0 and mode!='brake': initial_q = learner.score(observation,nominal_action)
             if tick==args.history_frames-1 and mode!='brake':
@@ -176,13 +177,13 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
         if env is not None: env.close()
 
 
-def summarize(records):
-    """Compare only cases where all four modes produced valid rollouts."""
+def summarize(records, required_modes=MODES):
+    """Compare only cases where all requested modes produced valid rollouts."""
     grouped = {}
     for row in records: grouped.setdefault((row['nominal_condition'],row['case']),[]).append(row)
     paired = set()
     for key, rows in grouped.items():
-        if len(rows)!=len(MODES) or not all(r['valid'] for r in rows): continue
+        if len(rows)!=len(required_modes) or {r['mode'] for r in rows} != set(required_modes) or not all(r['valid'] for r in rows): continue
         # Reject drift between nominally identical resets rather than attribute
         # different initial conditions to controller improvement.
         if any(max(r[field] for r in rows)-min(r[field] for r in rows)>tolerance
@@ -213,6 +214,8 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
     from .train_online_hj import append_json
     started = time.monotonic()
     records = []
+    safety_only = getattr(args,'performance_policy','pid') == 'safety'
+    modes = ('safety',) if safety_only else MODES
     print(f'Evaluating frozen HJ at training step {steps}; no replay or optimizer updates.',flush=True)
     with isolated_evaluation(learner):
         suite_path = args.outdir/'evaluation_suite.json'
@@ -225,7 +228,7 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
             suite_path.write_text(json.dumps(suite,indent=2)+'\n')
         for name, nominal in nominal_policies.items():
             for case in suite:
-                for mode in MODES:
+                for mode in modes:
                     try: record = rollout(learner,nominal,client,scenario_class,args,case,mode,viewer)
                     except InvalidBrakingScenario as error:
                         record = dict(valid=False,error=str(error))
@@ -236,15 +239,15 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
                     records.append(record)
                     append_json(args.outdir/'evaluation_rollouts.jsonl',record)
         summary = dict(step=steps,updates=learner.updates,seconds=time.monotonic()-started,
-            nominal_kind='goal' if hasattr(learner,'goal_actor') else 'pid',
-            threshold=args.switching_threshold,**summarize(records),
+            nominal_kind='safety' if safety_only else 'goal' if hasattr(learner,'goal_actor') else 'pid',
+            threshold=args.switching_threshold,**summarize(records,modes),
             interpretation='Finite-horizon empirical learned-policy recovery; collision-free outcomes are censored, not certified safe. No optimal HJ ground truth or calibration MSE.',
-            by_profile={name:summarize([r for r in records if r['nominal_condition']==name]) for name in nominal_policies},
-            by_start={label:summarize([r for r in records if r['challenge']==challenge]) for label,challenge in [('ordinary',False),('closing',True)]})
+            by_profile={name:summarize([r for r in records if r['nominal_condition']==name],modes) for name in nominal_policies},
+            by_start={label:summarize([r for r in records if r['challenge']==challenge],modes) for label,challenge in [('ordinary',False),('closing',True)]})
         summary['braking_baseline']=dict(cases=len(suite),collisions=sum(c['braking_baseline']['collision'] for c in suite),
             survived_horizon=sum(c['braking_baseline']['horizon_complete'] for c in suite),
             interpretation='Immediate full braking with fixed steering, cached once when validating the suite. Failure does not prove inevitable collision.')
-        summary['by_braking']={label:summarize([r for r in records if r['braking_group']==label])
+        summary['by_braking']={label:summarize([r for r in records if r['braking_group']==label],modes)
                                for label in ('survived_horizon','collision','incomplete')}
         if not summary['paired_cases']:
             print('Evaluation has no valid matched cases; inspect evaluation_rollouts.jsonl. No improvement claim is possible.',flush=True)
@@ -254,7 +257,7 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
             comparable = bool(summary['paired_cases']) and previous['paired_case_ids']==summary['paired_case_ids']
             summary['change_from_previous'] = dict(step=previous['step'],same_matched_cases=comparable,
                 collision_rate_delta={mode:summary['modes'][mode]['collision']-previous['modes'][mode]['collision']
-                                      for mode in MODES} if comparable else None,
+                                      for mode in modes} if comparable else None,
                 interpretation='Negative collision-rate deltas mean fewer observed collisions; small suites are screening checks, not proof of improvement.')
         append_json(args.outdir/'evaluation.jsonl',summary)
         latest_path.write_text(json.dumps(summary,indent=2)+'\n')
@@ -263,7 +266,11 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
         if tracker is not None:
             tracker.evaluation(summary,args.outdir/'evaluation_plot.png',records)
         mode_metrics = summary['modes']
-        print(f'EVAL step={steps} matched={summary["paired_cases"]} excluded={summary["excluded_cases"]} '
+        if safety_only:
+            print(f'EVAL step={steps} cases={summary["paired_cases"]} '
+                  f'safety collision rate={mode_metrics["safety"]["collision"]}',flush=True)
+        else:
+            print(f'EVAL step={steps} matched={summary["paired_cases"]} excluded={summary["excluded_cases"]} '
               f'collision rates: {summary["nominal_kind"]}={mode_metrics["pid"]["collision"]} '
               f'safety={mode_metrics["safety"]["collision"]} filter={mode_metrics["filter"]["collision"]}; '
               f'false-safe contacts={mode_metrics["pid_then_safety"]["false_safe_collisions"]}/'

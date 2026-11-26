@@ -9,6 +9,8 @@ maintain hazardous-state coverage; recurring random episodes are opt-in.
 The default collision objective has no lower/upper gap failure boundary.
 Excessive separation and lane departure truncate rollouts without a failure label.
 Alternative following objectives are available explicitly.
+--performance-policy safety executes only the safety actor after random warmup,
+without a PID, goal actor, or switching gate.
 Automatic held-out evaluation runs before training, every 5000 steps between
 episodes, and at completion. Results go to evaluation.jsonl; only final or
 interrupted weights are saved. --eval-interval 0 disables evaluation.
@@ -126,11 +128,27 @@ class GeneralistPID(ContextPID):
         self.load_encoder(path, device)
 
 
+class SafetyPolicy:
+    """Adapter for direct execution and deterministic evaluation of one safety actor."""
+    is_safety = True
+
+    def __init__(self, learner, target_gap):
+        self.learner = learner
+        self.profile = dict(target_gap=target_gap)
+
+    def reset(self): pass
+
+    def propose(self, observation, dt, deterministic=False):
+        return self.learner.action(observation, deterministic=deterministic), None
+
+
 def behavior_action(learner, observation, nominal, explorer, step, args, exploration_episode):
-    """PID proposals create experience, never imitation labels or actor targets."""
+    """Select random warmup, direct safety execution, or a filtered proposer."""
     result=dict(nominal_action=nominal,nominal_q=None,intervened=False,gate_active=False)
     if step < args.random_steps:
         result.update(action=explorer.action(),source='warmup_random')
+    elif getattr(args,'performance_policy','pid') == 'safety':
+        result.update(action=nominal,source='safety_actor')
     elif exploration_episode:
         result.update(action=explorer.action(),source='coverage_random')
     elif learner.updates < args.gate_start_updates:
@@ -651,7 +669,8 @@ def finalize_episode(rows, collision_events, departures, failure_margin, *, incl
 def parse_args(defaults=None, description=None, argv=None):
     p = argparse.ArgumentParser(description=description or __doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--outdir', type=Path, required=True)
-    p.add_argument('--performance-policy', choices=('pid','sac'), default='pid')
+    p.add_argument('--performance-policy', choices=('pid','sac','safety'), default='pid',
+                   help='safety: execute the safety actor directly after random warmup; no PID or goal actor')
     p.add_argument('--target-gap', type=float, default=6.)
     p.add_argument('--performance-gamma', type=float, default=.99)
     p.add_argument('--performance-tau', type=float, default=.005)
@@ -833,6 +852,11 @@ def main(args=None):
             reward='1 - abs(gap-target_gap)/target_gap - .2*abs(ego_speed-leader_speed)/5 - .05*((action-previous_action)/3)^2; contact/lane terminal penalties',
             intervention='Q(goal action) < switching_threshold selects safety actor after initial random transitions',
             paper_differences='CARLA following task; ResNet18 with four frames, fixed route steering, collision margin; replay/batch/lr chosen for visual memory budget')
+    elif args.performance_policy == 'safety':
+        learner = OnlineHJ(args, device)
+        nominal_policies = {'safety':SafetyPolicy(learner,args.target_gap)}
+        manifest.update(performance='single HJ safety actor; no separate goal actor or PID',
+            intervention='disabled; random warmup followed by direct stochastic safety actor execution')
     else:
         learner = OnlineHJ(args, device)
         if getattr(args,'pid_checkpoint',None):
@@ -846,6 +870,8 @@ def main(args=None):
             manifest['nominal_policies']['generalist']['checkpoint']=str(args.pid_checkpoint.resolve())
     manifest['gate_warmup']=('initial random transitions, then learned goal proposals gated by HJ safety value; no safety guarantee during training'
                             if args.performance_policy == 'sac' else
+                            'initial random transitions, then direct safety actor execution; no gate'
+                            if args.performance_policy == 'safety' else
                             'ungated contextual PID after initial random steps, until enough critic updates; no safety guarantee during training')
     manifest.update(architecture=learner.architecture if hasattr(learner,'architecture') else 'test',
         critic_fusion='vision -> Linear128/LayerNorm/ReLU; normalized action -> Linear32/ReLU; concatenated value head',
@@ -926,7 +952,10 @@ def main(args=None):
                 if frame != observation.frame_ids[-1]: raise RuntimeError('World advanced before action selection')
                 leader_velocity=env.world.get_snapshot().find(env.nonego.id).get_velocity()
                 leader_speed=math.sqrt(leader_velocity.x**2+leader_velocity.y**2+leader_velocity.z**2)
-                nominal_action,predicted_gap=nominal.propose(observation,args.dt)
+                if args.performance_policy == 'safety' and steps < args.random_steps:
+                    nominal_action,predicted_gap=0.,None
+                else:
+                    nominal_action,predicted_gap=nominal.propose(observation,args.dt)
                 decision=behavior_action(learner,observation,nominal_action,explorer,steps,args,start['exploration_episode'])
                 if args.performance_policy == 'sac' and decision['source'] in ('contextual_pid','pid_critic_warmup'):
                     decision['source'] = 'goal_actor'
