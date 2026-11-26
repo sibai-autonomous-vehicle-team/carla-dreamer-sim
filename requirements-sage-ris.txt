@@ -1,0 +1,17 @@
+# Python 3.10. Matches the local CUDA training environment without the CPU overlay.
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0+cu124
+torchvision==0.21.0+cu124
+carla==0.9.15
+numpy==1.26.4
+gym==0.23.1
+opencv-python==4.10.0.84
+PyYAML==6.0.2
+networkx==3.2.1
+Flask==3.0.3
+tqdm==4.67.1
+einops==0.8.1
+shapely==2.0.7
+pygame==2.6.1
+matplotlib==3.10.9
+pillow==12.3.0
