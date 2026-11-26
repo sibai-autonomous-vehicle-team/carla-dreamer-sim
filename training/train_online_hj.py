@@ -26,6 +26,8 @@ Example (start a dedicated CARLA server separately, with rendering enabled):
       --condition day_cloudy --port 2800 --require-cuda
 Add --start-server to launch the bundled simulator. Checkpoints have a separate
 format; they are NOT compatible with the existing offline RGBSafetyFilter.
+Use --pid-checkpoint PATH for a generalist CNN-PID instead of specialist profiles;
+--target-gap and --pid-kp/--pid-ki/--pid-kd configure its frozen PID.
 Add --windowed for a combined chase/model-camera preview; --real-time limits
 decision speed when compute is faster than simulation time. The server itself
 renders off-screen; the preview is a separate Python window.
@@ -40,6 +42,7 @@ import math
 from pathlib import Path
 import random
 import queue
+import sys
 import time
 from types import SimpleNamespace
 
@@ -86,6 +89,10 @@ class ContextPID:
         self.sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
         if self.profile.get('cnn_sha256') != self.sha256:
             raise ValueError(f'PID CNN checksum mismatch: {path}')
+        self.load_encoder(path, device)
+
+    def load_encoder(self, path, device):
+        self.checkpoint = Path(path)
         self.device = device
         self.encoder = RGBEncoder(pretrained=False,freeze_batch_norm=True)
         self.encoder.network.fc = nn.Linear(512,1)
@@ -104,6 +111,19 @@ class ContextPID:
         gap=float(self.encoder.network(self.encoder.preprocess(frame))[0,0])
         if not math.isfinite(gap): raise FloatingPointError('Nonfinite nominal CNN gap')
         return self.pid.update(gap,dt),gap
+
+
+class GeneralistPID(ContextPID):
+    """Frozen pooled gap CNN with one PID, independent of weather profiles."""
+    def __init__(self, checkpoint, device, *, target_gap=6., kp=.5, ki=0., kd=.5):
+        values = dict(target_gap=target_gap, kp=kp, ki=ki, kd=kd)
+        if any(not math.isfinite(v) or v < 0 for v in values.values()) or target_gap <= 0:
+            raise ValueError('PID target must be positive and gains finite and nonnegative')
+        path = Path(checkpoint)
+        self.folder = path.parent
+        self.sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+        self.profile = dict(values, cnn_sha256=self.sha256)
+        self.load_encoder(path, device)
 
 
 def behavior_action(learner, observation, nominal, explorer, step, args, exploration_episode):
@@ -443,13 +463,24 @@ class Actor(VisualNetwork):
 
 
 class Critic(VisualNetwork):
-    def __init__(self, *args):
+    def __init__(self, *args, value_bounds=None):
         super().__init__(*args)
-        self.head = nn.Sequential(nn.Linear(self.width+1, 256), nn.ReLU(), nn.Linear(256, 128),
+        # Compress and normalize vision before fusion. A single action scalar
+        # beside 2048 unnormalized visual features is easily ignored by the head.
+        self.state_head = nn.Sequential(nn.Linear(self.width,128),nn.LayerNorm(128),nn.ReLU())
+        self.action_head = nn.Sequential(nn.Linear(1,32),nn.ReLU())
+        self.value_bounds = value_bounds
+        self.head = nn.Sequential(nn.Linear(160, 256), nn.ReLU(), nn.Linear(256, 128),
                                   nn.ReLU(), nn.Linear(128, 1))
 
+    def value(self, features, action):
+        raw = self.head(torch.cat((self.state_head(features),self.action_head(action/3)), -1)).squeeze(-1)
+        if self.value_bounds is None: return raw
+        low,high=self.value_bounds
+        return low+(high-low)*torch.sigmoid(raw)
+
     def forward(self, images, speed, action):
-        return self.head(torch.cat((self.features(images, speed), action/3), -1)).squeeze(-1)
+        return self.value(self.features(images,speed),action)
 
 
 def hj_backup(margin, next_margin, failed, continuation, gamma):
@@ -459,13 +490,15 @@ def hj_backup(margin, next_margin, failed, continuation, gamma):
 
 
 class OnlineHJ:
-    architecture = 'online_hj_rgb_longitudinal'
+    architecture = 'online_hj_rgb_longitudinal_v2'
     model_names = ('actor', 'critics', 'targets')
     snapshot_names = model_names + ('actor_optimizer', 'critic_optimizer')
     def __init__(self, args, device):
         contract = (args.history_frames, args.include_speed, not args.no_pretrained, args.freeze_encoder)
         self.actor = Actor(*contract).to(device)
-        self.critics = nn.ModuleList([Critic(*contract), Critic(*contract)]).to(device)
+        self.safety_bounds = ((-args.event_failure_margin,args.max_gap)
+                              if getattr(args,'safety_objective','following') == 'collision' else None)
+        self.critics = nn.ModuleList([Critic(*contract,value_bounds=self.safety_bounds) for _ in range(2)]).to(device)
         self.targets = deepcopy(self.critics).eval().requires_grad_(False)
         self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=args.actor_lr)
         self.critic_optimizer = torch.optim.Adam(self.critics.parameters(), lr=args.critic_lr)
@@ -523,6 +556,11 @@ class OnlineHJ:
             next_action, _ = self.actor(successor, next_speed)
             continuation = torch.minimum(*(q(successor, next_speed, next_action) for q in self.targets))
             target = hj_backup(margin, next_margin, failed, continuation, gamma)
+            if self.safety_bounds is not None:
+                low,high=self.safety_bounds
+                if not ((margin>=low)&(margin<=high)&(next_margin>=low)&(next_margin<=high)).all():
+                    raise ValueError('Safety labels outside the declared collision-value bounds')
+                target=target.clamp(low,high)
         values = [q(image, speed, action) for q in self.critics]
         critic_loss = sum(F.mse_loss(q, target) for q in values)/2
         if not torch.isfinite(critic_loss): raise FloatingPointError('Nonfinite HJ critic loss')
@@ -537,6 +575,7 @@ class OnlineHJ:
         try:
             proposed, log_prob = self.actor(image, speed)
             q = torch.minimum(*(c(image, speed, proposed) for c in self.critics))
+            action_gradient=torch.autograd.grad(q.sum(),proposed,retain_graph=True)[0].detach().abs().mean()
             actor_loss = (alpha*log_prob-q).mean()
             if not torch.isfinite(actor_loss): raise FloatingPointError('Nonfinite HJ actor loss')
             self.actor_optimizer.zero_grad(set_to_none=True)
@@ -552,7 +591,10 @@ class OnlineHJ:
                     target_mean=float(target.mean()), q_mean=float(values[0].detach().mean()),
                     q_std=float(values[0].detach().std(unbiased=False)),
                     disagreement=float((values[0]-values[1]).detach().abs().mean()),
-                    entropy=float(-log_prob.detach().mean()))
+                    entropy=float(-log_prob.detach().mean()),
+                    safety_action_gradient=float(action_gradient),
+                    q_min=float(torch.minimum(*values).detach().min()),
+                    q_max=float(torch.maximum(*values).detach().max()))
 
     def save(self, path, steps):
         payload = dict(format_version=1, architecture=self.architecture,
@@ -626,6 +668,10 @@ def parse_args(defaults=None, description=None):
     p.add_argument('--batch-size', type=int, default=8)
     p.add_argument('--random-steps', type=int, default=1000)
     p.add_argument('--pid-root', type=Path, default=Path('specialists'), help='Contextual PID bank containing CONDITION/cnn.pth and pid.json')
+    p.add_argument('--pid-checkpoint', type=Path, help='Generalist gap CNN checkpoint; replaces the contextual PID bank, using target-gap and pid gains')
+    p.add_argument('--pid-kp', type=float, default=.5)
+    p.add_argument('--pid-ki', type=float, default=0.)
+    p.add_argument('--pid-kd', type=float, default=.5)
     p.add_argument('--nominal-conditions', nargs='+', help='PID profiles to sample per episode; default is weather-matched profile')
     p.add_argument('--gate-start-updates', type=int, default=500, help='Use ungated PID until this many critic updates, then enable safety interventions')
     p.add_argument('--exploration-episode-fraction', type=float, default=0.,
@@ -675,6 +721,12 @@ def parse_args(defaults=None, description=None):
     p.add_argument('--eval-cases', type=int, default=6, help='Held-out starts per nominal PID, half ordinary and half fast-closing')
     p.add_argument('--eval-seed', type=int, default=1000003)
     p.add_argument('--log-interval', type=int, default=100)
+    p.add_argument('--wandb',action='store_true',help='Log metrics and evaluation plots to Weights & Biases')
+    p.add_argument('--wandb-project',default='carla-sage')
+    p.add_argument('--wandb-entity')
+    p.add_argument('--wandb-name')
+    p.add_argument('--wandb-group')
+    p.add_argument('--wandb-mode',choices=('online','offline'),default='online')
     if defaults: p.set_defaults(**defaults)
     args = p.parse_args()
     if not 0 <= args.performance_gamma < 1 or not 0 < args.performance_tau <= 1:
@@ -720,9 +772,16 @@ def parse_args(defaults=None, description=None):
         low=args.min_gap if args.safety_objective=='following' else 0.
         if not low<args.challenge_gap_range[0]<=args.challenge_gap_range[1]<args.max_gap:
             p.error('Challenge gaps must start inside the selected following constraints')
+    for key in ('pid_kp','pid_ki','pid_kd'):
+        if not math.isfinite(getattr(args,key)) or getattr(args,key)<0:
+            p.error(f'{key} must be finite and nonnegative')
+    if args.pid_checkpoint:
+        if args.performance_policy != 'pid': p.error('--pid-checkpoint requires --performance-policy pid')
+        if args.nominal_conditions: p.error('--pid-checkpoint replaces --nominal-conditions')
+        if not args.pid_checkpoint.is_file(): p.error(f'Missing generalist checkpoint: {args.pid_checkpoint}')
     args.nominal_conditions=args.nominal_conditions or [args.condition]
     if len(set(args.nominal_conditions))!=len(args.nominal_conditions): p.error('Duplicate nominal PID profiles')
-    for name in args.nominal_conditions if args.performance_policy == 'pid' else []:
+    for name in args.nominal_conditions if args.performance_policy == 'pid' and not args.pid_checkpoint else []:
         if name not in [f'{t}_{w}' for t in ('day','sunset','night') for w in ('sunny','cloudy','rainy')]:
             p.error(f'Unknown nominal PID profile: {name}')
         if not all((args.pid_root/name/f).is_file() for f in ('pid.json','cnn.pth')):
@@ -772,12 +831,22 @@ def main(args=None):
             paper_differences='CARLA following task; ResNet18 with four frames, fixed route steering, collision margin; replay/batch/lr chosen for visual memory budget')
     else:
         learner = OnlineHJ(args, device)
-        nominal_policies={name:ContextPID(args.pid_root/name,device) for name in args.nominal_conditions}
+        if getattr(args,'pid_checkpoint',None):
+            nominal_policies={'generalist':GeneralistPID(args.pid_checkpoint,device,
+                target_gap=args.target_gap,kp=args.pid_kp,ki=args.pid_ki,kd=args.pid_kd)}
+        else:
+            nominal_policies={name:ContextPID(args.pid_root/name,device) for name in args.nominal_conditions}
         manifest['nominal_policies']={name:dict(path=str(policy.folder.resolve()),cnn_sha256=policy.sha256,
             pid={k:policy.profile[k] for k in ('target_gap','kp','ki','kd')}) for name,policy in nominal_policies.items()}
+        if getattr(args,'pid_checkpoint',None):
+            manifest['nominal_policies']['generalist']['checkpoint']=str(args.pid_checkpoint.resolve())
     manifest['gate_warmup']=('initial random transitions, then learned goal proposals gated by HJ safety value; no safety guarantee during training'
                             if args.performance_policy == 'sac' else
                             'ungated contextual PID after initial random steps, until enough critic updates; no safety guarantee during training')
+    manifest.update(architecture=learner.architecture if hasattr(learner,'architecture') else 'test',
+        critic_fusion='vision -> Linear128/LayerNorm/ReLU; normalized action -> Linear32/ReLU; concatenated value head',
+        safety_value_bounds=learner.safety_bounds if hasattr(learner,'safety_bounds') else None,
+        evaluation_validation='full-braking setup validation with up to 30 deterministic attempts per case; suite fixed before policy evaluation')
     (args.outdir/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     replay = Replay(args.capacity)
     import carla
@@ -787,8 +856,11 @@ def main(args=None):
     from .closed_loop import read_snapshot
     from collect_parallel import stop
     process, env, world, original_settings, viewer = None, None, None, None, None
+    from .wandb_logging import WandbLogger
+    tracker=None
     steps, episode = 0, 0
     try:
+        tracker=WandbLogger(args,manifest)
         if args.windowed: viewer = TrainingViewer()
         scenario_class = with_route_aware_leader(BrakingScenario,args.leader_lateral_accel,args.leader_deceleration)
         scenario_class = with_closing_starts(scenario_class,args.leader_lateral_accel,args.leader_deceleration)
@@ -801,7 +873,7 @@ def main(args=None):
         next_eval = args.eval_interval
         last_eval = None
         if args.eval_interval:
-            evaluate(learner, nominal_policies, client, world, scenario_class, args, 0, viewer)
+            evaluate(learner, nominal_policies, client, world, scenario_class, args, 0, viewer,tracker=tracker)
             last_eval = 0
         while steps < args.steps:
             # Different route seed on every episode; retain the complete rollout plan.
@@ -884,13 +956,15 @@ def main(args=None):
                     rows[-1].reward=following_reward(next_gap,successor.speed-next_leader_speed,action,previous_action,args.target_gap)
                 previous_action = action
                 steps += 1
-                append_json(args.outdir/'transitions.jsonl', dict(step=steps,episode=episode,frame=frame,next_frame=next_frame,
+                transition_record=dict(step=steps,episode=episode,frame=frame,next_frame=next_frame,
                     history_frames=observation.frame_ids,successor_history_frames=successor.frame_ids,
                     action=action,steering=steering,gap=gap,next_gap=next_gap,failed_gap=failed,
                     ego_lane=ego_lane,leader_lane=leader_lane,behavior=decision,
                     nominal_condition=nominal_name,predicted_gap=predicted_gap,
                     ego_speed=observation.speed,leader_speed=leader_speed,closing_rate=(gap-next_gap)/args.dt,
-                    challenge_start=start['challenge']))
+                    challenge_start=start['challenge'])
+                append_json(args.outdir/'transitions.jsonl',transition_record)
+                tracker.transition(transition_record)
                 if len(replay) >= args.learning_starts:
                     metrics = learner.update(replay.sample(args.batch_size,device))
                     if steps % args.log_interval == 0:
@@ -902,6 +976,7 @@ def main(args=None):
                                     safety_objective=args.safety_objective,
                                     failure_rows_in_replay=sum(r.failed for r in replay.rows))
                     append_json(args.outdir/'progress.jsonl',progress)
+                    tracker.progress(progress,metrics)
                     if len(replay) < args.learning_starts: print(json.dumps(progress),flush=True)
                 observation = successor
                 if args.real_time: time.sleep(max(0.,args.dt-(time.monotonic()-iteration_started)))
@@ -949,23 +1024,28 @@ def main(args=None):
             if contact_before_departure: record['ending'] = 'collision_or_lane_failure'
             if args.safety_objective == 'collision' and record['failed']: record['ending'] = 'collision'
             append_json(args.outdir/'episodes.jsonl',record); print(json.dumps(record),flush=True)
+            tracker.episode(record)
             env.close(); env=None
             episode += 1
             if args.eval_interval and steps >= next_eval:
-                evaluate(learner, nominal_policies, client, world, scenario_class, args, steps, viewer)
+                evaluate(learner, nominal_policies, client, world, scenario_class, args, steps, viewer,tracker=tracker)
                 last_eval = steps
                 next_eval = (steps//args.eval_interval+1)*args.eval_interval
         if args.eval_interval and last_eval != steps:
-            evaluate(learner, nominal_policies, client, world, scenario_class, args, steps, viewer)
+            evaluate(learner, nominal_policies, client, world, scenario_class, args, steps, viewer,tracker=tracker)
         learner.save(args.outdir/'checkpoint_final.pt',steps)
     except BaseException:
         learner.save(args.outdir/'checkpoint_interrupted.pt',steps)
         raise
     finally:
-        if env is not None: env.close()
-        if viewer is not None: viewer.close()
-        if world is not None and original_settings is not None: world.apply_settings(original_settings)
-        if process is not None: stop(process)
+        exit_code=0 if sys.exc_info()[0] is None else 1
+        try:
+            if env is not None: env.close()
+            if viewer is not None: viewer.close()
+            if world is not None and original_settings is not None: world.apply_settings(original_settings)
+            if process is not None: stop(process)
+        finally:
+            if tracker is not None: tracker.finish(exit_code=exit_code)
 
 
 if __name__ == '__main__': main()

@@ -13,6 +13,15 @@ Replay size 10000, batch size 8 and LR 1e-4 retain the visual trainer's memory
 budget; paper settings are replay 250000, batch 256 and LR .003. Entropy .2,
 performance gamma .99, safety gamma .85 to .9999, and target taus .005/.05.
 Final/interrupted checkpoints contain both pairs. Training resume is not supported.
+Version 2 normalizes/compresses visual features and embeds actions before critic
+fusion; collision critics have bounded outputs [-event_failure_margin,max_gap].
+This is a stabilization change, not a paper reproduction. Old checkpoints cannot
+be loaded into the changed architecture. Evaluation starts are validated using
+full braking, and invalid setups are replaced before the suite is frozen.
+Optional tracking: --wandb --wandb-project carla-sage --wandb-name RUN_NAME.
+Install requirements-wandb.txt first. --wandb-mode offline stores metrics for
+later wandb sync when cluster nodes cannot reach the service. Existing running
+jobs can be monitored via python -m training.wandb_logging --outdir RUN --follow.
 """
 from .train_online_hj import main as train, parse_args
 

@@ -34,7 +34,7 @@ def finalize_performance(rows, contacts, departures, args):
 
 
 class OnlineSAGE(OnlineHJ):
-    architecture = 'online_sage_rgb_longitudinal'
+    architecture = 'online_sage_rgb_longitudinal_v2'
     model_names = OnlineHJ.model_names+('goal_actor','goal_critics','goal_targets')
     snapshot_names = model_names+('actor_optimizer','critic_optimizer','goal_actor_optimizer','goal_critic_optimizer')
 
@@ -75,6 +75,7 @@ class OnlineSAGE(OnlineHJ):
         try:
             proposed,log_probability=self.goal_actor(image,speed)
             q=torch.minimum(*(critic(image,speed,proposed) for critic in self.goal_critics))
+            action_gradient=torch.autograd.grad(q.sum(),proposed,retain_graph=True)[0].detach().abs().mean()
             actor_loss=(self.args.performance_alpha*log_probability-q).mean()
             if not torch.isfinite(actor_loss): raise FloatingPointError('Nonfinite SAC performance actor loss')
             self.goal_actor_optimizer.zero_grad(set_to_none=True)
@@ -85,7 +86,8 @@ class OnlineSAGE(OnlineHJ):
         soft_update(self.goal_targets,self.goal_critics,self.args.performance_tau)
         metrics.update(goal_critic_mse=float(critic_loss.detach()),goal_actor_loss=float(actor_loss.detach()),
                        goal_target_mean=float(target.mean()),goal_q_mean=float(values[0].detach().mean()),
-                       goal_entropy=float(-log_probability.detach().mean()),reward_mean=float(reward.mean()))
+                       goal_entropy=float(-log_probability.detach().mean()),reward_mean=float(reward.mean()),
+                       goal_action_gradient=float(action_gradient))
         return metrics
 
 

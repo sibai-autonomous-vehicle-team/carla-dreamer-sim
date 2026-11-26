@@ -13,10 +13,26 @@ import numpy as np
 import torch
 from torch import nn
 
-from training.evaluate_online_hj import isolated_evaluation, summarize, evaluate
+from training.evaluate_online_hj import isolated_evaluation, summarize, evaluate, prepare_suite
 
 
 class EvaluationTests(unittest.TestCase):
+    def test_invalid_setups_are_replaced_but_valid_braking_collisions_are_retained(self):
+        from training.braking_scenario import InvalidBrakingScenario
+        original=dict(case=0,seed=100)
+        replacement=dict(case=0,seed=200)
+        baseline=dict(valid=True,collision=True,horizon_complete=False)
+        with TemporaryDirectory() as directory,patch('training.evaluate_online_hj.make_suite',return_value=[original]), \
+             patch('training.evaluate_online_hj.make_case',return_value=replacement) as make_case, \
+             patch('training.evaluate_online_hj.rollout',side_effect=[InvalidBrakingScenario('curve'),baseline]) as rollout:
+            args=NS(outdir=Path(directory))
+            suite=prepare_suite(None,None,None,None,None,args)
+            self.assertEqual(suite[0]['seed'],200)
+            self.assertTrue(suite[0]['braking_baseline']['collision'])
+            self.assertEqual(make_case.call_args.args[-1],1)
+            self.assertEqual(rollout.call_count,2)
+            self.assertEqual(json.loads((args.outdir/'evaluation_rejected_starts.jsonl').read_text())['error'],'curve')
+
     def test_restores_rng_and_nested_modes_even_on_error(self):
         learner=NS(actor=nn.Sequential(nn.Linear(1,1),nn.Dropout()),critics=nn.Linear(1,1),targets=nn.Linear(1,1))
         learner.goal_actor=nn.Linear(1,1); learner.goal_critics=nn.Linear(1,1); learner.goal_targets=nn.Linear(1,1)
@@ -78,7 +94,7 @@ class EvaluationTests(unittest.TestCase):
             self.assertEqual(probe['false_safe_collisions'],1)
             self.assertEqual(probe['missed_collision_fraction'],1.)
             self.assertEqual(summary['modes']['safety']['horizon_complete'],1.)
-            self.assertTrue(all(env.closed for env in instances)); self.assertEqual(len(instances),4)
+            self.assertTrue(all(env.closed for env in instances)); self.assertEqual(len(instances),5)
             self.assertTrue(torch.equal(weights,learner.actor.weight)); self.assertEqual(learner.updates,7)
             self.assertEqual(len((args.outdir/'evaluation_rollouts.jsonl').read_text().splitlines()),4)
             self.assertEqual(json.loads((args.outdir/'evaluation_latest.json').read_text())['step'],5000)

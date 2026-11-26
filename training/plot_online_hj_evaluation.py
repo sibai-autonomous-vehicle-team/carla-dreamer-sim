@@ -71,6 +71,12 @@ def plot_evaluations(outdir):
         scopes.append((f'{"Policy" if nominal_kind == "goal" else "PID profile"}: {profile}',[dict(step=r['step'],**r['by_profile'][profile]) for r in records]))
     for label in records[-1].get('by_start',{}):
         scopes.append((f'{label.capitalize()} starts',[dict(step=r['step'],**r['by_start'][label]) for r in records]))
+    for label,title in [('survived_horizon','Full braking survived the horizon'),
+                        ('collision','Full braking collided (not proven unavoidable)'),
+                        ('incomplete','Full braking ended before the horizon')]:
+        if label in records[-1].get('by_braking',{}) and any(
+                r['by_braking'][label]['paired_cases']+r['by_braking'][label]['excluded_cases'] for r in records):
+            scopes.append((title,[dict(step=r['step'],**r['by_braking'][label]) for r in records]))
     panels = []
     for index,(title,history) in enumerate(scopes):
         fig = evaluation_figure(history,title,nominal_kind)
@@ -87,6 +93,10 @@ def plot_evaluations(outdir):
     options = ''.join(f'<option value="scope-{i}">{escape(title)}</option>' for i,(title,_) in enumerate(scopes))
     updated = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
     proposer='goal-policy' if nominal_kind == 'goal' else 'PID'
+    baseline=records[-1].get('braking_baseline')
+    baseline_text=(f'Immediate full-braking reference: {baseline["collisions"]}/{baseline["cases"]} collisions; '
+                   f'{baseline["survived_horizon"]}/{baseline["cases"]} survived the full horizon. '
+                   'Use the selector to inspect these groups separately.' if baseline else '')
     html = f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="refresh" content="10"><title>Online HJ evaluation</title>
@@ -99,6 +109,7 @@ This page reloads every 10 seconds; charts update after each completed evaluatio
 <p>Lower collision and false-safe rates are better. Read speed and gap error alongside safety:
 stopping indefinitely can reduce collisions. Intervention rate alone is not a quality score.
 Missing measurements appear as gaps, not zeros.</p>
+<p>{baseline_text}</p>
 {''.join(panels)}
 <p class="muted">Small, finite-horizon screening suite; collision-free rollouts are not safety certificates.
 Recovery probes test a {proposer} action after collecting real frame history under the frozen safety actor,

@@ -1,6 +1,7 @@
 """Dual-policy updates, executed-action replay, terminal targets and rollout wiring."""
 from contextlib import ExitStack, redirect_stdout
 import io
+import importlib
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -12,7 +13,7 @@ import torch
 from torch import nn
 
 from training.online_sage import OnlineSAGE, GoalPolicy, following_reward, sac_backup, finalize_performance
-from training.train_online_hj import Observation, Transition, Replay, VisualNetwork, finalize_episode
+from training.train_online_hj import Observation, Transition, Replay, VisualNetwork, Critic, finalize_episode
 
 
 def tiny_encoder(self,history,include_speed,pretrained,freeze_encoder):
@@ -31,7 +32,8 @@ class SageTests(unittest.TestCase):
         self.args=NS(history_frames=4,include_speed=True,no_pretrained=True,freeze_encoder=True,
             actor_lr=1e-3,critic_lr=1e-3,gamma_start=.85,gamma_final=.9999,alpha=.2,alpha_final=.2,
             anneal_updates=100,tau=.05,performance_gamma=.99,performance_alpha=.2,performance_tau=.005,
-            collision_penalty=10.,lane_penalty=5.,safety_objective='collision',switching_threshold=1.)
+            collision_penalty=10.,lane_penalty=5.,safety_objective='collision',switching_threshold=1.,
+            event_failure_margin=1.,max_gap=9.)
 
     def row(self,frame=100):
         image=torch.ones(224,224,3,dtype=torch.uint8)
@@ -43,6 +45,29 @@ class SageTests(unittest.TestCase):
         result=sac_backup(torch.tensor([1.,1.]),torch.tensor([True,False]),torch.tensor([4.,4.]),
                           torch.tensor([-2.,-2.]),.9,.2)
         torch.testing.assert_close(result,torch.tensor([1.,4.96]))
+
+    def test_safety_value_head_learns_action_order_and_respects_bounds(self):
+        with patch.object(VisualNetwork,'__init__',tiny_encoder):
+            critic=Critic(4,True,False,True,value_bounds=(-1.,9.))
+        features=torch.randn(4,critic.width)
+        optimizer=torch.optim.Adam([p for p in critic.parameters() if p.requires_grad],lr=.003)
+        for _ in range(200):
+            indices=torch.randint(4,(32,)); actions=torch.rand(32,1)*6-3
+            target=4.+.2*features[indices,0].tanh()-.8*actions[:,0]
+            loss=(critic.value(features[indices],actions)-target).square().mean()
+            optimizer.zero_grad(); loss.backward(); optimizer.step()
+        actions=torch.tensor([[-3.],[0.],[3.]],requires_grad=True)
+        q=critic.value(features[:1].expand(3,-1),actions)
+        expected=4.+.2*features[0,0].tanh()-.8*actions[:,0]
+        self.assertTrue(q[0]>q[1]>q[2])
+        self.assertLess(float((q-expected).abs().max()),.4)
+        self.assertTrue((torch.autograd.grad(q.sum(),actions)[0]<0).all())
+        with torch.no_grad():
+            critic.head[-1].weight.zero_()
+            for bias in (-100000.,100000.):
+                critic.head[-1].bias.fill_(bias)
+                predictions=critic.value(features,torch.zeros(4,1))
+                self.assertTrue(((predictions>=-1)&(predictions<=9)).all())
 
     def test_reward_prefers_target_gap_and_speed_match_and_smoothness(self):
         self.assertEqual(following_reward(6.,0.,0.,0.,6.),1.)
@@ -113,6 +138,8 @@ class SageTests(unittest.TestCase):
         learner.update=update
         with TemporaryDirectory() as directory,ExitStack() as stack:
             root=Path(directory)
+            tracking_module=importlib.import_module('training.wandb_logging')
+            tracking=stack.enter_context(patch.object(tracking_module,'WandbLogger'))
             argv=['train','--outdir',str(root/'run'),'--steps','2','--episode-steps','1','--random-steps','0',
                   '--challenge-fraction','0','--learning-starts','1','--batch-size','1','--capacity','8',
                   '--eval-interval','0','--cpu','--pid-root',str(root/'nonexistent')]
@@ -136,6 +163,9 @@ class SageTests(unittest.TestCase):
             manifest=json.loads((root/'run'/'manifest.json').read_text())
             self.assertEqual(manifest['performance_policy'],'sac'); self.assertTrue(manifest['include_speed'])
             self.assertTrue((root/'run'/'checkpoint_final.pt').exists())
+            self.assertEqual(tracking.return_value.transition.call_count,2)
+            self.assertEqual(tracking.return_value.episode.call_count,2)
+            tracking.return_value.finish.assert_called_once_with(exit_code=0)
 
 
 if __name__ == '__main__': unittest.main()

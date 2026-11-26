@@ -37,23 +37,45 @@ def isolated_evaluation(learner):
         if cuda_state is not None: torch.cuda.set_rng_state_all(cuda_state)
 
 
-def make_suite(world, args):
+def make_case(world,args,index,attempt=0):
     from .evaluate_closed_loop import make_scenarios
     from .train_online_hj import sample_start
-    rng = random.Random(args.eval_seed)
-    cases = []
-    for index in range(args.eval_cases):
-        # Explicit strata ensure both types occur independently of training mix.
-        config = SimpleNamespace(**vars(args))
-        config.challenge_fraction = float(index % 2 == 1)
-        start = sample_start(config, rng)
-        start['exploration_episode'] = False
-        scenario = make_scenarios(world, 1, args.eval_seed+index*1009, args.episode_steps)[0]
-        scenario['leader'] = list(scenario['full_route'][20]); scenario['leader'][2] += .5
-        scenario['route'] = scenario['full_route'][20:]
-        cases.append(dict(case=index, seed=args.eval_seed+index*1009, start=start,
-                          scenario=scenario, brake_after=rng.uniform(*args.brake_delay_range)))
-    return cases
+    seed=args.eval_seed+index*1009+attempt*1000003
+    rng = random.Random(seed)
+    config = SimpleNamespace(**vars(args))
+    config.challenge_fraction = float(index % 2 == 1)
+    start = sample_start(config, rng)
+    start['exploration_episode'] = False
+    scenario = make_scenarios(world, 1, seed, args.episode_steps)[0]
+    scenario['leader'] = list(scenario['full_route'][20]); scenario['leader'][2] += .5
+    scenario['route'] = scenario['full_route'][20:]
+    return dict(case=index, seed=seed, attempt=attempt, start=start,
+                scenario=scenario, brake_after=rng.uniform(*args.brake_delay_range))
+
+
+def make_suite(world,args):
+    return [make_case(world,args,index) for index in range(args.eval_cases)]
+
+
+def prepare_suite(learner,nominal,client,world,scenario_class,args,viewer=None):
+    """Validate setups before freezing the suite; never select on learned success."""
+    from .braking_scenario import InvalidBrakingScenario
+    from .train_online_hj import append_json
+    suite=[]
+    for original in make_suite(world,args):
+        for attempt in range(30):
+            case=original if attempt==0 else make_case(world,args,original['case'],attempt)
+            try:
+                baseline=rollout(learner,nominal,client,scenario_class,args,case,'brake',viewer)
+                if not baseline['valid']: raise InvalidBrakingScenario('Invalid leader during full-braking baseline')
+                case['braking_baseline']=baseline
+                suite.append(case)
+                break
+            except InvalidBrakingScenario as error:
+                append_json(args.outdir/'evaluation_rejected_starts.jsonl',
+                            dict(case=case['case'],attempt=attempt,seed=case['seed'],error=str(error)))
+        else: raise RuntimeError(f'Cannot construct valid held-out case {original["case"]} after 30 attempts')
+    return suite
 
 
 def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=None):
@@ -80,27 +102,34 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
         first_leader_velocity = env.world.get_snapshot().find(env.nonego.id).get_velocity()
         first_leader_speed = (first_leader_velocity.x**2+first_leader_velocity.y**2+first_leader_velocity.z**2)**.5
         rows, invalid_frame, interventions, speed_sum, gap_error_sum = [], None, 0, 0., 0.
-        initial_q, probe_q = None, None
+        initial_q, probe_q, action_scan = None, None, None
+        commands=[]
         ending = 'time_limit'
         for tick in range(args.episode_steps):
             frame, _, _, gap = read_snapshot(env,args.dt)
             if frame != observation.frame_ids[-1]: raise RuntimeError('Evaluation observation/snapshot mismatch')
-            nominal_action, _ = (nominal.propose(observation,args.dt,deterministic=True)
-                                if getattr(nominal,'is_goal',False) else nominal.propose(observation,args.dt))
-            if tick == 0: initial_q = learner.score(observation,nominal_action)
+            if mode=='brake': nominal_action=-3.
+            elif getattr(nominal,'is_goal',False): nominal_action,_=nominal.propose(observation,args.dt,deterministic=True)
+            else: nominal_action,_=nominal.propose(observation,args.dt)
+            if tick == 0 and mode!='brake': initial_q = learner.score(observation,nominal_action)
+            if tick==args.history_frames-1 and mode!='brake':
+                action_scan=dict(frame=frame,frame_ids=list(observation.frame_ids),
+                    brake_q=learner.score(observation,-3.),coast_q=learner.score(observation,0.),
+                    throttle_q=learner.score(observation,3.),safety_action=learner.action(observation,deterministic=True))
             intervened = False
             # A motion-value probe needs four real captures, not reset padding.
             # First gather history under the deterministic recovery policy.
             probe_now = mode == 'pid_then_safety' and tick == args.history_frames-1
             if probe_now: probe_q = learner.score(observation,nominal_action)
-            if mode == 'pid' or probe_now: action = nominal_action
+            if mode == 'brake': action=-3.
+            elif mode == 'pid' or probe_now: action = nominal_action
             elif mode == 'filter':
                 decision = learner.filter_action(observation,nominal_action)
                 action, intervened = decision['action'], decision['intervened']
             else: action = learner.action(observation,deterministic=True)
             if viewer is not None:
                 viewer.show(observation,step=0,action=action,steering=-env.tracker(env.ego).steering(),
-                    gap=gap,q=learner.score(observation,action),updates=learner.updates,
+                    gap=gap,q=learner.score(observation,action) if mode!='brake' else 0.,updates=learner.updates,
                     phase=f'EVALUATION case {case["case"]}: {mode.replace("pid","goal") if getattr(nominal,"is_goal",False) else mode}',metrics=None,
                     actor_active=intervened,epsilon=args.switching_threshold,
                     controller_label=f'EVAL {(mode.replace("pid","goal") if getattr(nominal,"is_goal",False) else mode).upper()}')
@@ -114,6 +143,7 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
             if not ego_inside and next_frame not in env.departures: env.departures.append(next_frame)
             if not planned_lane_status(env,env.nonego)['inside']: invalid_frame = next_frame
             rows.append(Transition(observation,action,successor,margin(gap,args),margin(next_gap,args),gap_failure(next_gap,args)))
+            commands.append(action)
             interventions += int(intervened); speed_sum += observation.speed
             gap_error_sum += abs(gap-nominal.profile['target_gap'])
             observation = successor
@@ -135,7 +165,8 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
         return dict(valid=valid,collision=collision,failure=bool(rows[-1].failed),
             lane_departure=bool(departures),ending=ending,ticks=len(rows),
             horizon_complete=not collision and not departures and ending == 'time_limit',
-            initial_nominal_q=initial_q,probe_q=probe_q,
+            initial_nominal_q=initial_q,probe_q=probe_q,action_scan=action_scan,
+            mean_action=sum(commands)/len(commands),minimum_action=min(commands),maximum_action=max(commands),
             predicted_safe=probe_q >= args.switching_threshold if probe_q is not None else None,
             initial_gap=first_gap,initial_ego_speed=first_speed,initial_leader_speed=first_leader_speed,
             intervention_fraction=interventions/(tick+1),mean_speed=speed_sum/(tick+1),
@@ -176,7 +207,7 @@ def summarize(records):
     return result
 
 
-def evaluate(learner, nominal_policies, client, world, scenario_class, args, steps, viewer=None):
+def evaluate(learner, nominal_policies, client, world, scenario_class, args, steps, viewer=None,tracker=None):
     from .braking_scenario import InvalidBrakingScenario
     from .train_online_hj import append_json
     started = time.monotonic()
@@ -184,9 +215,12 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
     print(f'Evaluating frozen HJ at training step {steps}; no replay or optimizer updates.',flush=True)
     with isolated_evaluation(learner):
         suite_path = args.outdir/'evaluation_suite.json'
-        if suite_path.exists(): suite = json.loads(suite_path.read_text())
+        if suite_path.exists():
+            suite = json.loads(suite_path.read_text())
+            if any('braking_baseline' not in case for case in suite):
+                raise RuntimeError('Legacy unvalidated evaluation suite: use a fresh output directory; do not mix evaluation histories')
         else:
-            suite = make_suite(world,args)
+            suite = prepare_suite(learner,next(iter(nominal_policies.values())),client,world,scenario_class,args,viewer)
             suite_path.write_text(json.dumps(suite,indent=2)+'\n')
         for name, nominal in nominal_policies.items():
             for case in suite:
@@ -194,7 +228,10 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
                     try: record = rollout(learner,nominal,client,scenario_class,args,case,mode,viewer)
                     except InvalidBrakingScenario as error:
                         record = dict(valid=False,error=str(error))
-                    record.update(step=steps,nominal_condition=name,case=case['case'],challenge=case['start']['challenge'],mode=mode)
+                    baseline=case['braking_baseline']
+                    record.update(step=steps,nominal_condition=name,case=case['case'],challenge=case['start']['challenge'],mode=mode,
+                                  braking_group='survived_horizon' if baseline['horizon_complete'] else
+                                                'collision' if baseline['collision'] else 'incomplete')
                     records.append(record)
                     append_json(args.outdir/'evaluation_rollouts.jsonl',record)
         summary = dict(step=steps,updates=learner.updates,seconds=time.monotonic()-started,
@@ -203,6 +240,11 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
             interpretation='Finite-horizon empirical learned-policy recovery; collision-free outcomes are censored, not certified safe. No optimal HJ ground truth or calibration MSE.',
             by_profile={name:summarize([r for r in records if r['nominal_condition']==name]) for name in nominal_policies},
             by_start={label:summarize([r for r in records if r['challenge']==challenge]) for label,challenge in [('ordinary',False),('closing',True)]})
+        summary['braking_baseline']=dict(cases=len(suite),collisions=sum(c['braking_baseline']['collision'] for c in suite),
+            survived_horizon=sum(c['braking_baseline']['horizon_complete'] for c in suite),
+            interpretation='Immediate full braking with fixed steering, cached once when validating the suite. Failure does not prove inevitable collision.')
+        summary['by_braking']={label:summarize([r for r in records if r['braking_group']==label])
+                               for label in ('survived_horizon','collision','incomplete')}
         if not summary['paired_cases']:
             print('Evaluation has no valid matched cases; inspect evaluation_rollouts.jsonl. No improvement claim is possible.',flush=True)
         latest_path = args.outdir/'evaluation_latest.json'
@@ -217,6 +259,8 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
         latest_path.write_text(json.dumps(summary,indent=2)+'\n')
         from .plot_online_hj_evaluation import plot_evaluations
         plot_evaluations(args.outdir)
+        if tracker is not None:
+            tracker.evaluation(summary,args.outdir/'evaluation_plot.png',records)
         mode_metrics = summary['modes']
         print(f'EVAL step={steps} matched={summary["paired_cases"]} excluded={summary["excluded_cases"]} '
               f'collision rates: {summary["nominal_kind"]}={mode_metrics["pid"]["collision"]} '
