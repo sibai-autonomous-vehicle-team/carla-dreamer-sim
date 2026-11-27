@@ -4,7 +4,7 @@
 #SBATCH --gpus=1
 #SBATCH --constraint=H100
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=32G
+#SBATCH --mem=16G
 #SBATCH --time=12:00:00
 #SBATCH --output=slurm-%j.out
 
