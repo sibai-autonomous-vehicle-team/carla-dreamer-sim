@@ -18,7 +18,7 @@ export OMP_NUM_THREADS=8
 condition="${CONDITION:-day_sunny}"
 run_name="hj-dino-last2-${condition}-${SLURM_JOB_ID}"
 # DINOv2 Small CLS; last two blocks + final norm train at 1e-5, heads at 1e-4.
-# Fixed gamma=.99 and alpha=.05; offscreen RGB rendering remains enabled.
+# Gamma ramps .85 -> .99 across the run; alpha decays .05 -> 0 over 10k updates.
 # STEPS and CONDITION can be supplied with sbatch --export.
 timeout --signal=INT --kill-after=120s 42300s \
     "$workspace/sage-env/bin/python" -u -m training.train_dino_hj \
@@ -29,8 +29,8 @@ timeout --signal=INT --kill-after=120s 42300s \
     --termination-gap-range 0.2 11 \
     --gap-range 2 8 --challenge-gap-range 1.5 3 \
     --history-frames 4 --speed-range 10 20 \
-    --gamma-start 0.99 --gamma-final 0.99 \
-    --alpha 0.05 --alpha-final 0.05 \
+    --gamma-start 0.85 --gamma-final 0.99 --gamma-anneal-steps "${STEPS:-100000}" \
+    --alpha 0.05 --alpha-final 0 --anneal-updates 10000 \
     --dino-unfreeze-blocks 2 --encoder-lr 1e-5 \
     --random-steps 1000 --learning-starts 1000 \
     --exploration-episode-fraction 0 --exploration-hold-steps 5 15 \

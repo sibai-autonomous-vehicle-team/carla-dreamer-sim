@@ -18,7 +18,7 @@ exec .venv/bin/python -u -m training.train_dino_hj \
     --history-frames 4 --speed-range 10 20 \
     --random-steps 1000 --learning-starts 1000 \
     --exploration-episode-fraction 0 --exploration-hold-steps 5 15 \
-    --gamma-start 0.99 --gamma-final 0.99 \
+    --gamma-start 0.85 --gamma-final 0.99 --gamma-anneal-steps 100000 \
     --alpha 0.05 --alpha-final 0.05 \
     --dino-unfreeze-blocks 0 \
     --steps 100000 --eval-interval 5000 --eval-cases 50 \

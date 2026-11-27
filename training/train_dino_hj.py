@@ -90,7 +90,7 @@ def parse_args(argv=None):
             road_environment='straight',condition='day_sunny',steps=100000,
             safety_objective='following',min_gap=1.,max_gap=9.,gap_range=[2.,8.],
             challenge_gap_range=[1.5,3.],termination_gap_range=[.2,11.],
-            gamma_start=.99,gamma_final=.99,alpha=.05,alpha_final=.05,
+            gamma_start=.85,gamma_final=.99,gamma_anneal_steps=100000,alpha=.05,alpha_final=.05,
             exploration_episode_fraction=0.,port=2980),description=__doc__,argv=argv,
             extra_arguments=extra_arguments)
     if args.performance_policy!='safety':raise ValueError('DINO trainer requires --performance-policy safety')
@@ -109,7 +109,7 @@ def main():
             critic_inputs='same visual embeddings + normalized longitudinal request',
             preprocessing=contract(args),encoder=contract(args),
             critic_fusion='DINO CLS concat -> Linear128/LayerNorm/ReLU + action Linear32/ReLU',
-            comparison='new visual backbone and fixed gamma/entropy; does not isolate encoder effects from schedule effects'))
+            comparison='new visual backbone, environment-step gamma curriculum and fixed entropy; does not isolate encoder effects from schedule effects'))
 
 
 if __name__=='__main__':main()

@@ -557,11 +557,19 @@ class OnlineHJ:
         self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=args.actor_lr)
         self.critic_optimizer = torch.optim.Adam(self.critics.parameters(), lr=args.critic_lr)
         self.device, self.args, self.updates = device, args, 0
+        self.environment_steps = 0
 
     def schedule(self, start, end):
         if self.args.anneal_updates == 0:
             return end
         return start + (end-start)*min(1., self.updates/self.args.anneal_updates)
+
+    def scheduled_gamma(self):
+        steps = getattr(self.args,'gamma_anneal_steps',None)
+        if steps is None:
+            return self.schedule(self.args.gamma_start,self.args.gamma_final)
+        fraction = min(1.,self.environment_steps/steps)
+        return self.args.gamma_start+(self.args.gamma_final-self.args.gamma_start)*fraction
 
     @torch.no_grad()
     def action(self, observation, deterministic=False):
@@ -637,7 +645,7 @@ class OnlineHJ:
 
     def update(self, batch):
         image, speed, action, successor, next_speed, margin, next_margin, failed = batch[:8]
-        gamma = self.schedule(self.args.gamma_start, self.args.gamma_final)
+        gamma = self.scheduled_gamma()
         alpha = self.schedule(self.args.alpha, self.args.alpha_final)
         self.actor.train(); self.critics.train()
         with torch.no_grad():
@@ -695,6 +703,7 @@ class OnlineHJ:
             if any(not p.isfinite().all() for p in getattr(self,name).parameters()):
                 raise ValueError('Nonfinite checkpoint weights')
         self.updates = int(payload['updates'])
+        self.environment_steps = int(payload['steps'])
         return int(payload['steps'])
 
     def save(self, path, steps):
@@ -804,6 +813,8 @@ def parse_args(defaults=None, description=None, argv=None, extra_arguments=None)
     p.add_argument('--tau', type=float, default=.05)
     p.add_argument('--gamma-start', type=float, default=.85)
     p.add_argument('--gamma-final', type=float, default=.9999)
+    p.add_argument('--gamma-anneal-steps', type=int,
+                   help='Ramp gamma over this many environment steps, including warmup; default uses anneal-updates')
     p.add_argument('--alpha', type=float, default=.05)
     p.add_argument('--alpha-final', type=float, default=0.)
     p.add_argument('--anneal-updates', type=int, default=20000)
@@ -872,6 +883,8 @@ def parse_args(defaults=None, description=None, argv=None, extra_arguments=None)
             p.error('Resume requires an online HJ/SAGE v2 checkpoint')
         known = {action.dest for action in p._actions}
         p.set_defaults(**{k:v for k,v in saved['config'].items() if k in known-runtime})
+        # Older checkpoints used the shared update-based gamma/alpha schedule.
+        p.set_defaults(gamma_anneal_steps=saved['config'].get('gamma_anneal_steps'))
     args = p.parse_args(argv)
     if saved is not None:
         for key,value in saved['config'].items():
@@ -889,6 +902,8 @@ def parse_args(defaults=None, description=None, argv=None, extra_arguments=None)
     if any(getattr(args,k)<1 for k in integers) or min(args.random_steps, args.collision_grace) < 0:
         p.error('Counts must be positive; random steps and collision grace must be nonnegative')
     if args.eval_interval < 0: p.error('eval-interval must be nonnegative')
+    if args.gamma_anneal_steps is not None and args.gamma_anneal_steps < 1:
+        p.error('gamma-anneal-steps must be positive')
     if not math.isfinite(args.straight_road_length) or args.straight_road_length<400:
         p.error('straight-road-length must be at least 400 m')
     if args.action_diagnostics_interval < 0: p.error('action-diagnostics-interval must be nonnegative')
@@ -1177,6 +1192,7 @@ def main(args=None, *, manifest_overrides=None):
                 append_json(args.outdir/'transitions.jsonl',transition_record)
                 tracker.transition(transition_record)
                 if len(replay) >= args.learning_starts:
+                    learner.environment_steps = steps
                     metrics = learner.update(replay.sample(args.batch_size,device))
                     if steps % args.log_interval == 0:
                         record=dict(step=steps,replay_rows=len(replay),**metrics)

@@ -50,7 +50,7 @@ class DinoTests(unittest.TestCase):
         replay.extend([Transition(a,1.,b,2.,1.8,False),Transition(a,-1.,b,.1,-.1,True)])
         batch=replay.sample(4,'cpu')
         metrics=learner.update(batch)
-        self.assertEqual((metrics['gamma'],metrics['alpha']),(.99,.05))
+        self.assertEqual((metrics['gamma'],metrics['alpha']),(.85,.05))
         for name,param in actor.named_parameters():
             if not param.requires_grad:self.assertTrue(torch.equal(before[name],param),name)
         self.assertTrue(any(not torch.equal(before[n],p) for n,p in actor.named_parameters() if n.startswith('network.blocks.3')))
@@ -65,12 +65,27 @@ class DinoTests(unittest.TestCase):
             with patch('training.train_dino_hj.load_backbone',return_value=TinyDino()):
                 restored=DinoHJ(continued,'cpu')
             self.assertEqual(restored.restore_training(path),20000)
+            learner.environment_steps=20000
             torch.manual_seed(19);expected=learner.update(batch)
             torch.manual_seed(19);actual=restored.update(batch)
             self.assertEqual(expected,actual)
             payload=torch.load(path,weights_only=True)
             self.assertEqual(payload['preprocessing']['kind'],'dinov2_cls_rgb')
             self.assertEqual(payload['preprocessing']['unfreeze_blocks'],2)
+
+    def test_gamma_uses_environment_steps_independently_of_entropy_updates(self):
+        # Exercise the schedule without loading a visual backbone.
+        learner=DinoHJ.__new__(DinoHJ)
+        learner.args=self.args()
+        learner.updates=10000
+        for step,expected in ((0,.85),(10000,.864),(50000,.92),(100000,.99),(120000,.99)):
+            learner.environment_steps=step
+            self.assertAlmostEqual(learner.scheduled_gamma(),expected)
+            self.assertEqual(learner.schedule(learner.args.alpha,learner.args.alpha_final),.05)
+        learner.args.gamma_anneal_steps=None
+        learner.args.anneal_updates=10000
+        self.assertEqual(learner.scheduled_gamma(),.99)
+        with self.assertRaises(SystemExit):self.args('--gamma-anneal-steps','0')
 
     def test_history_order_is_preserved_and_shape_validated(self):
         with patch('training.train_dino_hj.load_backbone',return_value=TinyDino()):
