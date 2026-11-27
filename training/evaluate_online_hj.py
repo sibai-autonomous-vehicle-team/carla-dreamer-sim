@@ -104,6 +104,7 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
         first_leader_velocity = env.world.get_snapshot().find(env.nonego.id).get_velocity()
         first_leader_speed = (first_leader_velocity.x**2+first_leader_velocity.y**2+first_leader_velocity.z**2)**.5
         rows, invalid_frame, interventions, speed_sum, gap_error_sum = [], None, 0, 0., 0.
+        successor_gaps = []
         initial_q, probe_q, action_scan = None, None, None
         commands=[]
         ending = 'time_limit'
@@ -153,6 +154,7 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
             if not ego_inside and next_frame not in env.departures: env.departures.append(next_frame)
             if not planned_lane_status(env,env.nonego)['inside']: invalid_frame = next_frame
             rows.append(Transition(observation,action,successor,margin(gap,args),margin(next_gap,args),gap_failure(next_gap,args)))
+            successor_gaps.append(next_gap)
             commands.append(action)
             interventions += int(intervened); speed_sum += observation.speed
             gap_error_sum += abs(gap-nominal.profile['target_gap'])
@@ -173,7 +175,26 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
         departures = [f for f in events['lane_departure_frames'] if lo <= f <= hi]
         collision = bool(contacts)
         failure=any(r.failed for r in rows)
+        first_failure = None
+        for index, row in enumerate(rows):
+            if not row.failed: continue
+            frame = row.successor.frame_ids[-1]
+            # Include simultaneous causes rather than arbitrarily prioritizing one.
+            causes = []
+            # The margin is not invertible; use its matching measured gap.
+            measured_gap = successor_gaps[index]
+            if args.safety_objective == 'following' and measured_gap <= args.min_gap:
+                causes.append('lower_gap')
+            if args.safety_objective != 'collision' and measured_gap >= args.max_gap:
+                causes.append('upper_gap')
+            if any(f <= frame for f, _ in contacts): causes.append('collision')
+            if args.safety_objective != 'collision' and any(f <= frame for f in departures):
+                causes.append('lane_departure')
+            first_failure = dict(tick=index+1,seconds=(index+1)*args.dt,
+                                 gap=measured_gap,causes=causes)
+            break
         return dict(valid=valid,collision=collision,failure=failure,
+            first_failure=first_failure,
             lane_departure=bool(departures),ending=ending,ticks=len(rows),
             horizon_complete=not failure and not collision and not departures and ending == 'time_limit',
             rollout_horizon_complete=not collision and not departures and ending == 'time_limit',
@@ -201,7 +222,7 @@ def summarize(records, required_modes=MODES):
         paired.add(key)
     result = dict(paired_cases=len(paired),paired_case_ids=[list(key) for key in sorted(paired)],
                   excluded_cases=len(grouped)-len(paired),modes={})
-    for mode in MODES:
+    for mode in dict.fromkeys((*MODES, *required_modes)):
         rows = [r for r in records if r['mode']==mode and (r['nominal_condition'],r['case']) in paired]
         metrics = dict(episodes=len(rows))
         for key in ('collision','failure','lane_departure','horizon_complete','intervention_fraction','mean_speed','mean_absolute_gap_error'):

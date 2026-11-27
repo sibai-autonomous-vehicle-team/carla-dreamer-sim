@@ -105,6 +105,9 @@ class EvaluationTests(unittest.TestCase):
             self.assertIn('Ordinary starts',dashboard)
             self.assertEqual(list(args.outdir.glob('*.pt')),[])
             rows=[json.loads(line) for line in (args.outdir/'evaluation_rollouts.jsonl').read_text().splitlines()]
+            self.assertEqual(rows[0]['first_failure']['causes'],['collision'])
+            self.assertAlmostEqual(rows[0]['first_failure']['seconds'],.1)
+            self.assertIsNone(rows[1]['first_failure'])
             rows[0]['valid']=False
             self.assertEqual(summarize(rows)['paired_cases'],0)
             self.assertIsNone(summarize(rows)['modes']['safety']['collision'])
@@ -128,6 +131,22 @@ class EvaluationTests(unittest.TestCase):
             dashboard=(root/'evaluation_dashboard.html').read_text()
             self.assertIn('SAGE (goal + safety)',dashboard)
             self.assertIn('goal-policy action',dashboard)
+
+    def test_grid_uses_twin_minimum_and_encodes_each_observation_once(self):
+        from training.diagnose_hj_checkpoint import GridController
+        class Critic:
+            def __init__(self, offset): self.offset=offset; self.calls=0
+            def features(self, images, speed):
+                self.calls+=1
+                return torch.zeros(1,2)
+            def value(self, features, action):
+                return -(action[:,0]-self.offset)**2
+        critics=[Critic(-1.),Critic(2.)]
+        learner=NS(device=torch.device('cpu'),critics=critics)
+        with patch('training.diagnose_hj_checkpoint.hj.tensors',return_value=(None,None)):
+            # Maximin of the two parabolas is their midpoint, not either peak.
+            self.assertAlmostEqual(GridController(learner,13).action(None),.5)
+        self.assertEqual([c.calls for c in critics],[1,1])
 
     def test_plot_missing_rates_stay_missing_and_all_checkpoints_are_shown(self):
         from training.plot_online_hj_evaluation import evaluation_figure
