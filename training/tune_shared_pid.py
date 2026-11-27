@@ -278,6 +278,7 @@ def main():
         if cli.start_server:process=start_server(args)
         client=carla.Client('127.0.0.1',cli.port);client.set_timeout(120.)
         world=client.load_world(args.map);settings=world.get_settings()
+        client.set_timeout(30.)  # Fail promptly if a running server becomes unresponsive.
         with isolated_evaluation(learner):
             validation={};test={}
             for condition in CONDITIONS:

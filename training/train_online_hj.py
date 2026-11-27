@@ -758,7 +758,7 @@ def finalize_episode(rows, collision_events, departures, failure_margin, *, incl
     return rows
 
 
-def parse_args(defaults=None, description=None, argv=None):
+def parse_args(defaults=None, description=None, argv=None, extra_arguments=None):
     p = argparse.ArgumentParser(description=description or __doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--outdir', type=Path, required=True)
     p.add_argument('--resume', type=Path,
@@ -852,6 +852,7 @@ def parse_args(defaults=None, description=None, argv=None):
     p.add_argument('--wandb-name')
     p.add_argument('--wandb-group')
     p.add_argument('--wandb-mode',choices=('online','offline'),default='online')
+    if extra_arguments is not None: extra_arguments(p)
     if defaults: p.set_defaults(**defaults)
     # Inherit training settings, but let this invocation choose runtime settings.
     bootstrap = argparse.ArgumentParser(add_help=False)
