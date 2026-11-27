@@ -12,7 +12,9 @@ Task reward and target gap are in the run manifest. Safety remains collision-onl
 Replay size 10000, batch size 8 and LR 1e-4 retain the visual trainer's memory
 budget; paper settings are replay 250000, batch 256 and LR .003. Entropy .2,
 performance gamma .99, safety gamma .85 to .9999, and target taus .005/.05.
-Final/interrupted checkpoints contain both pairs. Training resume is not supported.
+Final/interrupted checkpoints contain both pairs. --resume CHECKPOINT restores
+weights, optimizers and counters in a new outdir; replay is rebuilt. --steps is
+the total environment-step target, including steps before the checkpoint.
 Version 2 normalizes/compresses visual features and embeds actions before critic
 fusion; collision critics have bounded outputs [-event_failure_margin,max_gap].
 This is a stabilization change, not a paper reproduction. Old checkpoints cannot

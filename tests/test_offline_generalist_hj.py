@@ -7,7 +7,7 @@ import torch
 from torch import nn
 
 from training.train_online_hj import Actor, OnlineHJ, VisualNetwork
-from training.train_offline_generalist_hj import FeatureReplay, transition_rows, update_features
+from training.train_offline_generalist_hj import FeatureReplay, transition_rows, update_features, offline_anneal_updates
 
 
 class OfflineTests(unittest.TestCase):
@@ -69,6 +69,33 @@ class OfflineTests(unittest.TestCase):
         replay=FeatureReplay([data]*9)
         self.assertTrue((replay.sample(20,'train','cpu')[1]==1).all())
         self.assertTrue((replay.sample(20,'val','cpu')[1]==2).all())
+
+    def test_validation_sampling_preserves_global_cpu_and_cuda_random_streams(self):
+        data=dict(features=torch.zeros(4,2),refs=torch.tensor([[[0]*4,[1]*4],[[2]*4,[3]*4]]),
+                  action=torch.tensor([[1.],[2.]]),margin=torch.ones(2),next_margin=torch.ones(2),
+                  failed=torch.zeros(2,dtype=torch.bool),validation=torch.tensor([False,True]))
+        replay=FeatureReplay([data]*9)
+        cpu_before=torch.get_rng_state().clone()
+        cuda_before=torch.cuda.get_rng_state().clone() if torch.cuda.is_available() else None
+        replay.sample(20,'val','cuda' if cuda_before is not None else 'cpu',
+                      generator=torch.Generator().manual_seed(43))
+        self.assertTrue(torch.equal(cpu_before,torch.get_rng_state()))
+        if cuda_before is not None:self.assertTrue(torch.equal(cuda_before,torch.cuda.get_rng_state()))
+
+    def test_training_has_updates_after_the_annealing_boundary(self):
+        self.assertEqual(offline_anneal_updates(20000),5000)
+        self.assertEqual(offline_anneal_updates(1),0)
+        self.assertEqual(offline_anneal_updates(20000,0),0)
+        for invalid in (-1,20000,20001):
+            with self.assertRaises(ValueError):offline_anneal_updates(20000,invalid)
+        learner=OnlineHJ.__new__(OnlineHJ)
+        learner.args=NS(anneal_updates=5000)
+        learner.updates=4999
+        self.assertLess(learner.schedule(.85,.9999),.9999)
+        learner.updates=5000
+        self.assertEqual(learner.schedule(.85,.9999),.9999)
+        learner.args.anneal_updates=0;learner.updates=0
+        self.assertEqual(learner.schedule(.85,.9999),.9999)
 
 
 if __name__ == '__main__':

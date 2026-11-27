@@ -17,7 +17,7 @@ export OMP_NUM_THREADS=8
 
 run_name="sage-cloudy-overnight-${SLURM_JOB_ID}"
 # Reserve time for an interrupted checkpoint and CARLA cleanup before Slurm ends.
-# Checkpoints do not currently support resuming training.
+# Later continuation: --resume CHECKPOINT --outdir NEW_DIR --steps TOTAL_STEPS.
 timeout --signal=INT --kill-after=120s 42300s \
     "$workspace/sage-env/bin/python" -u -m training.train_online_sage \
     --outdir "training/_local/$run_name" \

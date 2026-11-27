@@ -4,7 +4,7 @@ No imitation loss or offline dataset is used. The learned action is longitudinal
 request [-3, 3]; route steering is supplied by the same fixed tracker every time.
 Default inputs are four RGB captures. --include-speed adds measured ego speed.
 Contextual CNN-PIDs propose nominal actions after replay exploration. After
-critic warmup the HJ gate can switch to the learned actor. Fast-closing resets
+critic warmup the HJ gate switches unsafe PID proposals to full braking. Fast-closing resets
 maintain hazardous-state coverage; recurring random episodes are opt-in.
 The default collision objective has no lower/upper gap failure boundary.
 Excessive separation and lane departure truncate rollouts without a failure label.
@@ -14,9 +14,12 @@ without a PID, goal actor, or switching gate.
 Automatic held-out evaluation runs before training, every 5000 steps between
 episodes, and at completion. Results go to evaluation.jsonl; only final or
 interrupted weights are saved. --eval-interval 0 disables evaluation.
+Continue with --resume CHECKPOINT --outdir NEW_DIR --steps TOTAL_STEPS.
+Training settings, weights, optimizers and counters are restored; replay is
+rebuilt with the restored policy. Simulator episodes and RNG restart.
 The six default starts are a screening suite, not a safety certificate. Each PID
 gets PID-only, deterministic safety, filtered PID, and one-action recovery probes.
-Probes gather real frame history under the safety actor before testing a PID
+Probes gather real frame history under full braking before testing a PID
 action; pre-probe collisions are reported separately from value-prediction tests.
 Evaluation uses no replay/updates/exploration or real-time pacing. Increase
 --eval-cases for stronger evidence at the cost of additional simulator time.
@@ -33,6 +36,9 @@ Use --pid-checkpoint PATH for a generalist CNN-PID instead of specialist profile
 Add --windowed for a combined chase/model-camera preview; --real-time limits
 decision speed when compute is faster than simulation time. The server itself
 renders off-screen; the preview is a separate Python window.
+Add --action-diagnostics-interval 10 for a live same-observation action/Q scan,
+also written to action_diagnostics.jsonl and W&B when enabled. The overlay
+identifies its capture step; diagnostics do not select controls or consume RNG.
 """
 from collections import deque, Counter
 from copy import deepcopy
@@ -156,8 +162,10 @@ def behavior_action(learner, observation, nominal, explorer, step, args, explora
     else:
         q=learner.score(observation,nominal)
         intervene=q < args.switching_threshold
-        result.update(action=learner.action(observation) if intervene else nominal,
-                      source='safety_actor' if intervene else 'contextual_pid',
+        pid_mode=getattr(args,'performance_policy','pid') == 'pid'
+        fallback=-3. if pid_mode else None
+        result.update(action=(fallback if pid_mode else learner.action(observation)) if intervene else nominal,
+                      source=('full_brake_fallback' if pid_mode else 'safety_actor') if intervene else 'contextual_pid',
                       nominal_q=q,intervened=intervene,gate_active=True)
     return result
 
@@ -183,11 +191,13 @@ class TrainingViewer:
         self.font = pygame.font.Font(None,24)
         self.chase_frames = queue.Queue()
         self.chase_frame, self.chase = None, None
+        self.action_diagnostics = None
 
     def attach(self, env):
         # Attached relative to ego: no extra world tick or changed initial state.
         self.chase_frames = queue.Queue()
         self.chase_frame, self.chase = None, None
+        self.action_diagnostics = None
         camera = env.world.get_blueprint_library().find('sensor.camera.rgb')
         for key,value in {'image_size_x':'1280','image_size_y':'720','fov':'90','sensor_tick':'0.0'}.items():
             camera.set_attribute(key,value)
@@ -245,6 +255,17 @@ class TrainingViewer:
         for index,label in enumerate(labels[1:]):
             color = (255,75,75) if label.startswith('SAFETY ACTOR') else (225,232,242)
             self.window.blit(self.font.render(label,True,color),(1292,295+index*26))
+        diagnostic = getattr(self,'action_diagnostics',None)
+        if diagnostic is not None:
+            pygame.draw.rect(self.window,(15,19,26),(15,535,1030,175))
+            lines = [f"Same-observation diagnostic | step {diagnostic['step']} | frame {diagnostic['frame']}",
+                f"Executed: {diagnostic['executed_action']:+.3f} | deterministic: {diagnostic['deterministic_action']:+.3f} | latent std: {diagnostic['latent_std']:.3f}",
+                f"Q brake: {diagnostic['brake_q']:+.4f} | coast: {diagnostic['coast_q']:+.4f} | throttle: {diagnostic['throttle_q']:+.4f}",
+                f"Q deterministic: {diagnostic['deterministic_q']:+.4f} | executed: {diagnostic['executed_q']:+.4f}",
+                f"Best grid action: {diagnostic['best_grid_action']:+.2f} | Q advantage over actor: {diagnostic['actor_q_gap']:.4f}",
+                f"Gap: {diagnostic['gap']:.2f} m | ego-minus-leader speed: {diagnostic['closing_speed']:+.2f} m/s"]
+            for index,label in enumerate(lines):
+                self.window.blit(self.font.render(label,True,(240,245,250)),(25,545+index*26))
         pygame.display.flip()
 
     def close(self):
@@ -475,7 +496,12 @@ class Actor(VisualNetwork):
         return self.sample_features(self.features(images, speed), deterministic)
 
     def sample_features(self, features, deterministic=False):
-        """Also support cached features when the visual encoder is frozen."""
+        """Sample a physical request; log density uses normalized [-1,1] actions.
+
+        The constant scale of three is applied after the tanh correction, as in
+        the normalized-action SAC convention. Cached features require a frozen
+        visual encoder.
+        """
         mean, log_std = self.head(features).chunk(2, -1)
         distribution = torch.distributions.Normal(mean, log_std.clamp(-5, 2).exp())
         raw = mean if deterministic else distribution.rsample()
@@ -506,6 +532,11 @@ class Critic(VisualNetwork):
 
 
 def hj_backup(margin, next_margin, failed, continuation, gamma):
+    """SAGE's discounted safety backup, distinct from SAC's reward backup.
+
+    Entropy regularizes the safety actor only; adding an entropy bonus here
+    would change the safety-value interpretation used by the switching gate.
+    """
     # A reset due to time limit is NOT a failure; it retains a bootstrap.
     continuation = torch.where(failed, next_margin, continuation)
     return (1-gamma)*margin + gamma*torch.minimum(margin, continuation)
@@ -516,7 +547,8 @@ class OnlineHJ:
     model_names = ('actor', 'critics', 'targets')
     snapshot_names = model_names + ('actor_optimizer', 'critic_optimizer')
     def __init__(self, args, device):
-        contract = (args.history_frames, args.include_speed, not args.no_pretrained, args.freeze_encoder)
+        contract = (args.history_frames, args.include_speed,
+                    not args.no_pretrained and not getattr(args,'resume',None), args.freeze_encoder)
         self.actor = Actor(*contract).to(device)
         self.safety_bounds = ((-args.event_failure_margin,args.max_gap)
                               if getattr(args,'safety_objective','following') == 'collision' else None)
@@ -527,6 +559,8 @@ class OnlineHJ:
         self.device, self.args, self.updates = device, args, 0
 
     def schedule(self, start, end):
+        if self.args.anneal_updates == 0:
+            return end
         return start + (end-start)*min(1., self.updates/self.args.anneal_updates)
 
     @torch.no_grad()
@@ -545,11 +579,43 @@ class OnlineHJ:
         command = torch.tensor([[action]], device=self.device, dtype=torch.float32)
         return float(torch.minimum(*(q(images,speed,command) for q in self.critics))[0])
 
+    @torch.no_grad()
+    def action_diagnostics(self, observation, executed_action):
+        """Compare actions at one observation, without sampling or advancing CARLA."""
+        modes=[(m,m.training) for model in (self.actor,self.critics) for m in model.modules()]
+        try:
+            self.actor.eval(); self.critics.eval()
+            images,speed=tensors([observation],self.device)
+            mean,log_std=self.actor.head(self.actor.features(images,speed)).chunk(2,-1)
+            deterministic=3*mean.tanh()
+            grid=torch.linspace(-3.,3.,21,device=self.device).reshape(-1,1)
+            actions=torch.cat((grid,deterministic,grid.new_tensor([[executed_action]])))
+            values=[]
+            for critic in self.critics:
+                features=critic.features(images,speed).expand(len(actions),-1)
+                values.append(critic.value(features,actions))
+            q=torch.minimum(*values)
+            best=int(q[:21].argmax())
+            return dict(executed_action=float(executed_action),
+                deterministic_action=float(deterministic[0,0]),
+                latent_std=float(log_std.clamp(-5,2).exp()[0,0]),
+                brake_q=float(q[0]),coast_q=float(q[10]),throttle_q=float(q[20]),
+                deterministic_q=float(q[21]),executed_q=float(q[22]),
+                best_grid_action=float(grid[best,0]),
+                actor_q_gap=max(0.,float(q[best]-q[21])))
+        finally:
+            for module,mode in modes: module.training=mode
+
     def filter_action(self, observation, nominal_action):
-        """Apply the paper's Q < epsilon gate; epsilon does not change failure labels."""
+        """PID gates use full braking; learned goal policies retain their safety actor."""
         score = self.score(observation, nominal_action)
         intervene = score < getattr(self.args,'switching_threshold',1.)
-        return dict(action=self.action(observation,True) if intervene else nominal_action,
+        if intervene:
+            action=(-3. if getattr(self.args,'performance_policy','pid') == 'pid'
+                    else self.action(observation,True))
+        else:
+            action=nominal_action
+        return dict(action=action,
                     nominal_q=score, intervened=intervene)
 
     @classmethod
@@ -618,6 +684,19 @@ class OnlineHJ:
                     q_min=float(torch.minimum(*values).detach().min()),
                     q_max=float(torch.maximum(*values).detach().max()))
 
+    def restore_training(self, path):
+        """Restore trainable networks and optimizers; replay and simulator restart."""
+        payload = torch.load(path, map_location=self.device, weights_only=True)
+        if payload.get('format_version') != 1 or payload.get('architecture') != self.architecture:
+            raise ValueError('Checkpoint architecture does not match this trainer')
+        for name in self.snapshot_names:
+            getattr(self,name).load_state_dict(payload[name])
+        for name in self.model_names:
+            if any(not p.isfinite().all() for p in getattr(self,name).parameters()):
+                raise ValueError('Nonfinite checkpoint weights')
+        self.updates = int(payload['updates'])
+        return int(payload['steps'])
+
     def save(self, path, steps):
         payload = dict(format_version=1, architecture=self.architecture,
                        objective={'collision':'discounted_collision_first_hit',
@@ -626,7 +705,7 @@ class OnlineHJ:
                                       getattr(self.args,'safety_objective','following')],
                        config={k:str(v) if isinstance(v, Path) else v for k,v in vars(self.args).items()},
                        preprocessing=PREPROCESS, steps=steps, updates=self.updates,
-                       note='Inference/optimizer snapshot only; replay is not saved and resume is not implemented.')
+                       note='Training continuation supported; replay and simulator/RNG state are not saved. Fresh replay is collected before updates resume.')
         for name in self.snapshot_names:
             payload[name] = getattr(self, name).state_dict()
         temporary = path.with_suffix('.tmp')
@@ -669,6 +748,8 @@ def finalize_episode(rows, collision_events, departures, failure_margin, *, incl
 def parse_args(defaults=None, description=None, argv=None):
     p = argparse.ArgumentParser(description=description or __doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--outdir', type=Path, required=True)
+    p.add_argument('--resume', type=Path,
+                   help='Continue checkpoint weights/optimizers/counters in a NEW outdir; rebuild replay, --steps is the total environment-step target')
     p.add_argument('--performance-policy', choices=('pid','sac','safety'), default='pid',
                    help='safety: execute the safety actor directly after random warmup; no PID or goal actor')
     p.add_argument('--target-gap', type=float, default=6.)
@@ -744,6 +825,8 @@ def parse_args(defaults=None, description=None, argv=None):
     p.add_argument('--eval-cases', type=int, default=6, help='Held-out starts per nominal PID, half ordinary and half fast-closing')
     p.add_argument('--eval-seed', type=int, default=1000003)
     p.add_argument('--log-interval', type=int, default=100)
+    p.add_argument('--action-diagnostics-interval', type=int, default=0,
+                   help='Compare safety actor and action Q scan every N steps; show in window, log JSONL/W&B; 0 disables')
     p.add_argument('--wandb',action='store_true',help='Log metrics and evaluation plots to Weights & Biases')
     p.add_argument('--wandb-project',default='carla-sage')
     p.add_argument('--wandb-entity')
@@ -751,7 +834,32 @@ def parse_args(defaults=None, description=None, argv=None):
     p.add_argument('--wandb-group')
     p.add_argument('--wandb-mode',choices=('online','offline'),default='online')
     if defaults: p.set_defaults(**defaults)
+    # Inherit training settings, but let this invocation choose runtime settings.
+    bootstrap = argparse.ArgumentParser(add_help=False)
+    bootstrap.add_argument('--resume',type=Path)
+    resume_path = bootstrap.parse_known_args(argv)[0].resume
+    runtime = {'outdir','resume','steps','server','port','start_server','windowed','real_time',
+               'cpu','require_cuda','eval_interval','eval_cases','eval_seed','log_interval','action_diagnostics_interval',
+               'wandb','wandb_project','wandb_entity','wandb_name','wandb_group','wandb_mode'}
+    saved = None
+    if resume_path:
+        try:
+            saved = torch.load(resume_path,map_location='cpu',weights_only=True)
+        except (OSError,RuntimeError,ValueError) as error:
+            p.error(f'Cannot read resume checkpoint: {error}')
+        if saved.get('format_version') != 1 or saved.get('architecture') not in (
+                OnlineHJ.architecture,'online_sage_rgb_longitudinal_v2'):
+            p.error('Resume requires an online HJ/SAGE v2 checkpoint')
+        known = {action.dest for action in p._actions}
+        p.set_defaults(**{k:v for k,v in saved['config'].items() if k in known-runtime})
     args = p.parse_args(argv)
+    if saved is not None:
+        for key,value in saved['config'].items():
+            current = getattr(args,key,None)
+            if key not in runtime and key in known and str(current) != str(value):
+                p.error(f'Resume must preserve {key}={value!r}; got {current!r}')
+        if args.steps <= saved['steps']:
+            p.error(f'--steps must exceed saved step {saved["steps"]}; it is the total target')
     if not 0 <= args.performance_gamma < 1 or not 0 < args.performance_tau <= 1:
         p.error('Require performance-gamma in [0,1), performance-tau in (0,1]')
     for key in ('target_gap','performance_alpha','collision_penalty','lane_penalty'):
@@ -761,6 +869,7 @@ def parse_args(defaults=None, description=None, argv=None):
     if any(getattr(args,k)<1 for k in integers) or min(args.random_steps, args.collision_grace) < 0:
         p.error('Counts must be positive; random steps and collision grace must be nonnegative')
     if args.eval_interval < 0: p.error('eval-interval must be nonnegative')
+    if args.action_diagnostics_interval < 0: p.error('action-diagnostics-interval must be nonnegative')
     if args.eval_cases < 2: p.error('eval-cases must be at least two to cover ordinary and closing starts')
     if not 0 <= args.eval_seed < 2**32: p.error('eval-seed must be in [0, 2**32)')
     if args.capacity < max(args.batch_size, args.history_frames+1, args.learning_starts):
@@ -816,7 +925,7 @@ def append_json(path, record):
     with path.open('a') as stream: stream.write(json.dumps(record, allow_nan=False)+'\n')
 
 
-def main(args=None):
+def main(args=None, *, manifest_overrides=None):
     args = parse_args() if args is None else args
     if args.require_cuda and not torch.cuda.is_available(): raise RuntimeError('CUDA requested but unavailable')
     device = torch.device('cuda' if torch.cuda.is_available() and not args.cpu else 'cpu')
@@ -835,7 +944,7 @@ def main(args=None):
                             'min(gap-min_gap, max_gap-gap); collision/lane event forces negative successor margin'),
                     time_limit='truncation with bootstrap, never a failure label',
                     distant_rollout='gap >= max_separation is a truncation with bootstrap, not a failure',
-                    intervention='Q(PID) < switching_threshold selects safety actor after gate_start_updates; explicit exploration episodes bypass the gate',
+                    intervention='Q(PID) < switching_threshold selects full braking (-3, brake=1) after gate_start_updates; explicit exploration episodes bypass the gate',
                     sensor_contract='camera capture ID equals snapshot ID; consecutive captures exactly dt apart',
                     collision_contract='per-step grace and final callback drain before replay admission; event sensors have no strict delivery watermark',
                     replay='new experience only; completed episodes admitted after event drain; one update per subsequent simulator step',
@@ -877,6 +986,15 @@ def main(args=None):
         critic_fusion='vision -> Linear128/LayerNorm/ReLU; normalized action -> Linear32/ReLU; concatenated value head',
         safety_value_bounds=learner.safety_bounds if hasattr(learner,'safety_bounds') else None,
         evaluation_validation='full-braking setup validation with up to 30 deterministic attempts per case; suite fixed before policy evaluation')
+    restored_steps = learner.restore_training(args.resume) if getattr(args,'resume',None) else 0
+    if getattr(args,'resume',None):
+        manifest['continuation'] = dict(checkpoint=str(args.resume),steps=restored_steps,
+            updates=learner.updates,replay='fresh; collect learning_starts rows with restored policy before updating',
+            simulator='new episodes',rng='reseeded; not an exact trajectory continuation')
+        print(f'Restored step {restored_steps}, update {learner.updates}; rebuilding replay before further updates.',flush=True)
+        random.seed(args.seed+restored_steps); np.random.seed((args.seed+restored_steps) % 2**32)
+        torch.manual_seed(args.seed+restored_steps)
+    manifest.update(manifest_overrides or {})
     (args.outdir/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     replay = Replay(args.capacity)
     import carla
@@ -888,7 +1006,7 @@ def main(args=None):
     process, env, world, original_settings, viewer = None, None, None, None, None
     from .wandb_logging import WandbLogger
     tracker=None
-    steps, episode = 0, 0
+    steps, episode = restored_steps, restored_steps
     try:
         tracker=WandbLogger(args,manifest)
         if args.windowed: viewer = TrainingViewer()
@@ -900,11 +1018,11 @@ def main(args=None):
         world = client.load_world(args.map)
         original_settings = world.get_settings()
         from .evaluate_online_hj import evaluate
-        next_eval = args.eval_interval
+        next_eval = ((steps//args.eval_interval+1)*args.eval_interval) if args.eval_interval else 0
         last_eval = None
         if args.eval_interval:
-            evaluate(learner, nominal_policies, client, world, scenario_class, args, 0, viewer,tracker=tracker)
-            last_eval = 0
+            evaluate(learner, nominal_policies, client, world, scenario_class, args, steps, viewer,tracker=tracker)
+            last_eval = steps
         while steps < args.steps:
             # Different route seed on every episode; retain the complete rollout plan.
             for attempt in range(30):
@@ -960,13 +1078,22 @@ def main(args=None):
                 if args.performance_policy == 'sac' and decision['source'] in ('contextual_pid','pid_critic_warmup'):
                     decision['source'] = 'goal_actor'
                 action=decision['action']; action_counts[decision['source']]+=1
+                diagnostic_interval=getattr(args,'action_diagnostics_interval',0)
+                if diagnostic_interval and steps % diagnostic_interval == 0:
+                    diagnostic=dict(step=steps,frame=frame,gap=gap,
+                        closing_speed=observation.speed-leader_speed,
+                        **learner.action_diagnostics(observation,action))
+                    append_json(args.outdir/'action_diagnostics.jsonl',diagnostic)
+                    tracker.log({f'action_diagnostics/{key}':value for key,value in diagnostic.items()
+                                 if key not in ('step','frame')},steps)
+                    if viewer is not None: viewer.action_diagnostics=diagnostic
                 steering = -env.tracker(env.ego).steering()
                 if viewer is not None:
                     viewer.show(observation,step=steps,action=action,steering=steering,gap=gap,
                                 q=learner.score(observation,action),updates=learner.updates,
                                 phase=(f'Replay warmup: {len(replay)} / {args.learning_starts}'
                                        if len(replay) < args.learning_starts else 'Online actor-critic updates'),metrics=metrics,
-                                actor_active=decision['intervened'],epsilon=args.switching_threshold,
+                                actor_active=decision['intervened'] and decision['source']=='safety_actor',epsilon=args.switching_threshold,
                                 controller_label=decision['source'].replace('_',' ').upper())
                 if env.world.get_snapshot().frame != frame: raise RuntimeError('World advanced during policy inference')
                 env.step((action, steering))

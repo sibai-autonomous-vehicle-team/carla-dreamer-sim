@@ -46,7 +46,7 @@ class OnlineTests(unittest.TestCase):
         self.assertTrue(any(a<-2 for a in commands))
         self.assertTrue(all(-3<=a<=3 for a in commands))
 
-    def test_behavior_switches_pid_to_safety_and_preserves_deliberate_exploration(self):
+    def test_behavior_switches_pid_to_full_brake_and_preserves_deliberate_exploration(self):
         args=NS(random_steps=1000,gate_start_updates=500,switching_threshold=.25)
         learner=NS(updates=0,score=lambda obs,a:.1,action=lambda obs:-3.)
         explorer=NS(action=lambda:2.5)
@@ -54,7 +54,7 @@ class OnlineTests(unittest.TestCase):
         self.assertEqual(behavior_action(learner,None,1.,explorer,1100,args,False)['action'],1.)
         learner.updates=500
         decision=behavior_action(learner,None,1.,explorer,1100,args,False)
-        self.assertEqual(decision['source'],'safety_actor'); self.assertTrue(decision['intervened'])
+        self.assertEqual(decision['source'],'full_brake_fallback'); self.assertTrue(decision['intervened'])
         self.assertEqual(decision['action'],-3.)
         learner.score=lambda obs,a:.5
         self.assertEqual(behavior_action(learner,None,1.,explorer,1100,args,False)['source'],'contextual_pid')

@@ -1,6 +1,6 @@
 """Automatic frozen, paired rollouts for the online visual HJ trainer.
 
-Rollouts measure the learned recovery policy, not optimal recoverability. Finite
+PID recovery uses full braking; goal-policy recovery uses the learned actor. Finite
 rollouts without contact are censored; no infinite-horizon value error is claimed.
 """
 from contextlib import contextmanager
@@ -79,7 +79,7 @@ def prepare_suite(learner,nominal,client,world,scenario_class,args,viewer=None,b
     return suite
 
 
-def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=None):
+def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=None,trace_callback=None):
     from .train_online_hj import FrameHistory, Transition, margin, gap_failure, planned_lane_status, finalize_episode
     from .closed_loop import read_snapshot
     start = case['start']; gap = start['gap']
@@ -106,18 +106,21 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
         initial_q, probe_q, action_scan = None, None, None
         commands=[]
         ending = 'time_limit'
+        pid_backup=getattr(args,'performance_policy','pid') == 'pid'
         for tick in range(args.episode_steps):
             frame, _, _, gap = read_snapshot(env,args.dt)
             if frame != observation.frame_ids[-1]: raise RuntimeError('Evaluation observation/snapshot mismatch')
+            predicted_gap = None
             if mode=='brake': nominal_action=-3.
             elif getattr(nominal,'is_goal',False) or getattr(nominal,'is_safety',False):
-                nominal_action,_=nominal.propose(observation,args.dt,deterministic=True)
-            else: nominal_action,_=nominal.propose(observation,args.dt)
+                nominal_action,predicted_gap=nominal.propose(observation,args.dt,deterministic=True)
+            else: nominal_action,predicted_gap=nominal.propose(observation,args.dt)
             if tick == 0 and mode!='brake': initial_q = learner.score(observation,nominal_action)
             if tick==args.history_frames-1 and mode!='brake':
                 action_scan=dict(frame=frame,frame_ids=list(observation.frame_ids),
                     brake_q=learner.score(observation,-3.),coast_q=learner.score(observation,0.),
-                    throttle_q=learner.score(observation,3.),safety_action=learner.action(observation,deterministic=True))
+                    throttle_q=learner.score(observation,3.),
+                    safety_action=-3. if pid_backup else learner.action(observation,deterministic=True))
             intervened = False
             # A motion-value probe needs four real captures, not reset padding.
             # First gather history under the deterministic recovery policy.
@@ -128,13 +131,17 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
             elif mode == 'filter':
                 decision = learner.filter_action(observation,nominal_action)
                 action, intervened = decision['action'], decision['intervened']
-            else: action = learner.action(observation,deterministic=True)
+            else: action = -3. if pid_backup else learner.action(observation,deterministic=True)
             if viewer is not None:
                 viewer.show(observation,step=0,action=action,steering=-env.tracker(env.ego).steering(),
                     gap=gap,q=learner.score(observation,action) if mode!='brake' else 0.,updates=learner.updates,
                     phase=f'EVALUATION case {case["case"]}: {mode.replace("pid","goal") if getattr(nominal,"is_goal",False) else mode}',metrics=None,
-                    actor_active=intervened,epsilon=args.switching_threshold,
-                    controller_label=f'EVAL {(mode.replace("pid","goal") if getattr(nominal,"is_goal",False) else mode).upper()}')
+                    actor_active=intervened and getattr(args,'performance_policy','pid')!='pid',epsilon=args.switching_threshold,
+                    controller_label=('FULL BRAKE FALLBACK' if intervened and getattr(args,'performance_policy','pid')=='pid' else
+                                      f'EVAL {(mode.replace("pid","goal") if getattr(nominal,"is_goal",False) else mode).upper()}'))
+            if trace_callback is not None:
+                trace_callback(env,observation,dict(tick=tick,nominal_action=nominal_action,
+                    action=action,intervened=intervened,predicted_gap=predicted_gap,gap=gap))
             if env.world.get_snapshot().frame != frame: raise RuntimeError('World advanced during evaluation inference')
             env.step((action,-env.tracker(env.ego).steering()))
             successor = history.capture(env)
@@ -241,7 +248,9 @@ def evaluate(learner, nominal_policies, client, world, scenario_class, args, ste
         summary = dict(step=steps,updates=learner.updates,seconds=time.monotonic()-started,
             nominal_kind='safety' if safety_only else 'goal' if hasattr(learner,'goal_actor') else 'pid',
             threshold=args.switching_threshold,**summarize(records,modes),
-            interpretation='Finite-horizon empirical learned-policy recovery; collision-free outcomes are censored, not certified safe. No optimal HJ ground truth or calibration MSE.',
+            interpretation=('Finite-horizon empirical full-brake PID recovery; collision-free outcomes are censored, not certified safe. No optimal HJ ground truth or calibration MSE.'
+                            if getattr(args,'performance_policy','pid')=='pid' else
+                            'Finite-horizon empirical learned-policy recovery; collision-free outcomes are censored, not certified safe. No optimal HJ ground truth or calibration MSE.'),
             by_profile={name:summarize([r for r in records if r['nominal_condition']==name],modes) for name in nominal_policies},
             by_start={label:summarize([r for r in records if r['challenge']==challenge],modes) for label,challenge in [('ordinary',False),('closing',True)]})
         summary['braking_baseline']=dict(cases=len(suite),collisions=sum(c['braking_baseline']['collision'] for c in suite),

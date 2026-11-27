@@ -17,7 +17,7 @@ export OMP_NUM_THREADS=8
 
 run_name="sage-cloudy-no-safety-entropy-g099-${SLURM_JOB_ID}"
 # Fresh diagnostic run: fixed safety discount, zero safety entropy.
-# Goal SAC keeps entropy 0.2. Checkpoints do not support training resume.
+# Goal SAC keeps entropy 0.2. Later --resume restores training with fresh replay.
 timeout --signal=INT --kill-after=120s 42300s \
     "$workspace/sage-env/bin/python" -u -m training.train_online_sage \
     --outdir "training/_local/$run_name" \

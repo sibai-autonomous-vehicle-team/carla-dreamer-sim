@@ -85,7 +85,8 @@ def summarize(records):
         result = {}
         for arm in ARMS:
             selected = [r for r in rows if r['arm'] == arm]
-            result[arm] = dict(episodes=len(selected), collisions=sum(r['collision'] for r in selected))
+            result[arm] = dict(episodes=len(selected), collisions=sum(r['collision'] for r in selected),
+                               horizon_survivors=sum(r['horizon_complete'] for r in selected))
             result[arm].update({k:sum(r[k] for r in selected)/len(selected) if selected else None
                                 for k in METRICS})
         return result
@@ -112,7 +113,7 @@ def summarize(records):
 def write_report(outdir, result, manifest):
     (outdir/'summary.json').write_text(json.dumps(result, indent=2)+'\n')
     with (outdir/'comparison.csv').open('w', newline='') as stream:
-        writer = csv.DictWriter(stream, fieldnames=['arm', 'episodes', 'collisions', *METRICS])
+        writer = csv.DictWriter(stream, fieldnames=['arm', 'episodes', 'collisions', 'horizon_survivors', *METRICS])
         writer.writeheader()
         for arm, metrics in result['arms'].items():
             writer.writerow(dict(arm=arm, **metrics))
@@ -120,20 +121,26 @@ def write_report(outdir, result, manifest):
              f"Frozen checkpoint: {manifest['training_mode']}, {manifest['updates']} updates.",
              f"Conditions: {', '.join(manifest['conditions'])}. Threshold: {manifest['threshold']} m.",
              f"Paired cases: {result['paired_cases']}; excluded cases: {len(result['excluded'])}.", '',
-             '| Controller | Collisions | Completion | Gap MAE (m) | Speed (m/s) | Fallback |',
+             f"| Controller | Collisions | Survived full {manifest['dt']*manifest['horizon']:g} s | Gap tracking MAE (m) | Speed (m/s) | Fallback |",
              '| --- | ---: | ---: | ---: | ---: | ---: |']
     for arm, m in result['arms'].items():
         if not m['episodes']:
             lines.append(f'| {arm} | no paired cases | — | — | — | — |')
             continue
-        lines.append(f"| {arm} | {m['collisions']}/{m['episodes']} | {m['horizon_complete']:.1%} | "
+        lines.append(f"| {arm} | {m['collisions']}/{m['episodes']} | {m['horizon_survivors']}/{m['episodes']} ({m['horizon_complete']:.1%}) | "
                      f"{m['mean_absolute_gap_error']:.3f} | {m['mean_speed']:.3f} | {m['intervention_fraction']:.1%} |")
     lines += ['', '## By condition', '',
-             '| Condition | Generalist PID collisions | Filtered generalist collisions | Context selector PID collisions |',
+             '| Condition | Generalist PID collisions | Generalist + full brake collisions | Context selector + full brake collisions |',
               '| --- | ---: | ---: | ---: |']
     for condition, arms in result['by_condition'].items():
         cells = [f"{arms[a]['collisions']}/{arms[a]['episodes']}" for a in ARMS]
         lines.append('| '+condition+' | '+' | '.join(cells)+' |')
+    lines += ['', '## By starting scenario', '',
+              '| Start | Generalist PID collisions | Generalist + full brake collisions | Context selector + full brake collisions |',
+              '| --- | ---: | ---: | ---: |']
+    for start, arms in result['by_start'].items():
+        cells = [f"{arms[a]['collisions']}/{arms[a]['episodes']}" for a in ARMS]
+        lines.append('| '+start+' | '+' | '.join(cells)+' |')
     lines += ['', '## Paired collision outcomes', '']
     for baseline, counts in result['paired_outcomes'].items():
         lines.append(f"Against {baseline}: filtered-only collisions {counts['filtered_only_collision']}; "
@@ -141,14 +148,20 @@ def write_report(outdir, result, manifest):
     lines += ['', 'Half of the requested cases are close, fast-closing starts. All arms share the same saved scenarios,',
               'leader behavior, steering, 0.1 s timestep and horizon. Actual starts must agree within',
               '0.3 m gap and 0.4 m/s speed across arms; otherwise the whole case is excluded.',
-              'Metrics average over episodes. Gap MAE covers each rollout until termination and can be biased by early collisions.',
-              'Completion means surviving the configured horizon without contact, departure or separation truncation.',
+              'Metrics average over episodes. Gap tracking MAE is absolute true-gap error from the 6 m target, not CNN prediction error.',
+              'It covers each rollout until termination and can be biased by early collisions.',
+              'Fallback fraction counts gate-active steps, including steps where PID already requests full braking.',
+              'Full-horizon survival is the fraction of episodes reaching the time limit without contact, departure or separation truncation.',
+              'It does not measure the fraction of a route traveled; route completion was not measured in this screen.',
               'The specialist arm uses the saved logistic selector: weather/time flags plus its original generalist gap CNN,',
               'argmax specialist selection every 2 s, shared PID (0.9, 0.05, 0.15), and derivative reset on switches.',
-              'Its acceptance threshold is diagnostic, matching the existing runner; it does not add a fallback.',
+              'Its selector acceptance threshold is diagnostic. The HJ critic gates both PID systems at the shared switching threshold.',
+              'For both generalist and selected-specialist PID, a score below threshold executes -3 (100% brake).',
+              'The learned SAC actor supplies no fallback commands to either PID system.',
+              'Existing checkpoint critic scores retain their trained value interpretation; changing execution does not retrain them.',
               'All arms use the same synchronized camera, route steering and terminal rules in this benchmark.',
               'Generalist PID gains come from the training checkpoint. This compares configured controllers, not the CNN alone.',
-              'Safety is collision-only. A small screening suite and a partially trained actor cannot establish safety.',
+              'The safety objective is collision-only. This small screening suite does not establish safety.',
               'Fresh sampling seeds do not establish route disjointness from all CNN training data.',
               'Sensor failures retry the same scenario at most three times and are recorded in attempts.jsonl.', '']
     (outdir/'report.md').write_text('\n'.join(lines))
@@ -162,10 +175,10 @@ def plot_result(outdir, result):
     conditions = list(result['by_condition'])
     x = np.arange(len(conditions))
     fig, axes = plt.subplots(2,1,figsize=(13,8),sharex=True)
-    labels = ('Generalist PID','Generalist + critic/actor fallback','Context selector + specialist PID')
+    labels = ('Generalist PID','Generalist + critic/full-brake fallback','Context selector + specialist/full-brake fallback')
     colors = ('#377eb8','#e68613','#359b73')
     for ax,metric,scale,ylabel in [(axes[0],'collision',100,'Collision rate (%)'),
-                                   (axes[1],'mean_absolute_gap_error',1,'Gap MAE (m)')]:
+                                   (axes[1],'mean_absolute_gap_error',1,'Gap tracking MAE (m)')]:
         for i,(arm,label,color) in enumerate(zip(ARMS,labels,colors)):
             values = [result['by_condition'][c][arm][metric] for c in conditions]
             ax.bar(x+(i-1)*.25,[v*scale if v is not None else float('nan') for v in values],
@@ -208,6 +221,8 @@ def main():
     torch.set_num_threads(4)
     device = torch.device('cuda' if torch.cuda.is_available() and not cli.cpu else 'cpu')
     learner = OnlineHJ.from_checkpoint(cli.checkpoint, device)
+    checkpoint_training_policy=getattr(learner.args,'performance_policy','pid')
+    learner.args.performance_policy='pid'  # Both compared proposers are PIDs, regardless of checkpoint provenance.
     args = SimpleNamespace(**vars(learner.args))
     cli.conditions = cli.conditions or getattr(args,'offline_conditions',[args.condition])
     args.outdir, args.port, args.server = cli.outdir, cli.port, cli.server
@@ -228,6 +243,9 @@ def main():
                     steps=0, updates=learner.updates, conditions=cli.conditions,
                     training_mode='offline pooled nine-condition HJ-SAC' if hasattr(args,'offline_conditions') else 'online HJ-SAC',
                     threshold=args.switching_threshold, cases_per_condition=cli.cases,
+                    checkpoint_training_policy=checkpoint_training_policy,
+                    fallback='full_brake',fallback_request=-3.,fallback_brake=1.,
+                    gated_arms=['generalist_filtered','contextual_specialist'],
                     seed=cli.seed, dt=args.dt, horizon=args.episode_steps,
                     generalist=dict(sha256=generalist.sha256, profile=generalist.profile),
                     selector=dict(path=str(cli.selector.resolve()),sha256=hashlib.sha256(cli.selector.read_bytes()).hexdigest(),
@@ -277,7 +295,7 @@ def main():
                 for case in suite:
                     arms = [('generalist_pid',generalist,'pid'),
                             ('generalist_filtered',generalist,'filter'),
-                            ('contextual_specialist',contextual,'pid')]
+                            ('contextual_specialist',contextual,'filter')]
                     # Rotate execution order to distribute server drift across arms.
                     offset = case['case'] % len(arms)
                     for arm, policy, mode in arms[offset:]+arms[:offset]:

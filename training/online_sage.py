@@ -40,7 +40,8 @@ class OnlineSAGE(OnlineHJ):
 
     def __init__(self,args,device):
         super().__init__(args,device)
-        contract=(args.history_frames,args.include_speed,not args.no_pretrained,args.freeze_encoder)
+        contract=(args.history_frames,args.include_speed,
+                  not args.no_pretrained and not getattr(args,'resume',None),args.freeze_encoder)
         self.goal_actor=Actor(*contract).to(device)
         self.goal_critics=nn.ModuleList([Critic(*contract),Critic(*contract)]).to(device)
         self.goal_targets=deepcopy(self.goal_critics).eval().requires_grad_(False)

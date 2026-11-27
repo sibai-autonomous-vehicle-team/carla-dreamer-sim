@@ -75,7 +75,9 @@ def transition_rows(actions, distances, costs, *, metadata=None, margin_cap=9., 
 
 def build_condition(condition, cli, encoder, device):
     """Cache independent episode histories and retain the CNN's episode split."""
-    cache = cli.outdir/'cache'/f'{condition}.pt'
+    cache = (cli.cache_root if cli.cache_root is not None else cli.outdir/'cache')/f'{condition}.pt'
+    if cli.cache_root is not None and not cache.is_file():
+        raise FileNotFoundError(f'Missing requested cache: {cache}')
     split_path = cli.data_root/condition/'split.json'
     split = json.loads(split_path.read_text())
     selected = {i:part for part in ('train','val') for i in split[f'{part}_ids']}
@@ -153,15 +155,15 @@ class FeatureReplay:
         if any(not len(ids) for values in self.indices.values() for ids in values):
             raise ValueError('Every condition needs nonempty train and validation transitions')
 
-    def sample(self, count, part, device):
+    def sample(self, count, part, device, generator=None):
         # Equal expected condition exposure; no large condition dominates replay.
-        conditions = torch.randint(len(self.data),(count,))
+        conditions = torch.randint(len(self.data),(count,),generator=generator)
         batches = []
         for condition,d in enumerate(self.data):
             size = int((conditions==condition).sum())
             if not size: continue
             ids = self.indices[part][condition]
-            rows = ids[torch.randint(len(ids),(size,))]
+            rows = ids[torch.randint(len(ids),(size,),generator=generator)]
             refs = d['refs'][rows]
             current = d['features'][refs[:,0]].flatten(1)
             successor = d['features'][refs[:,1]].flatten(1)
@@ -173,6 +175,9 @@ class FeatureReplay:
 def feature_target(learner, batch):
     current, action, successor, h, nh, failed = batch
     gamma = learner.schedule(learner.args.gamma_start,learner.args.gamma_final)
+    low,high = learner.safety_bounds
+    if not ((h>=low)&(h<=high)&(nh>=low)&(nh<=high)).all():
+        raise ValueError('Safety labels outside the declared collision-value bounds')
     with torch.no_grad():
         next_action,_ = learner.actor.sample_features(successor)
         continuation = torch.minimum(*(q.value(successor,next_action) for q in learner.targets))
@@ -181,6 +186,7 @@ def feature_target(learner, batch):
 
 def update_features(learner, batch):
     features,action,*_ = batch
+    gamma = learner.schedule(learner.args.gamma_start,learner.args.gamma_final)
     target = feature_target(learner,batch)
     values = [q.value(features,action) for q in learner.critics]
     loss = sum(F.mse_loss(q,target) for q in values)/2
@@ -207,9 +213,20 @@ def update_features(learner, batch):
         for name in ('state_head','action_head','head'):
             soft_update(getattr(target_q,name),getattr(q,name),learner.args.tau)
     learner.updates += 1
-    return dict(update=learner.updates,critic_mse=float(loss.detach()),actor_loss=float(actor_loss.detach()),
+    return dict(update=learner.updates,gamma=gamma,alpha=alpha,
+                critic_mse=float(loss.detach()),actor_loss=float(actor_loss.detach()),
                 q_mean=float(torch.minimum(*values).detach().mean()),
                 mean_action=float(proposed.detach().mean()),braking_fraction=float((proposed.detach()<0).float().mean()))
+
+
+def offline_anneal_updates(total_updates, requested=None):
+    """Leave a fixed-objective phase instead of stopping at the annealing boundary."""
+    if total_updates < 1:
+        raise ValueError('updates must be positive')
+    count = min(5000,total_updates//4) if requested is None else requested
+    if not 0 <= count < total_updates:
+        raise ValueError('anneal-updates must be nonnegative and smaller than updates')
+    return count
 
 
 def main():
@@ -222,10 +239,16 @@ def main():
     p.add_argument('--updates',type=int,default=20000)
     p.add_argument('--batch-size',type=int,default=256)
     p.add_argument('--encode-batch',type=int,default=256)
+    p.add_argument('--cache-root',type=Path,help='Reuse caches built for the same dataset splits and CNN')
+    p.add_argument('--anneal-updates',type=int,help='Default: min(5000, updates/4); 0 trains at final settings from the start')
     p.add_argument('--seed',type=int,default=42)
     p.add_argument('--require-cuda',action='store_true')
     cli = p.parse_args()
     if min(cli.updates,cli.batch_size,cli.encode_batch)<1: p.error('Counts must be positive')
+    try:
+        anneal_updates = offline_anneal_updates(cli.updates,cli.anneal_updates)
+    except ValueError as error:
+        p.error(str(error))
     if cli.require_cuda and not torch.cuda.is_available(): raise RuntimeError('CUDA unavailable')
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     random.seed(cli.seed); torch.manual_seed(cli.seed); torch.set_num_threads(4)
@@ -239,7 +262,8 @@ def main():
     args = online_args(argv=['--outdir',str(cli.outdir),'--pid-checkpoint',str(cli.cnn),
                             '--freeze-encoder','--no-pretrained'])
     args.batch_size, args.seed = cli.batch_size, cli.seed
-    args.anneal_updates = cli.updates
+    args.anneal_updates = anneal_updates
+    args.offline_trainer_revision = 2
     args.offline_conditions = list(CONDITIONS)
     args.offline_data_root = str(cli.data_root.resolve())
     learner = OnlineHJ(args,device)
@@ -248,6 +272,8 @@ def main():
         model.network.load_state_dict(weights)
         model.eval()
     manifest = dict(conditions=list(CONDITIONS),updates=cli.updates,batch_size=cli.batch_size,
+        trainer_revision=2,anneal_updates=anneal_updates,final_objective_updates=cli.updates-anneal_updates,
+        cache_root=str(cli.cache_root.resolve()) if cli.cache_root is not None else None,
         seed=cli.seed,cnn_sha256=cli.cnn_sha,preprocessing=PREPROCESS,
         representation='frozen generalist gap CNN; FP32 cached frame features; four-frame history',
         objective='collision-only discounted HJ-SAC; twin-min critics; no BC or online experience',
@@ -265,10 +291,9 @@ def main():
         replay = FeatureReplay(data)
         manifest['coverage'] = {c:d['coverage'] for c,d in zip(CONDITIONS,data)}
         (cli.outdir/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-        # Validation sampling does not consume the training RNG stream.
-        with torch.random.fork_rng(devices=[]):
-            torch.manual_seed(cli.seed+1)
-            validation = replay.sample(1024,'val',device)
+        # A local CPU generator leaves both CPU and CUDA training streams intact.
+        validation = replay.sample(1024,'val',device,
+                                  generator=torch.Generator().manual_seed(cli.seed+1))
         for step in range(1,cli.updates+1):
             metrics = update_features(learner,replay.sample(cli.batch_size,'train',device))
             if step%100 == 0 or step == 1:
