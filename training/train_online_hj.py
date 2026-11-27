@@ -730,6 +730,19 @@ def gap_failure(gap, args):
     return getattr(args,'safety_objective','following') == 'following' and margin(gap,args) <= 0
 
 
+def gap_termination(gap, args):
+    """Episode stop bounds can differ from the unchanged safety constraints."""
+    bounds=getattr(args,'termination_gap_range',None)
+    if bounds is None: return gap_failure(gap,args)
+    return gap <= bounds[0] or gap >= bounds[1]
+
+
+def first_hit_rows(rows):
+    """Preserve the first-hit training objective when collection continues."""
+    index=next((i for i,row in enumerate(rows) if row.failed),None)
+    return rows if index is None else rows[:index+1]
+
+
 def finalize_episode(rows, collision_events, departures, failure_margin, *, include_lane_failure=True):
     """Resolve delayed event callbacks before admitting an episode to replay."""
     events = [frame for frame, _ in collision_events]
@@ -799,6 +812,8 @@ def parse_args(defaults=None, description=None, argv=None):
     p.add_argument('--min-gap', type=float, default=1., help='Lower failure boundary for following objective only')
     p.add_argument('--max-gap', type=float, default=9.,
                    help='Upper separation failure boundary (default 9 m); in pure collision mode, positive margin cap only')
+    p.add_argument('--termination-gap-range',type=float,nargs=2,metavar=('MIN','MAX'),
+                   help='Independent episode stop gaps in metres; safety margins/failure labels still use min-gap/max-gap. Default: stop at safety boundaries')
     p.add_argument('--max-separation', type=float, default=50.,
                    help='End an uninformative distant rollout as a truncation, retaining a bootstrap, not a failure')
     p.add_argument('--event-failure-margin', type=float, default=1.)
@@ -814,6 +829,10 @@ def parse_args(defaults=None, description=None, argv=None):
     p.add_argument('--dt', type=float, default=.1)
     p.add_argument('--port', type=int, default=2800)
     p.add_argument('--map', default='Town03')
+    p.add_argument('--road-environment',choices=('town','straight'),default='town',
+                   help='straight: generate a minimal junction-free OpenDRIVE road instead of a town')
+    p.add_argument('--straight-road-length',type=float,default=1000.)
+    p.add_argument('--straight-vehicle',default='vehicle.audi.tt',help='Straight-road vehicle; Audi TT has integrated headlights and tail lights')
     p.add_argument('--start-server', action='store_true')
     p.add_argument('--windowed', action='store_true',
                    help='Show a window with synchronized third-person view, native 224x224 model RGB and training status')
@@ -839,7 +858,7 @@ def parse_args(defaults=None, description=None, argv=None):
     bootstrap.add_argument('--resume',type=Path)
     resume_path = bootstrap.parse_known_args(argv)[0].resume
     runtime = {'outdir','resume','steps','server','port','start_server','windowed','real_time',
-               'cpu','require_cuda','eval_interval','eval_cases','eval_seed','log_interval','action_diagnostics_interval',
+               'cpu','require_cuda','eval_interval','eval_cases','eval_seed','log_interval','action_diagnostics_interval','termination_gap_range',
                'wandb','wandb_project','wandb_entity','wandb_name','wandb_group','wandb_mode'}
     saved = None
     if resume_path:
@@ -869,6 +888,8 @@ def parse_args(defaults=None, description=None, argv=None):
     if any(getattr(args,k)<1 for k in integers) or min(args.random_steps, args.collision_grace) < 0:
         p.error('Counts must be positive; random steps and collision grace must be nonnegative')
     if args.eval_interval < 0: p.error('eval-interval must be nonnegative')
+    if not math.isfinite(args.straight_road_length) or args.straight_road_length<400:
+        p.error('straight-road-length must be at least 400 m')
     if args.action_diagnostics_interval < 0: p.error('action-diagnostics-interval must be nonnegative')
     if args.eval_cases < 2: p.error('eval-cases must be at least two to cover ordinary and closing starts')
     if not 0 <= args.eval_seed < 2**32: p.error('eval-seed must be in [0, 2**32)')
@@ -892,6 +913,16 @@ def parse_args(defaults=None, description=None, argv=None):
     if args.safety_objective == 'collision-following' and args.gap_range[1] >= args.max_gap:
         p.error('Starting gaps must be below max-gap')
     if args.max_separation <= args.gap_range[1]: p.error('max-separation must exceed the starting gap range')
+    if args.termination_gap_range is not None:
+        lo,hi=args.termination_gap_range
+        if not all(map(math.isfinite,(lo,hi))) or not 0<=lo<hi:
+            p.error('termination-gap-range requires finite 0 <= MIN < MAX')
+        if not lo<args.gap_range[0]<=args.gap_range[1]<hi:
+            p.error('Starting gaps must be inside termination-gap-range')
+        if args.challenge_fraction and not lo<args.challenge_gap_range[0]<=args.challenge_gap_range[1]<hi:
+            p.error('Challenge gaps must be inside termination-gap-range')
+        if args.max_separation<=hi:
+            p.error('max-separation must exceed termination MAX')
     if args.cpu and args.require_cuda: p.error('--cpu conflicts with --require-cuda')
     if args.gate_start_updates<0: p.error('gate-start-updates must be nonnegative')
     for key in ('challenge_fraction','exploration_episode_fraction'):
@@ -953,6 +984,17 @@ def main(args=None, *, manifest_overrides=None):
     manifest.update(leader='route tracker + curvature-aware speed tracking, with scheduled full-brake pulse',
                     exploration='uniform longitudinal requests held for sampled exploration_hold_steps; reset each episode; no controller imitation',
                     lane_validation='both vehicle footprints checked against planned route every decision; invalid leader rollouts excluded from replay')
+    if getattr(args,'road_environment','town')=='straight':
+        from .straight_weather import make_weather,CAMERA_ATTRIBUTES
+        manifest['controlled_scene']=dict(vehicle=args.straight_vehicle,
+            surface='7.2 m asphalt, dashed center line, grass verges; visual meshes do not collide',
+            weather=str(make_weather(args.condition)),
+            camera_attributes=CAMERA_ATTRIBUTES,
+            lights='position + low beam at sunset/night and in rain; brake lamps follow brake commands',
+            particles='spectator follows ego for offscreen precipitation rendering')
+    manifest['episode_gap_termination']=dict(bounds=getattr(args,'termination_gap_range',None),
+        default='safety boundaries when no override is supplied',
+        replay='only transitions through the first safety failure are admitted; later rollout remains diagnostic')
     if args.performance_policy == 'sac':
         from .online_sage import OnlineSAGE, GoalPolicy
         learner = OnlineSAGE(args,device)
@@ -1000,7 +1042,6 @@ def main(args=None, *, manifest_overrides=None):
     import carla
     from .braking_scenario import BrakingScenario, InvalidBrakingScenario
     from .collect_braking import start_server
-    from .evaluate_closed_loop import make_scenarios
     from .closed_loop import read_snapshot
     from collect_parallel import stop
     process, env, world, original_settings, viewer = None, None, None, None, None
@@ -1012,10 +1053,17 @@ def main(args=None, *, manifest_overrides=None):
         if args.windowed: viewer = TrainingViewer()
         scenario_class = with_route_aware_leader(BrakingScenario,args.leader_lateral_accel,args.leader_deceleration)
         scenario_class = with_closing_starts(scenario_class,args.leader_lateral_accel,args.leader_deceleration)
+        if getattr(args,'road_environment','town')=='straight':
+            from .straight_weather import with_straight_weather
+            scenario_class=with_straight_weather(scenario_class)
         if viewer is not None: scenario_class = with_preview(scenario_class,viewer)
         if args.start_server: process = start_server(args)
         client = carla.Client('127.0.0.1', args.port); client.set_timeout(120.)
-        world = client.load_world(args.map)
+        if getattr(args,'road_environment','town')=='straight':
+            from .straight_road import create_world
+            world=create_world(client,args.straight_road_length,args.outdir/'road.xodr')
+        else:
+            world = client.load_world(args.map)
         original_settings = world.get_settings()
         from .evaluate_online_hj import evaluate
         next_eval = ((steps//args.eval_interval+1)*args.eval_interval) if args.eval_interval else 0
@@ -1026,7 +1074,8 @@ def main(args=None, *, manifest_overrides=None):
         while steps < args.steps:
             # Different route seed on every episode; retain the complete rollout plan.
             for attempt in range(30):
-                scenario = make_scenarios(world, 1, args.seed+episode*1009+attempt, args.episode_steps)[0]
+                from .straight_road import scenarios_for_args
+                scenario = scenarios_for_args(world,1,args.seed+episode*1009+attempt,args.episode_steps,args)[0]
                 start=sample_start(args,random)
                 speed,gap=start['leader_speed'],start['gap']
                 # Leave setup space to settle differential wheel speeds before
@@ -1035,7 +1084,8 @@ def main(args=None, *, manifest_overrides=None):
                 scenario['leader'][2]+=.5
                 scenario['route']=scenario['full_route'][20:]
                 delay = random.uniform(*args.brake_delay_range)
-                rollout = SimpleNamespace(condition=args.condition, blueprint='vehicle.audi.a2',
+                blueprint=args.straight_vehicle if getattr(args,'road_environment','town')=='straight' else 'vehicle.audi.a2'
+                rollout = SimpleNamespace(condition=args.condition, blueprint=blueprint,
                     initial_gap=gap+start['closing_speed']*1.5, initial_speed=speed,
                     ego_initial_speed=start['ego_speed'],leader_brake_test=True, leader_brake_after=delay,
                     leader_brake_duration=args.brake_duration, stationary_leader_test=False,
@@ -1143,8 +1193,10 @@ def main(args=None, *, manifest_overrides=None):
                 if invalid_leader_frame is not None:
                     ending = 'invalid_leader_rollout'
                     break
-                if failed or env.events or env.departures:
-                    ending = ('gap_failure' if failed else 'collision' if env.events else
+                if gap_termination(next_gap,args) or env.events or env.departures:
+                    ending = ('collision' if env.events else
+                              'gap_failure' if gap_termination(next_gap,args) and failed else
+                              'gap_truncation' if gap_termination(next_gap,args) else
                               'lane_truncation' if args.safety_objective == 'collision' else 'lane_failure')
                     break
                 if next_gap >= args.max_separation:
@@ -1170,14 +1222,15 @@ def main(args=None, *, manifest_overrides=None):
                 append_json(args.outdir/'invalid_rollouts.jsonl',dict(episode=episode,frame=invalid_leader_frame,
                             reason='leader left planned lane or collided with external object',discarded_rows=len(rows)))
             else:
-                replay.extend(rows)
+                replay.extend(first_hit_rows(rows))
             record=dict(episode=episode,step=steps,rows=len(rows),ending=ending,
                         action_sources=dict(action_counts),challenge_start=start['challenge'],
                         exploration_episode=start['exploration_episode'],nominal_condition=nominal_name,
                         admitted_to_replay=not invalid_leader,
-                        failed=bool(rows and rows[-1].failed),
+                        failed=any(r.failed for r in rows),
+                        safety_replay_rows=len(first_hit_rows(rows)) if not invalid_leader else 0,
                         minimum_safety_margin=min(r.next_margin for r in rows) if rows else None,
-                        last_admitted_frame=rows[-1].successor.frame_ids[-1] if rows else None,
+                        last_admitted_frame=first_hit_rows(rows)[-1].successor.frame_ids[-1] if rows and not invalid_leader else None,
                         collision_events=events['collision_events'],lane_departures=events['lane_departure_frames'])
             if args.performance_policy == 'sac': record['performance_return']=sum(r.reward for r in rows)
             if record['failed'] and ending == 'time_limit': record['ending'] = 'delayed_event_failure'

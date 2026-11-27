@@ -27,16 +27,30 @@ METRICS = ('collision', 'lane_departure', 'horizon_complete',
            'mean_absolute_gap_error', 'mean_speed', 'intervention_fraction')
 
 
+def validate_shared_pid(profile):
+    """One numeric gain/target contract for both controller implementations."""
+    if not isinstance(profile,dict):raise ValueError('PID profile must be a JSON object')
+    result={}
+    for key in ('target_gap','kp','ki','kd'):
+        value=profile.get(key)
+        if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or value<0:
+            raise ValueError(f'PID {key} must be finite and nonnegative')
+        result[key]=float(value)
+    if result['target_gap']<=0:raise ValueError('PID target_gap must be positive')
+    return result
+
+
 class ContextSelectorPID:
     """Existing logistic selection rule on the benchmark's synchronized images."""
-    def __init__(self, selector, context_cnn, bank, condition):
+    def __init__(self, selector, context_cnn, bank, condition,*,target_gap=6.,kp=.9,ki=.05,kd=.15):
         self.selector, self.context_cnn, self.bank, self.condition = selector,context_cnn,bank,condition
-        self.profile = dict(target_gap=6.,kp=.9,ki=.05,kd=.15)
+        self.profile = validate_shared_pid(dict(target_gap=target_gap,kp=kp,ki=ki,kd=kd))
         self.reset()
 
     def reset(self):
         from run_gap_pid import GapPID
-        self.pid = GapPID(6.,.9,.05,.15)
+        p=self.profile
+        self.pid = GapPID(p['target_gap'],p['kp'],p['ki'],p['kd'])
         self.step, self.active, self.switches, self.selections = 0,None,0,defaultdict(int)
 
     @staticmethod
@@ -154,13 +168,15 @@ def write_report(outdir, result, manifest):
               'Full-horizon survival is the fraction of episodes reaching the time limit without contact, departure or separation truncation.',
               'It does not measure the fraction of a route traveled; route completion was not measured in this screen.',
               'The specialist arm uses the saved logistic selector: weather/time flags plus its original generalist gap CNN,',
-              'argmax specialist selection every 2 s, shared PID (0.9, 0.05, 0.15), and derivative reset on switches.',
+              'argmax specialist selection every 2 s and derivative reset on switches.',
               'Its selector acceptance threshold is diagnostic. The HJ critic gates both PID systems at the shared switching threshold.',
               'For both generalist and selected-specialist PID, a score below threshold executes -3 (100% brake).',
               'The learned SAC actor supplies no fallback commands to either PID system.',
               'Existing checkpoint critic scores retain their trained value interpretation; changing execution does not retrain them.',
               'All arms use the same synchronized camera, route steering and terminal rules in this benchmark.',
-              'Generalist PID gains come from the training checkpoint. This compares configured controllers, not the CNN alone.',
+              ('Both systems use the same PID target and gains: '+json.dumps(manifest['shared_pid'])+'.'
+               if 'shared_pid' in manifest else 'Legacy run: PID gains may differ; consult the run manifest.'),
+              'This compares configured controllers, not the CNN alone.',
               'The safety objective is collision-only. This small screening suite does not establish safety.',
               'Fresh sampling seeds do not establish route disjointness from all CNN training data.',
               'Sensor failures retry the same scenario at most three times and are recorded in attempts.jsonl.', '']
@@ -210,6 +226,7 @@ def main():
     parser.add_argument('--cpu', action='store_true')
     parser.add_argument('--selector',type=Path,default=Path('experiments/logistic_context_selector_2026-11-19/model.json'))
     parser.add_argument('--context-cnn',type=Path,default=Path('generalist/cnn.pth'))
+    parser.add_argument('--pid-profile',type=Path,help='Shared target_gap/kp/ki/kd JSON; defaults to checkpoint PID settings applied to BOTH systems')
     cli = parser.parse_args()
     conditions = [f'{t}_{w}' for t in ('day','sunset','night') for w in ('sunny','cloudy','rainy')]
     if cli.conditions is not None and (len(set(cli.conditions)) != len(cli.conditions) or any(c not in conditions for c in cli.conditions)):
@@ -227,8 +244,12 @@ def main():
     cli.conditions = cli.conditions or getattr(args,'offline_conditions',[args.condition])
     args.outdir, args.port, args.server = cli.outdir, cli.port, cli.server
     args.eval_cases, args.eval_seed = cli.cases, cli.seed
-    generalist = GeneralistPID(args.pid_checkpoint, device, target_gap=args.target_gap,
-                              kp=args.pid_kp, ki=args.pid_ki, kd=args.pid_kd)
+    try:
+        shared_pid=validate_shared_pid(json.loads(cli.pid_profile.read_text()) if cli.pid_profile else
+            dict(target_gap=args.target_gap,kp=args.pid_kp,ki=args.pid_ki,kd=args.pid_kd))
+    except (ValueError,OSError) as error:parser.error(str(error))
+    args.target_gap=shared_pid['target_gap']
+    generalist = GeneralistPID(args.pid_checkpoint, device, **shared_pid)
     from selector.model import Selector
     selector = Selector.load(cli.selector)
     context_cnn = GeneralistPID(cli.context_cnn,device)
@@ -246,10 +267,12 @@ def main():
                     checkpoint_training_policy=checkpoint_training_policy,
                     fallback='full_brake',fallback_request=-3.,fallback_brake=1.,
                     gated_arms=['generalist_filtered','contextual_specialist'],
+                    shared_pid=shared_pid,pid_profile_source=str(cli.pid_profile.resolve()) if cli.pid_profile else 'checkpoint settings applied to both',
                     seed=cli.seed, dt=args.dt, horizon=args.episode_steps,
                     generalist=dict(sha256=generalist.sha256, profile=generalist.profile),
                     selector=dict(path=str(cli.selector.resolve()),sha256=hashlib.sha256(cli.selector.read_bytes()).hexdigest(),
-                                  context_cnn_sha256=context_cnn.sha256,decision_interval_s=2.,pid=[.9,.05,.15]),
+                                  context_cnn_sha256=context_cnn.sha256,decision_interval_s=2.,
+                                  pid=[shared_pid[k] for k in ('kp','ki','kd')]),
                     specialists={c:dict(sha256=p.sha256, profile=p.profile) for c,p in specialists.items()})
     # The model loader retains update count; steps are metadata only.
     payload = torch.load(cli.checkpoint, map_location='cpu', weights_only=True)
@@ -286,7 +309,7 @@ def main():
         with isolated_evaluation(learner):
             for condition in cli.conditions:
                 args.condition = condition
-                contextual = ContextSelectorPID(selector,context_cnn,specialists,condition)
+                contextual = ContextSelectorPID(selector,context_cnn,specialists,condition,**shared_pid)
                 # Suite creation validates leader setups with a full-braking arm;
                 # no controller's success is used to select cases.
                 suite = prepare_suite(learner,generalist,client,world,scenario_class,args,

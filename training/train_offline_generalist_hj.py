@@ -1,6 +1,8 @@
 """Pooled nine-condition offline HJ-SAC, using a frozen generalist RGB backbone.
 
-The actor and twin action critics train from logged actions and successor images.
+Twin action critics train from logged actions and successor images. By default,
+their continuation policy is fixed full braking. --backup-policy actor enables
+the legacy learned-actor HJ-SAC experiment explicitly.
 Frozen CNN features are cached once; no online transitions or imitation labels
 are used. The output loads directly into OnlineHJ and its paired CARLA benchmark.
 Offline SAC can overestimate unseen actions; held-out CARLA evaluation is required.
@@ -179,7 +181,10 @@ def feature_target(learner, batch):
     if not ((h>=low)&(h<=high)&(nh>=low)&(nh<=high)).all():
         raise ValueError('Safety labels outside the declared collision-value bounds')
     with torch.no_grad():
-        next_action,_ = learner.actor.sample_features(successor)
+        if getattr(learner.args,'offline_backup_policy','actor') == 'full-brake':
+            next_action=torch.full_like(action,-3.)
+        else:
+            next_action,_ = learner.actor.sample_features(successor)
         continuation = torch.minimum(*(q.value(successor,next_action) for q in learner.targets))
         return hj_backup(h,nh,failed,continuation,gamma).clamp(*learner.safety_bounds)
 
@@ -195,25 +200,31 @@ def update_features(learner, batch):
     loss.backward()
     nn.utils.clip_grad_norm_(learner.critics.parameters(),10.)
     learner.critic_optimizer.step()
-    parameters = [p for p in learner.critics.parameters() if p.requires_grad]
-    for p in parameters: p.requires_grad_(False)
-    try:
-        proposed,log_prob = learner.actor.sample_features(features)
-        q = torch.minimum(*(c.value(features,proposed) for c in learner.critics))
-        alpha = learner.schedule(learner.args.alpha,learner.args.alpha_final)
-        actor_loss = (alpha*log_prob-q).mean()
-        if not torch.isfinite(actor_loss): raise FloatingPointError('Nonfinite offline actor loss')
-        learner.actor_optimizer.zero_grad(set_to_none=True)
-        actor_loss.backward()
-        nn.utils.clip_grad_norm_(learner.actor.parameters(),10.)
-        learner.actor_optimizer.step()
-    finally:
-        for p in parameters: p.requires_grad_(True)
+    fixed_brake=getattr(learner.args,'offline_backup_policy','actor') == 'full-brake'
+    if fixed_brake:
+        proposed=torch.full_like(action,-3.)
+        actor_loss=torch.zeros((),device=action.device)
+        alpha=0.
+    else:
+        parameters = [p for p in learner.critics.parameters() if p.requires_grad]
+        for p in parameters: p.requires_grad_(False)
+        try:
+            proposed,log_prob = learner.actor.sample_features(features)
+            q = torch.minimum(*(c.value(features,proposed) for c in learner.critics))
+            alpha = learner.schedule(learner.args.alpha,learner.args.alpha_final)
+            actor_loss = (alpha*log_prob-q).mean()
+            if not torch.isfinite(actor_loss): raise FloatingPointError('Nonfinite offline actor loss')
+            learner.actor_optimizer.zero_grad(set_to_none=True)
+            actor_loss.backward()
+            nn.utils.clip_grad_norm_(learner.actor.parameters(),10.)
+            learner.actor_optimizer.step()
+        finally:
+            for p in parameters: p.requires_grad_(True)
     for target_q,q in zip(learner.targets,learner.critics):
         for name in ('state_head','action_head','head'):
             soft_update(getattr(target_q,name),getattr(q,name),learner.args.tau)
     learner.updates += 1
-    return dict(update=learner.updates,gamma=gamma,alpha=alpha,
+    return dict(update=learner.updates,gamma=gamma,alpha=alpha,actor_updated=not fixed_brake,
                 critic_mse=float(loss.detach()),actor_loss=float(actor_loss.detach()),
                 q_mean=float(torch.minimum(*values).detach().mean()),
                 mean_action=float(proposed.detach().mean()),braking_fraction=float((proposed.detach()<0).float().mean()))
@@ -237,6 +248,7 @@ def main():
     p.add_argument('--original-root',type=Path,default=Path('dataset/combined_800'))
     p.add_argument('--braking-root',type=Path,default=Path('dataset/braking_lane_tracked_500_per_condition'))
     p.add_argument('--updates',type=int,default=20000)
+    p.add_argument('--backup-policy',choices=('full-brake','actor'),default='full-brake')
     p.add_argument('--batch-size',type=int,default=256)
     p.add_argument('--encode-batch',type=int,default=256)
     p.add_argument('--cache-root',type=Path,help='Reuse caches built for the same dataset splits and CNN')
@@ -263,20 +275,25 @@ def main():
                             '--freeze-encoder','--no-pretrained'])
     args.batch_size, args.seed = cli.batch_size, cli.seed
     args.anneal_updates = anneal_updates
-    args.offline_trainer_revision = 2
+    args.offline_trainer_revision = 3
+    args.offline_backup_policy = cli.backup_policy
     args.offline_conditions = list(CONDITIONS)
     args.offline_data_root = str(cli.data_root.resolve())
     learner = OnlineHJ(args,device)
+    if cli.backup_policy == 'full-brake':learner.actor.requires_grad_(False)
     weights = encoder.network.state_dict()
     for model in [learner.actor,*learner.critics,*learner.targets]:
         model.network.load_state_dict(weights)
         model.eval()
     manifest = dict(conditions=list(CONDITIONS),updates=cli.updates,batch_size=cli.batch_size,
-        trainer_revision=2,anneal_updates=anneal_updates,final_objective_updates=cli.updates-anneal_updates,
+        trainer_revision=3,backup_policy=cli.backup_policy,actor_trained=cli.backup_policy=='actor',
+        anneal_updates=anneal_updates,final_objective_updates=cli.updates-anneal_updates,
         cache_root=str(cli.cache_root.resolve()) if cli.cache_root is not None else None,
         seed=cli.seed,cnn_sha256=cli.cnn_sha,preprocessing=PREPROCESS,
         representation='frozen generalist gap CNN; FP32 cached frame features; four-frame history',
-        objective='collision-only discounted HJ-SAC; twin-min critics; no BC or online experience',
+        objective=('collision-only discounted HJ value under full-brake continuation; twin-min critics; no learned backup actor'
+                   if cli.backup_policy=='full-brake' else
+                   'collision-only discounted HJ-SAC; twin-min critics; no BC or online experience'),
         sampling='uniform conditions, then uniform training transitions',
         split='existing generalist episode IDs; train updates only; validation diagnostics only; test untouched',
         original_alignment='RGB[t], action[t], gap[t-1] -> RGB[t+1], gap[t]; t=1..T-2',

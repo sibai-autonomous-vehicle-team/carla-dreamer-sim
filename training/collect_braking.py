@@ -307,8 +307,10 @@ def start_server(args):
             sock.bind(('0.0.0.0', port))
     log = (args.outdir / 'server.log').open('w')
     environment = server_environment()
+    startup_map=(['/Game/Carla/Maps/OpenDriveMap']
+                 if getattr(args,'road_environment','town')=='straight' else [])
     process = subprocess.Popen(
-        [str(args.server.resolve()), '-RenderOffScreen', '-ResX=256', '-ResY=256',
+        [str(args.server.resolve()), *startup_map, '-RenderOffScreen', '-ResX=256', '-ResY=256',
          '-quality-level=Epic', '-nosound', f'-carla-rpc-port={args.port}'],
         stdout=log, stderr=subprocess.STDOUT, env=environment, start_new_session=True)
     log.close()

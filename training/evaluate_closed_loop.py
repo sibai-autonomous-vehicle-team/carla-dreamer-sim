@@ -169,7 +169,8 @@ class LiveScenario:
         settings.no_rendering_mode = args.graphics != 'windowed' and not args.camera
         self.world.apply_settings(settings)
         tod, weather = args.condition.split('_')
-        self.world.set_weather(make_weather(tod, weather))
+        parameters=getattr(args,'weather_parameters',None)
+        self.world.set_weather(parameters if parameters is not None else make_weather(tod,weather))
         self.map = self.world.get_map()
         self.route, self.route_index = scenario['route'], 0
         try:
@@ -179,6 +180,8 @@ class LiveScenario:
                 actor = self.world.spawn_actor(bp, transform_from(scenario[key]))
                 self.actors.append(actor)
                 actor.apply_control(carla.VehicleControl(brake=1.))
+                if getattr(args,'vehicle_initial_lights',None) is not None:
+                    actor.set_light_state(args.vehicle_initial_lights)
             self.ego, self.nonego = self.actors
             for _ in range(20):
                 self.world.tick()
@@ -220,8 +223,10 @@ class LiveScenario:
                 # Exact collection camera configuration: RGB 224x224, fov 120,
                 # attached at x=1.5 m, z=2 m, one image per simulation tick.
                 bp = library.find('sensor.camera.rgb')
-                for name,value in {'image_size_x':'224', 'image_size_y':'224',
-                                   'fov':'120', 'sensor_tick':'0.0'}.items():
+                attributes={'image_size_x':'224', 'image_size_y':'224',
+                            'fov':'120', 'sensor_tick':'0.0'}
+                attributes.update(getattr(args,'camera_attributes',{}))
+                for name,value in attributes.items():
                     bp.set_attribute(name,value)
                 sensor = self.world.spawn_actor(bp,carla.Transform(carla.Location(x=1.5,z=2.)),attach_to=self.ego)
                 self.actors.append(sensor)

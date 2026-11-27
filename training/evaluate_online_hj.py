@@ -38,7 +38,6 @@ def isolated_evaluation(learner):
 
 
 def make_case(world,args,index,attempt=0):
-    from .evaluate_closed_loop import make_scenarios
     from .train_online_hj import sample_start
     seed=args.eval_seed+index*1009+attempt*1000003
     rng = random.Random(seed)
@@ -46,7 +45,8 @@ def make_case(world,args,index,attempt=0):
     config.challenge_fraction = float(index % 2 == 1)
     start = sample_start(config, rng)
     start['exploration_episode'] = False
-    scenario = make_scenarios(world, 1, seed, args.episode_steps)[0]
+    from .straight_road import scenarios_for_args
+    scenario = scenarios_for_args(world,1,seed,args.episode_steps,args)[0]
     scenario['leader'] = list(scenario['full_route'][20]); scenario['leader'][2] += .5
     scenario['route'] = scenario['full_route'][20:]
     return dict(case=index, seed=seed, attempt=attempt, start=start,
@@ -80,10 +80,11 @@ def prepare_suite(learner,nominal,client,world,scenario_class,args,viewer=None,b
 
 
 def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=None,trace_callback=None):
-    from .train_online_hj import FrameHistory, Transition, margin, gap_failure, planned_lane_status, finalize_episode
+    from .train_online_hj import FrameHistory, Transition, margin, gap_failure, gap_termination, planned_lane_status, finalize_episode
     from .closed_loop import read_snapshot
     start = case['start']; gap = start['gap']
-    config = SimpleNamespace(condition=args.condition, blueprint='vehicle.audi.a2',
+    blueprint=getattr(args,'straight_vehicle','vehicle.audi.tt') if getattr(args,'road_environment','town')=='straight' else 'vehicle.audi.a2'
+    config = SimpleNamespace(condition=args.condition, blueprint=blueprint,
         initial_gap=gap+start['closing_speed']*1.5, initial_speed=start['leader_speed'],
         ego_initial_speed=start['ego_speed'], leader_brake_test=True, leader_brake_after=case['brake_after'],
         leader_brake_duration=args.brake_duration, stationary_leader_test=False,
@@ -156,7 +157,7 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
             interventions += int(intervened); speed_sum += observation.speed
             gap_error_sum += abs(gap-nominal.profile['target_gap'])
             observation = successor
-            if invalid_frame is not None or env.events or env.departures or rows[-1].failed:
+            if invalid_frame is not None or env.events or env.departures or gap_termination(next_gap,args):
                 ending = 'event'; break
             if next_gap >= args.max_separation:
                 ending = 'separation_truncation'; break
@@ -171,9 +172,11 @@ def rollout(learner, nominal, client, scenario_class, args, case, mode, viewer=N
                                 include_lane_failure=args.safety_objective != 'collision')
         departures = [f for f in events['lane_departure_frames'] if lo <= f <= hi]
         collision = bool(contacts)
-        return dict(valid=valid,collision=collision,failure=bool(rows[-1].failed),
+        failure=any(r.failed for r in rows)
+        return dict(valid=valid,collision=collision,failure=failure,
             lane_departure=bool(departures),ending=ending,ticks=len(rows),
-            horizon_complete=not collision and not departures and ending == 'time_limit',
+            horizon_complete=not failure and not collision and not departures and ending == 'time_limit',
+            rollout_horizon_complete=not collision and not departures and ending == 'time_limit',
             initial_nominal_q=initial_q,probe_q=probe_q,action_scan=action_scan,
             mean_action=sum(commands)/len(commands),minimum_action=min(commands),maximum_action=max(commands),
             predicted_safe=probe_q >= args.switching_threshold if probe_q is not None else None,

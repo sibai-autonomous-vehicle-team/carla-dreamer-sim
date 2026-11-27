@@ -60,6 +60,23 @@ class OfflineTests(unittest.TestCase):
         self.assertTrue(all(p.grad is None for p in learner.actor.network.parameters()))
         self.assertTrue(all(not p.requires_grad for p in learner.targets.parameters()))
 
+    def test_full_brake_target_and_updates_never_use_actor(self):
+        from training.train_offline_generalist_hj import feature_target
+        from tests.test_sac_implementation import tiny_network,args
+        settings=args();settings.offline_backup_policy='full-brake'
+        with patch.object(VisualNetwork,'__init__',tiny_network):learner=OnlineHJ(settings,'cpu')
+        before={k:v.clone() for k,v in learner.actor.state_dict().items()}
+        batch=(torch.zeros(2,8),torch.zeros(2,1),torch.zeros(2,8),
+               torch.ones(2)*2,torch.ones(2),torch.zeros(2,dtype=torch.bool))
+        learner.args.gamma_start=learner.args.gamma_final=.9
+        for q in learner.targets:q.value=lambda f,a:a[:,0]/3
+        with patch.object(learner.actor,'sample_features',side_effect=AssertionError('No learned backup actor')):
+            torch.testing.assert_close(feature_target(learner,batch),torch.full((2,),-.7))
+            result=update_features(learner,batch)
+        self.assertFalse(result['actor_updated'])
+        self.assertEqual(result['mean_action'],-3.)
+        for key,value in learner.actor.state_dict().items():torch.testing.assert_close(value,before[key])
+
     def test_replay_respects_validation_partition(self):
         data=dict(features=torch.arange(4.).reshape(4,1).expand(4,2),
                   refs=torch.tensor([[[0]*4,[1]*4],[[2]*4,[3]*4]]),
